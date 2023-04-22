@@ -6,7 +6,7 @@ services:
     restart: always
     environment: 
       - DATABASE_HOST=127.0.0.1
-      - POSTGRES_USER=gemet
+      - POSTGRES_USER=root
       - POSTGRES_PASSWORD=luis
       - POSTGRES_DB=gemet
     ports: 
