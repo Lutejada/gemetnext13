@@ -9,3 +9,54 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model equipo {
+  id String @id @default(cuid())
+  codigo String @unique
+  descripcion String 
+  modelo String
+  serie String
+  status enumstatus
+  ubicacion ubicacion?
+  responsable responsable? 
+  marca marca?
+  fechaCreacio DateTime @default(now())
+  fechaactualizacion DateTime @updatedAt
+}
+
+model responsable {
+  id String @id @default(cuid()) 
+  equipo equipo  @relation(fields:[equipoid], references:[id])
+  ubicacion ubicacion?
+  equipoid String @unique
+  alias String @unique
+  descripcion String
+  status enumstatus
+  
+}
+
+model ubicacion {
+  id String @id @default(cuid())
+  descripcion String
+  equipo equipo @relation(fields: [equipoid], references: [id])
+  equipoid String @unique
+  responsable responsable @relation(fields: [responsableid], references: [id])
+  responsableid String @unique
+  status enumstatus
+  fechaCreacio DateTime @default(now())
+  fechaactualizacion DateTime @updatedAt
+}
+
+model marca{
+  id String @id @default(cuid())
+  alias String 
+  descripcion String 
+  equipo equipo @relation(fields: [equipoid], references: [id])
+  equipoid String @unique
+  fechaCreacio DateTime @default(now())
+  fechaactualizacion DateTime @updatedAt
+}
+enum enumstatus {
+  activo
+  inactivo
+}

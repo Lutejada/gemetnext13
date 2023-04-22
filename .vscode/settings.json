@@ -3,5 +3,6 @@
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
-  }
+  },
+  "prisma.fileWatcher": true
 }
