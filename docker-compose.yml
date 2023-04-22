@@ -1,0 +1,25 @@
+version: "3.8"
+
+services: 
+  postgres:
+    image: postgres:15
+    restart: always
+    environment: 
+      - DATABASE_HOST=127.0.0.1
+      - POSTGRES_USER=gemet
+      - POSTGRES_PASSWORD=luis
+      - POSTGRES_DB=gemet
+    ports: 
+      - 5432:5432
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data  
+
+  pgadmin:
+    image: dpage/pgadmin4
+    environment: 
+      PGADMIN_DEFAULT_EMAIL: "luetejava@gmail.com"
+      PGADMIN_DEFAULT_PASSWORD: "luis"
+    ports:
+      - "80:80"
+    depends_on: 
+      - postgres 
