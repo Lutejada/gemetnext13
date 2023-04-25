@@ -11,75 +11,76 @@ datasource db {
 }
 
 model equipo {
-  id                 String            @id @default(cuid())
-  codigo             String            @unique @db.VarChar(20)
-  descripcion        String            @db.VarChar(60)
-  modelo             String            @db.VarChar(40)
-  serie              String            @db.VarChar(40)
-  status             enumstatus
-  ubicacion          ubicacion?
-  responsable        responsable?
-  marca              marca?
-  fechaCreacio       DateTime          @default(now())
-  fechaactualizacion DateTime          @updatedAt
-  equpo_actividad    equipo_actividad[]
+  id                    String             @id @default(cuid())
+  codigo                String             @unique @db.VarChar(20)
+  descripcion           String             @db.VarChar(60)
+  modelo                String             @db.VarChar(40)
+  serie                 String             @db.VarChar(40)
+  status                enumstatus
+  ubicacion             ubicacion          @relation(fields: [equipo_Ubicacion_id], references: [id])
+  responsable           responsable        @relation(fields: [equipo_responsable_id], references: [id])
+  equipo_responsable_id String             @unique
+  equipo_Ubicacion_id   String             @unique
+  marca                 marca              @relation(fields: [equipo_marca_id], references: [id])
+  equipo_marca_id       String             @unique
+  equipo_actividad      equipo_actividad[]
+  fechaCreacion         DateTime           @default(now())
+  fechaActualizacion    DateTime           @updatedAt
 }
 
 model responsable {
-  id                 String     @id @default(cuid())
-  equipo             equipo     @relation(fields: [equipoid], references: [id])
-  ubicacion          ubicacion?
-  equipoid           String     @unique
-  alias              String     @unique @db.VarChar(10)
-  descripcion        String     @db.VarChar(40)
-  fechaCreacio       DateTime   @default(now())
-  fechaactualizacion DateTime   @updatedAt
+  id                 String      @id @default(cuid())
+  equipo             equipo[]
+  ubicacion          ubicacion[]
+  alias              String      @unique @db.VarChar(10)
+  descripcion        String      @db.VarChar(40)
+  fechaCreacion      DateTime    @default(now())
+  fechaActualizacion DateTime    @updatedAt
 }
 
 model ubicacion {
   id                 String      @id @default(cuid())
   descripcion        String      @db.VarChar(40)
-  equipo             equipo      @relation(fields: [equipoid], references: [id])
-  equipoid           String      @unique
+  equipo             equipo[]
   responsable        responsable @relation(fields: [responsableid], references: [id])
   responsableid      String      @unique
   status             enumstatus
   fechaCreacio       DateTime    @default(now())
-  fechaactualizacion DateTime    @updatedAt
+  fechaActualizacion DateTime    @updatedAt
 }
 
 model marca {
   id                 String   @id @default(cuid())
   alias              String
   descripcion        String
-  equipo             equipo   @relation(fields: [equipoid], references: [id])
-  equipoid           String   @unique
+  equipo             equipo[]
   fechaCreacion      DateTime @default(now())
   fechaactualizacion DateTime @updatedAt
 }
 
 model actividad {
-  id                String         @id @default(cuid())
-  tipo_actividad tipo_actividad  @relation(fields: [tipo_actividad_id], references: [id])
-  tipo_actividad_id  String  @unique
-  fechaCreacion       DateTime @default(now())
-  fechaactualizacion DateTime @updatedAt
+  id                 String         @id @default(cuid())
+  tipo_actividad     tipo_actividad @relation(fields: [tipo_actividad_id], references: [id])
+  tipo_actividad_id  String         @unique
+  fechaCreacion      DateTime       @default(now())
+  fechaactualizacion DateTime       @updatedAt
 }
 
 model tipo_actividad {
-  id                 String           @id @default(cuid())
-  descripcion        enum_tipo_actividad
-  status             enumstatus
-  actividad          actividad[]
-  fechaCreacio       DateTime         @default(now())
-  fechaactualizacion DateTime         @updatedAt
- }
+  id          String              @id @default(cuid())
+  descripcion enum_tipo_actividad
+  status      enumstatus
+  actividad   actividad[]
+}
 
+// Tabla intermedia
 model equipo_actividad {
-  id        String              @id @default(cuid())
-  equipo    equipo              @relation(fields: [equipoId], references: [id])
-  actividad enum_tipo_actividad
-  equipoId  String
+  id                  String              @id @default(cuid())
+  equipo_actividad    equipo              @relation(fields: [equipo_actividad_id], references: [id])
+  equipo_actividad_id String              @unique
+  actividad           enum_tipo_actividad
+  fechaCreacion       DateTime            @default(now())
+  fechaActualizacion  DateTime            @updatedAt
 }
 
 enum enumstatus {
