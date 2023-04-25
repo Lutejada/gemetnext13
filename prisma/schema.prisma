@@ -95,3 +95,19 @@ enum enum_tipo_actividad {
   mantenimiento_preventivo
   operaciones
 }
+
+enum frecuencia {
+  Semanal
+  Quincenal
+  Mensual
+  Bimensual
+  Trimestral
+  Cuatrimensual
+  Semestral
+  Anual
+  Bianual
+  Trianual
+  Cuatrianual
+  Quintianual
+  Sextanual
+}
