@@ -16,7 +16,7 @@ model equipo {
   descripcion           String             @db.VarChar(60)
   modelo                String             @db.VarChar(40)
   serie                 String             @db.VarChar(40)
-  status                enumstatus
+  status                enum_status
   ubicacion             ubicacion          @relation(fields: [equipo_Ubicacion_id], references: [id])
   responsable           responsable        @relation(fields: [equipo_responsable_id], references: [id])
   equipo_responsable_id String             @unique
@@ -44,7 +44,7 @@ model ubicacion {
   equipo             equipo[]
   responsable        responsable @relation(fields: [responsableid], references: [id])
   responsableid      String      @unique
-  status             enumstatus
+  status             enum_status
   fechaCreacio       DateTime    @default(now())
   fechaActualizacion DateTime    @updatedAt
 }
@@ -58,32 +58,29 @@ model marca {
   fechaactualizacion DateTime @updatedAt
 }
 
-model actividad {
-  id                 String         @id @default(cuid())
-  tipo_actividad     tipo_actividad @relation(fields: [tipo_actividad_id], references: [id])
-  tipo_actividad_id  String         @unique
-  fechaCreacion      DateTime       @default(now())
-  fechaactualizacion DateTime       @updatedAt
-}
-
 model tipo_actividad {
-  id          String              @id @default(cuid())
-  descripcion enum_tipo_actividad
-  status      enumstatus
-  actividad   actividad[]
+  id                       String              @id @default(cuid())
+  descripcion              enum_tipo_actividad
+  status                   enum_status
+  equipo_tipo_actividad    equipo_actividad    @relation(fields: [equipo_tipo_actividad_id], references: [id])
+  equipo_tipo_actividad_id String
+  fechaCreacion            DateTime            @default(now())
+  fechaactualizacion       DateTime            @updatedAt
 }
 
 // Tabla intermedia
 model equipo_actividad {
-  id                  String              @id @default(cuid())
-  equipo_actividad    equipo              @relation(fields: [equipo_actividad_id], references: [id])
-  equipo_actividad_id String              @unique
-  actividad           enum_tipo_actividad
-  fechaCreacion       DateTime            @default(now())
-  fechaActualizacion  DateTime            @updatedAt
+  id                    String           @id @default(cuid())
+  tipo_actividad        tipo_actividad[]
+  actividades_equipo    equipo           @relation(fields: [actividades_equipo_id], references: [id])
+  actividades_equipo_id String
+  fechaCreacion         DateTime         @default(now())
+  fechaActualizacion    DateTime         @updatedAt
 }
 
-enum enumstatus {
+// Lugar para los Enum
+
+enum enum_status {
   activo
   inactivo
 }
