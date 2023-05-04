@@ -70,12 +70,23 @@ model tipo_actividad {
 
 // Tabla intermedia
 model equipo_actividad {
-  id                    String           @id @default(cuid())
-  tipo_actividad        tipo_actividad[]
-  actividades_equipo    equipo           @relation(fields: [actividades_equipo_id], references: [id])
-  actividades_equipo_id String
-  fechaCreacion         DateTime         @default(now())
-  fechaActualizacion    DateTime         @updatedAt
+  id                            String                       @id @default(cuid())
+  tipo_actividad                tipo_actividad[]
+  actividades_equipo            equipo                       @relation(fields: [actividades_equipo_id], references: [id])
+  actividades_equipo_id         String
+  fercuencia_actividad_equipo   frecuencia_actividad_equipo?
+  fechaCreacion                 DateTime                     @default(now())
+  fechaActualizacion            DateTime                     @updatedAt
+  frecuencia_actividad_equipoId String
+}
+
+model frecuencia_actividad_equipo {
+  id                             String              @id @default(cuid())
+  descripcion                    enum_tipo_actividad
+  frecuencia_actividad_equipo    equipo_actividad    @relation(fields: [frecuencia_actividad_equipo_id], references: [id])
+  frecuencia_actividad_equipo_id String              @unique
+  fechaCreacion                  DateTime            @default(now())
+  fechaActualizacion             DateTime            @updatedAt
 }
 
 // Lugar para los Enum
@@ -107,4 +118,14 @@ enum frecuencia {
   Cuatrianual
   Quintianual
   Sextanual
+}
+
+enum rol {
+  admin
+  metrologo
+  consulta
+  coordinador
+  directorTecnico
+  auxiliarMetrologia
+  dev
 }
