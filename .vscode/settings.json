@@ -4,5 +4,17 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "prisma.fileWatcher": true
+  "prisma.fileWatcher": true,
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "locaconections",
+      "database": "gemet",
+      "username": "root",
+      "password": "luis"
+    }
+  ]
 }
