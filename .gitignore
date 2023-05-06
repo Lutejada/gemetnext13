@@ -6,6 +6,7 @@
 .pnp.js
 
 /prostgres_data
+docker-compose.yml
 
 # testing
 /coverage
