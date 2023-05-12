@@ -1,4 +1,7 @@
-import {equipo,enumstatus} from '@prisma/client'
-
-export interface Equipo extends equipo {
+export interface Equipo {
+  id: string;
+  codigo: string;
+  descripcion: string;
+  modelo: string;
+  serie: string;
 }

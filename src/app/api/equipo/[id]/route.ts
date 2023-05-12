@@ -8,7 +8,7 @@ interface Params {
 
 export async function GET(request: Request, { params }: Params) {
   try {
-    console.log(params.id);
+    console.log(params.id); //1
     const repositorio = equipoRespositoryImpl();
     const equipo = await obtenerEquipo(repositorio, params.id);
     return NextResponse.json(equipo);
