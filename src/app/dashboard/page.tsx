@@ -1,7 +1,9 @@
 import React from 'react'
 
-export default function DashBoard() {
+const dashboard = () => {
   return (
-    <div>DashBoard</div>
+    <div>dashboard</div>
   )
 }
+
+export default dashboard
