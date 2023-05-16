@@ -11,10 +11,9 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "localconections",
+      "name": "local",
       "database": "gmet",
-      "username": "root",
-      "password": "password"
+      "username": "root"
     }
   ]
 }
