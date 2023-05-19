@@ -5,6 +5,9 @@
 /.pnp
 .pnp.js
 
+/postgres_data
+docker-compose.yml
+
 # testing
 /coverage
 
