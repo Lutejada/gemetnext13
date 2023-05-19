@@ -1,6 +1,5 @@
 import React from 'react'
 import './globals.css'
-import AppBar from './dashboard/components/AppBar'
 
 export const metadata = {
   title: 'Gemet',
@@ -14,8 +13,7 @@ export default function RootLayout ({
 }) {
   return (
     <html lang='en'>
-      <body>
-        <AppBar />
+      <body className='h-screen'>
         {children}
       </body>
     </html>
