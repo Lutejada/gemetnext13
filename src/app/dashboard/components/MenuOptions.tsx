@@ -7,7 +7,11 @@ export default function MenuOptions () {
   return (
     <>
       {routes.map(route => (
-        <MenuItem name={route.name} subRoute={route.subRoute} />
+        <MenuItem
+          name={route.name}
+          path={route.path}
+          subRoute={route.subRoute}
+        />
       ))}
     </>
   )
