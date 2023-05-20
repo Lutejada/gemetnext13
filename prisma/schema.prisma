@@ -5,48 +5,54 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+  projectDatabaseType = "PostgreSQL"
+  includeRelationFields= false
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model equipo {
-  id                    String             @id @default(cuid())
-  codigo                String             @unique @db.VarChar(20)
-  descripcion           String             @db.VarChar(60)
-  modelo                String             @db.VarChar(40)
-  serie                 String             @db.VarChar(40)
-  status                enum_status
-  ubicacion             ubicacion          @relation(fields: [equipo_Ubicacion_id], references: [id])
-  responsable           responsable        @relation(fields: [equipo_responsable_id], references: [id])
-  equipo_responsable_id String             @unique
-  equipo_Ubicacion_id   String             @unique
-  marca                 marca              @relation(fields: [equipo_marca_id], references: [id])
-  equipo_marca_id       String             @unique
-  equipo_actividad      equipo_actividad[]
-  fechaCreacion         DateTime           @default(now())
-  fechaActualizacion    DateTime           @updatedAt
+  id                  String             @id @default(cuid())
+  codigo              String             @unique @db.VarChar(20)
+  descripcion         String             @db.VarChar(60)
+  modelo              String             @db.VarChar(40)
+  serie               String             @db.VarChar(40)
+  status              enum_status
+  ubicacion           ubicacion          @relation(fields: [ubicacion_id], references: [id])
+  responsable         responsable        @relation(fields: [responsable_id], references: [id])
+  responsable_id      String             @unique
+  ubicacion_id        String             @unique
+  marca               marca              @relation(fields: [marca_id], references: [id])
+  marca_id            String             @unique
+  equipo_actividad    equipo_actividad[]
+  fecha_creacion      DateTime           @default(now())
+  fecha_actualizacion DateTime           @updatedAt
 }
 
 model responsable {
-  id                 String      @id @default(cuid())
-  equipo             equipo[]
-  ubicacion          ubicacion[]
-  alias              String      @unique @db.VarChar(10)
-  descripcion        String      @db.VarChar(40)
-  fechaCreacion      DateTime    @default(now())
-  fechaActualizacion DateTime    @updatedAt
+  id                  String      @id @default(cuid())
+  equipo              equipo[]
+  ubicacion           ubicacion[]
+  alias               String      @unique @db.VarChar(10)
+  descripcion         String      @db.VarChar(40)
+  fecha_creacion      DateTime    @default(now())
+  fecha_actualizacion DateTime    @updatedAt
 }
 
 model ubicacion {
-  id                 String      @id @default(cuid())
-  descripcion        String      @db.VarChar(40)
-  equipo             equipo[]
-  responsable        responsable @relation(fields: [responsableid], references: [id])
-  responsableid      String      @unique
-  status             enum_status
-  fechaCreacio       DateTime    @default(now())
-  fechaActualizacion DateTime    @updatedAt
+  id                  String      @id @default(cuid())
+  descripcion         String      @db.VarChar(40)
+  equipo              equipo[]
+  responsable         responsable @relation(fields: [responsable_id], references: [id])
+  responsable_id      String      @unique
+  status              enum_status
+  fecha_creacio       DateTime    @default(now())
+  fecha_actualizacion DateTime    @updatedAt
 }
 
 model marca {
