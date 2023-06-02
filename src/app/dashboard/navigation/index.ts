@@ -32,5 +32,11 @@ export const routes: Route[] = [
     name: "Configuracion",
     icon:'',
     path:'/configuracion',
+    subRoute:[
+      {
+        name:'Responsable',
+        path:'/responsable',
+      }
+    ]
   },
 ];
