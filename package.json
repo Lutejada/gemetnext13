@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "prisma": {
+      "seed": "ts-node prisma/seed.ts"
+    }
   },
   "dependencies": {
     "@hookform/resolvers": "^3.1.0",
@@ -29,13 +32,16 @@
     "react-hook-form": "^7.44.2",
     "tailwind-merge": "^1.12.0",
     "tailwindcss-animate": "^1.0.5",
-    "typescript": "5.0.4",
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@types/node": "^20.2.1",
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.23",
     "prisma": "^4.14.0",
-    "tailwindcss": "^3.3.2"
+    "prisma-dbml-generator": "^0.10.0",
+    "tailwindcss": "^3.3.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.4"
   }
 }
