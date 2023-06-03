@@ -1,4 +1,4 @@
-export interface Responseable {
+export interface Responsable {
   id: string;
   equipo: string;
   ubicacion: string;
