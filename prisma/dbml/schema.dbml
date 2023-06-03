@@ -19,7 +19,7 @@ Table equipo {
 Table responsable {
   id String [pk]
   alias String [unique, not null]
-  descripcion String [not null]
+  nombre String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
 }
@@ -29,7 +29,7 @@ Table ubicacion {
   descripcion String [not null]
   responsable_id String [unique, not null]
   status enum_status [not null]
-  fecha_creacio DateTime [default: `now()`, not null]
+  fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
 }
 
