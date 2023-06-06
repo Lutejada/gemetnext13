@@ -58,13 +58,13 @@ model ubicacion {
 }
 
 model marca {
-  id                 String    @id @default(cuid())
-  alias              String
-  descripcion        String
-  equipo             equipo[]
-  fechaCreacion      DateTime  @default(now())
-  fechaactualizacion DateTime  @updatedAt
-  fecha_inactivacion DateTime?
+  id                  String    @id @default(cuid())
+  alias               String
+  descripcion         String
+  equipo              equipo[]
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 model tipo_actividad {
@@ -72,17 +72,17 @@ model tipo_actividad {
   descripcion                 String
   equipo_actividad_frecuencia equipo_actividad_frecuencia @relation(fields: [tipo_actividad_id], references: [id])
   tipo_actividad_id           String
-  fechaCreacion               DateTime                    @default(now())
-  fechaactualizacion          DateTime                    @updatedAt
+  fecha_creacion              DateTime                    @default(now())
+  fecha_actualizacion         DateTime                    @updatedAt
   fecha_inactivacion          DateTime?
 }
 
 model rol {
-  id_rol             String      @id @default(cuid())
-  descricion         String
-  status             enum_status @default(activo)
-  fechaCreacion      DateTime    @default(now())
-  fechaActualizacion DateTime    @updatedAt
+  id_rol              String      @id @default(cuid())
+  descricion          String
+  fecha_creacion      DateTime    @default(now())
+  fecha_actualizacion DateTime    @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Tabla intermedia
