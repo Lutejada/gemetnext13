@@ -20,42 +20,32 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
-
-
+import { useResponsables } from '../../hooks/useResponsables'
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: 'requerido' }),
-  alias: z.string().min(2, { message: 'requerido' })
+  responsables: z.string().min(2, { message: 'requerido' })
 })
 
 export default function Ubicacion () {
-  // ...
-  // 1. Define your form.
+  const { obtenerResponsables } = useResponsables()
+  const responsables = obtenerResponsables()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombre: '',
-      alias: ''
+      responsables: ''
     }
   })
 
   // 2. Define a submit handler.
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    const res = await axios.post('/api/responsables/crear',{
-      nombre:values.nombre,
-      alias:values.alias
-    })
-    console.log(res.data);
-    //LLAMAR EL ENDPOIN DE CREAR RESPONSABLE
+    console.log(values);
   }
 
   return (
     <>
-      <h2 className='text-center mb-4 font-semibold'>Crear Responsables</h2>
+      <h2 className='text-center mb-4 font-semibold'>Crear Ubicaciones</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -64,23 +54,43 @@ export default function Ubicacion () {
             name='nombre'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Descripcion</FormLabel>
+                <FormLabel>Nombre</FormLabel>
                 <FormControl>
-                  <Input placeholder='Ingrese su nombre' {...field} />
+                  <Input
+                    placeholder='Ingrese nombre de la ubicacion'
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
-            name='alias'
+            name='responsables'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Alias</FormLabel>
-                <FormControl>
-                  <Input placeholder='Ingrese sus iniciales' {...field} />
-                </FormControl>
+                <FormLabel>Email</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder='Select a verified email to display' />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {responsables.responsables?.map((res) => (
+                      <>
+                        <SelectItem value={res.id} key={res.id} >
+                          {res.nombre}
+                        </SelectItem>
+                      </>
+                    ))}
+                  </SelectContent>
+                </Select>
                 <FormMessage />
               </FormItem>
             )}

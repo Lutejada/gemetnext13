@@ -22,7 +22,7 @@ model equipo {
   descripcion         String             @db.VarChar(60)
   modelo              String             @db.VarChar(40)
   serie               String             @db.VarChar(40)
-  status              enum_status
+  status              enum_status        @default(activo)
   ubicacion           ubicacion          @relation(fields: [ubicacion_id], references: [id])
   responsable         responsable        @relation(fields: [responsable_id], references: [id])
   responsable_id      String             @unique
@@ -31,7 +31,7 @@ model equipo {
   marca_id            String             @unique
   equipo_actividad    equipo_actividad[]
   fecha_creacion      DateTime           @default(now())
-  fecha_actualizacion DateTime           @updatedAt
+  fecha_actualizacion DateTime           @updatedAt                    
 }
 
 model responsable {
@@ -46,7 +46,7 @@ model responsable {
 
 model ubicacion {
   id                  String      @id @default(cuid())
-  descripcion         String      @db.VarChar(40)
+  nombre         String      @db.VarChar(40)
   equipo              equipo[]
   responsable         responsable @relation(fields: [responsable_id], references: [id])
   responsable_id      String      @unique

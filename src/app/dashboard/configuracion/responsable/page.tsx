@@ -45,7 +45,7 @@ export default function Responsable () {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     console.log(values)
-    const res = await axios.post('/api/responsables/crear',{
+    const res = await axios.post('/api/responsables',{
       nombre:values.nombre,
       alias:values.alias
     })
