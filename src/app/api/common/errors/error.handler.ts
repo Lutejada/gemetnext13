@@ -9,7 +9,7 @@ export const errorHandler = (error: any) => {
     error as ZodError;
     const errorMesage = error.errors.map((error) => `${error.path[0]} - ${error.message}`).toString();
     console.log(errorMesage);
-    return NextResponse.json({ error: error.errors , typeError:'validation' }, { status: 400 });
+    return NextResponse.json({ error: errorMesage , typeError:'validation' }, { status: 400 });
   }
-  return NextResponse.json({ error: error.message }, { status: 500 });
+  return NextResponse.json({ error: 'Un error inesperado a ocurrido contactese con su admin' }, { status: 500 });
 };

@@ -11,18 +11,12 @@ import {
   FormLabel,
   FormMessage
 } from '@/components/ui/form'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import axios from 'axios'
-
-
+import { crearResponsable, useResponsables } from '../../hooks/useResponsables'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: 'requerido' }),
@@ -30,8 +24,6 @@ const formSchema = z.object({
 })
 
 export default function Responsable () {
-  // ...
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,53 +32,61 @@ export default function Responsable () {
     }
   })
 
-  // 2. Define a submit handler.
+  const { trigger, isLoading, error, responsable ,errorMsg } = crearResponsable()
+
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
-    const res = await axios.post('/api/responsables',{
-      nombre:values.nombre,
-      alias:values.alias
+    await trigger({
+      nombre: values.nombre,
+      alias: values.alias
     })
-    console.log(res.data);
-    //LLAMAR EL ENDPOIN DE CREAR RESPONSABLE
+
+    form.reset()
   }
 
   return (
     <>
       <h2 className='text-center mb-4 font-semibold'>Crear Responsables</h2>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-          <FormField
-            control={form.control}
-            name='nombre'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Descripcion</FormLabel>
-                <FormControl>
-                  <Input placeholder='Ingrese su nombre' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='alias'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Alias</FormLabel>
-                <FormControl>
-                  <Input placeholder='Ingrese sus iniciales' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className='grid grid-cols-2 grid-rows-1 gap-2'>
+            <FormField
+              control={form.control}
+              name='nombre'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nombre</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Ingrese su nombre' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='alias'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Alias</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Ingrese sus iniciales' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+          <Button type='submit' disabled={isLoading} className='block mx-auto'>
+            Crear Responsable
+          </Button>
 
-          <Button type='submit'>Crear</Button>
+          {error && (
+            <Alert variant='destructive'>
+              <AlertCircle className='h-4 w-4' />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{errorMsg}</AlertDescription>
+            </Alert>
+          )}
         </form>
       </Form>
     </>

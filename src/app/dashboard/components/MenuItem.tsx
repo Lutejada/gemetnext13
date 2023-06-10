@@ -20,7 +20,7 @@ const MenuItem = ({ path, name, subRoute }: Props) => {
         <AccordionTrigger>{name}</AccordionTrigger>
         {subRoute?.length
           ? subRoute.map(sub => (
-              <Link href={'/dashboard'+`${path + sub.path}`}>
+              <Link key={sub.name} href={'/dashboard'+`${path + sub.path}`}>
                 <AccordionContent key={sub.name}>{sub.name}</AccordionContent>
               </Link>
             ))
