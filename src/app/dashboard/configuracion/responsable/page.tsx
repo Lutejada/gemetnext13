@@ -13,10 +13,10 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
-import { crearResponsable, useResponsables } from '../../hooks/useResponsables'
+import { crearResponsable } from '../../hooks/useResponsables'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
+import { AlertCircle ,Loader2 } from 'lucide-react'
+import { useToast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: 'requerido' }),
@@ -32,7 +32,10 @@ export default function Responsable () {
     }
   })
 
-  const { trigger, isLoading, error, responsable ,errorMsg } = crearResponsable()
+  const { toast } = useToast()
+
+  const { trigger, isLoading, error, responsable, errorMsg } =
+    crearResponsable()
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
     await trigger({
@@ -41,7 +44,13 @@ export default function Responsable () {
     })
 
     form.reset()
+    toast({
+      title: 'Responsable se guardo correctamente',
+      variant: 'success'
+    })
   }
+
+  console.log(isLoading)
 
   return (
     <>
@@ -76,7 +85,10 @@ export default function Responsable () {
               )}
             />
           </div>
-          <Button type='submit' disabled={isLoading} className='block mx-auto'>
+          <Button type='submit' disabled={isLoading} className='mx-auto'>
+            <Loader2
+              className={'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')}
+            />
             Crear Responsable
           </Button>
 

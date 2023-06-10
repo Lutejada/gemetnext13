@@ -1,4 +1,4 @@
-import axios, { AxiosError } from "axios";
+import  { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { Responsable } from "../types";
 import { httpBase } from "../../config/api-base";
