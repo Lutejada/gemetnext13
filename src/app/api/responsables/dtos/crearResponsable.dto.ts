@@ -1,13 +1,15 @@
 import { object, string } from "zod";
 
 export interface crearResponsableDto {
-  alias: string;
+  identificacion: string;
   nombre: string;
+  apellido:string
 }
 
 export const validarCrearResponsable = (responsable: crearResponsableDto) => {
   object({
     nombre: string({ description: "nombre es requerido" }),
-    alias: string({ description: "alias es requerido" }),
+    identificacion: string({ description: "identificacion es requerido" }),
+    apellido: string({ description: "apellido es requerido" }),
   }).parse(responsable);
 };

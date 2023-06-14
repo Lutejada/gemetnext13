@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { ZodError } from "zod";
 export const errorHandler = (error: any) => {
+  console.log('Error',error);
   if (error.cause === "negocio") {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }

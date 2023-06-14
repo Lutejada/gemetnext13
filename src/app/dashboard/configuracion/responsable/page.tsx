@@ -15,32 +15,39 @@ import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { crearResponsable } from '../../hooks/useResponsables'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle ,Loader2 } from 'lucide-react'
+import { AlertCircle, Loader2 } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
-  nombre: z.string().min(2, { message: 'requerido' }),
-  alias: z.string().min(2, { message: 'requerido' })
+  nombre: z
+    .string()
+    .min(2, { message: 'requerido' })
+    .max(20, 'los caracteres maximos son 20'),
+  identificacion: z.string().min(2, { message: 'requerido' }),
+  apellido: z.string().min(2, { message: 'requerido' })
 })
 
 export default function Responsable () {
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombre: '',
-      alias: ''
+      identificacion: '',
+      apellido: ''
     }
   })
 
   const { toast } = useToast()
 
-  const { trigger, isLoading, error, responsable, errorMsg } =
+  const { crear, isLoading, error,  errorMsg } =
     crearResponsable()
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    await trigger({
+    await crear({
       nombre: values.nombre,
-      alias: values.alias
+      identificacion: values.identificacion,
+      apellido: values.apellido
     })
 
     form.reset()
@@ -73,12 +80,25 @@ export default function Responsable () {
             />
             <FormField
               control={form.control}
-              name='alias'
+              name='apellido'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Alias</FormLabel>
+                  <FormLabel>Apellido</FormLabel>
                   <FormControl>
-                    <Input placeholder='Ingrese sus iniciales' {...field} />
+                    <Input placeholder='Ingrese su Apellido' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='identificacion'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Identificacion</FormLabel>
+                  <FormControl>
+                    <Input placeholder='Ingrese su Identificaciòn' {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -87,7 +107,9 @@ export default function Responsable () {
           </div>
           <Button type='submit' disabled={isLoading} className='mx-auto'>
             <Loader2
-              className={'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')}
+              className={
+                'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')
+              }
             />
             Crear Responsable
           </Button>

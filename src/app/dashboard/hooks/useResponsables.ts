@@ -3,12 +3,8 @@ import useSWRMutation from "swr/mutation";
 import { Responsable } from "../types";
 import { httpBase } from "../../config/api-base";
 import useSWR, { mutate } from "swr";
-export const useResponsables = () => {
-  return {
-    obtenerResponsables,
-    crearResponsable,
-  };
-};
+
+import { crearResponsableDto } from "../../api/responsables/dtos/crearResponsable.dto";
 
 export const obtenerResponsables = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
@@ -30,18 +26,22 @@ export const obtenerResponsables = () => {
 //   };
 // };
 export const crearResponsable = () => {
+
   const fetcher = (
     url: string,
-    { arg }: { arg: { nombre: string; alias: string } }
+    { arg }: { arg: crearResponsableDto }
   ) => httpBase.post(url, arg).then((res) => res.data);
+
+
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/responsables",
     fetcher
   );
+
   return {
     isLoading: isMutating,
     responsable: data,
-    trigger,
+    crear:trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };

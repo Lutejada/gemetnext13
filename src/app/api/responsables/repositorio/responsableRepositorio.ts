@@ -9,18 +9,31 @@ const crearResponsable = async (
   const prisma = new PrismaClient();
   await prisma.responsable.create({
     data: {
-      alias: responsable.alias,
+      identificacion: responsable.identificacion,
       nombre: responsable.nombre,
+      apellido: responsable.apellido,
     },
   });
 };
 
 const obtenerResponsables = (): Promise<Responsable[]> => {
   const prisma = new PrismaClient();
-  return prisma.responsable.findMany()
+  return prisma.responsable.findMany();
+};
+const obtenerResponsableIdent = async (
+  identificacion: string
+): Promise<Responsable | null> => {
+  const prisma = new PrismaClient();
+  const res = await prisma.responsable.findUnique({
+    where: {
+      identificacion: identificacion,
+    },
+  });
+  return res;
 };
 
 export const responsableRepositorio: ResponsableRepositorio = {
   crearResponsable: crearResponsable,
   obtenerResponsables,
+  obtenerResponsableIdent: obtenerResponsableIdent,
 };
