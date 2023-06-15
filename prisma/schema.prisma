@@ -17,15 +17,15 @@ datasource db {
 }
 
 model equipo {
-  id                          String                        @id @default(cuid())
-  codigo                      String                        @unique @db.VarChar(20)
-  descripcion                 String                        @db.VarChar(60)
-  modelo                      String                        @db.VarChar(40)
-  serie                       String                        @db.VarChar(40)
-  ubicacion                   ubicacion                     @relation(fields: [ubicacion_id], references: [id])
-  responsable                 responsable                   @relation(fields: [responsable_id], references: [id])
-  responsable_id              String                        @unique
-  ubicacion_id                String                        @unique
+  id          String @id @default(cuid())
+  codigo      String @unique @db.VarChar(20)
+  descripcion String @db.VarChar(60)
+  modelo      String @db.VarChar(40)
+  serie       String @db.VarChar(40)
+
+  responsable    responsable @relation(fields: [responsable_id], references: [id])
+  responsable_id String      @unique
+
   marca                       marca                         @relation(fields: [marca_id], references: [id])
   marca_id                    String                        @unique
   equipo_actividad_frecuencia equipo_actividad_frecuencia[]
@@ -36,8 +36,8 @@ model equipo {
 
 model responsable {
   id                  String      @id @default(cuid())
-  equipo              equipo[]
   ubicacion           ubicacion[]
+  equipos             equipo[]
   alias               String      @unique @db.VarChar(10)
   nombre              String      @db.VarChar(40)
   apellido            String      @db.VarChar(40)
@@ -49,7 +49,6 @@ model responsable {
 model ubicacion {
   id                  String      @id @default(cuid())
   descripcion         String      @db.VarChar(40)
-  equipo              equipo[]
   responsable         responsable @relation(fields: [responsable_id], references: [id])
   responsable_id      String      @unique
   fecha_creacion      DateTime    @default(now())
@@ -78,10 +77,10 @@ model tipo_actividad {
 }
 
 model rol {
-  id_rol              String      @id @default(cuid())
+  id_rol              String    @id @default(cuid())
   descricion          String
-  fecha_creacion      DateTime    @default(now())
-  fecha_actualizacion DateTime    @updatedAt
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
 }
 
@@ -107,6 +106,14 @@ model frecuencia {
   fecha_creacion              DateTime                    @default(now())
   fecha_actualizacion         DateTime                    @updatedAt
   fecha_inactivacion          DateTime?
+}
+
+model tipo_patron {
+  id_tipo_patron      String    @id @default(cuid())
+  descripcion         String
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Lugar para los Enum
