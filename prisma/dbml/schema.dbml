@@ -8,101 +8,81 @@ Table equipo {
   descripcion String [not null]
   modelo String [not null]
   serie String [not null]
-  status enum_status [not null]
   responsable_id String [unique, not null]
   ubicacion_id String [unique, not null]
   marca_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Table responsable {
   id String [pk]
-  alias String [unique, not null]
-  descripcion String [not null]
+  identificacion String [unique, not null]
+  nombre String [not null]
+  apellido String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Table ubicacion {
   id String [pk]
-  descripcion String [not null]
+  nombre String [not null]
   responsable_id String [unique, not null]
-  status enum_status [not null]
-  fecha_creacio DateTime [default: `now()`, not null]
+  fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Table marca {
   id String [pk]
-  alias String [not null]
+  identificacion String [not null]
   descripcion String [not null]
   fechaCreacion DateTime [default: `now()`, not null]
   fechaactualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Table tipo_actividad {
   id String [pk]
-  descripcion enum_tipo_actividad [not null]
-  status enum_status [not null]
-  equipo_tipo_actividad_id String [not null]
+  descripcion String [not null]
+  tipo_actividad_id String [not null]
   fechaCreacion DateTime [default: `now()`, not null]
   fechaactualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
-Table equipo_actividad {
-  id String [pk]
-  actividades_equipo_id String [not null]
+Table rol {
+  id_rol String [pk]
+  descricion String [not null]
+  status enum_status [not null, default: 'activo']
   fechaCreacion DateTime [default: `now()`, not null]
   fechaActualizacion DateTime [not null]
-  frecuencia_actividad_equipoId String [not null]
 }
 
-Table frecuencia_actividad_equipo {
+Table equipo_actividad_frecuencia {
   id String [pk]
-  descripcion enum_tipo_actividad [not null]
-  frecuencia_actividad_equipo_id String [unique, not null]
-  fechaCreacion DateTime [default: `now()`, not null]
-  fechaActualizacion DateTime [not null]
+  descripcion String [not null]
+  equipo_actividad_frecuencia_id String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
+Table frecuencia {
+  id_frecuencia String [pk]
+  descripcion String [not null]
+  cantidad_dias Int [not null]
+  frecuencia_id String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Enum enum_status {
   activo
   inactivo
-}
-
-Enum enum_tipo_actividad {
-  calibracion
-  verificacion
-  mantenimiento_correctivo
-  mantenimiento_preventivo
-  operaciones
-}
-
-Enum frecuencia {
-  Semanal
-  Quincenal
-  Mensual
-  Bimensual
-  Trimestral
-  Cuatrimensual
-  Semestral
-  Anual
-  Bianual
-  Trianual
-  Cuatrianual
-  Quintianual
-  Sextanual
-}
-
-Enum rol {
-  admin
-  metrologo
-  consulta
-  coordinador
-  directorTecnico
-  auxiliarMetrologia
-  dev
 }
 
 Ref: equipo.ubicacion_id > ubicacion.id
@@ -113,8 +93,8 @@ Ref: equipo.marca_id > marca.id
 
 Ref: ubicacion.responsable_id > responsable.id
 
-Ref: tipo_actividad.equipo_tipo_actividad_id > equipo_actividad.id
+Ref: tipo_actividad.tipo_actividad_id > equipo_actividad_frecuencia.id
 
-Ref: equipo_actividad.actividades_equipo_id > equipo.id
+Ref: equipo_actividad_frecuencia.equipo_actividad_frecuencia_id > equipo.id
 
-Ref: frecuencia_actividad_equipo.frecuencia_actividad_equipo_id - equipo_actividad.id
+Ref: frecuencia.frecuencia_id > equipo_actividad_frecuencia.id

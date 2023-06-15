@@ -38,7 +38,7 @@ model responsable {
   id                  String      @id @default(cuid())
   equipo              equipo[]
   ubicacion           ubicacion[]
-  alias               String      @unique @db.VarChar(10)
+  identificacion      String      @unique @db.VarChar(10)
   nombre              String      @db.VarChar(40)
   apellido            String      @db.VarChar(40)
   fecha_creacion      DateTime    @default(now())
@@ -48,7 +48,7 @@ model responsable {
 
 model ubicacion {
   id                  String      @id @default(cuid())
-  descripcion         String      @db.VarChar(40)
+  nombre              String      @db.VarChar(40)
   equipo              equipo[]
   responsable         responsable @relation(fields: [responsable_id], references: [id])
   responsable_id      String      @unique
@@ -59,7 +59,7 @@ model ubicacion {
 
 model marca {
   id                 String    @id @default(cuid())
-  alias              String
+  identificacion     String
   descripcion        String
   equipo             equipo[]
   fechaCreacion      DateTime  @default(now())
