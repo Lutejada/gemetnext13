@@ -11,6 +11,16 @@ const crearUbicacion =async (ubicacion: crearUbicacionDto)=>{
         }
     })
 }
+
+const obtenerUbicacionPorResponsableId =(responsable_id:string)=>{
+    const prisma = new PrismaClient();
+    return prisma.ubicacion.findUnique({
+        where:{
+            responsable_id
+        }
+    })
+}
 export const ubicacionRepositorio:UbicacionRepositorio = {
-    crearUbicacion: crearUbicacion
+    crearUbicacion: crearUbicacion,
+    obtenerUbicacionPorResponsableId:obtenerUbicacionPorResponsableId
 }

@@ -13,18 +13,13 @@ export const obtenerResponsables = () => {
     fetcher
   );
   return {
-    responsables: data,
+    responsables: data ?? [],
     isLoading,
     isError: error,
   };
 };
 
-// export const crearResponsable = async (responsable: any) => {
-//   const res = await httpBase.post("/responsables", responsable );
-//   return {
-//     responsable: res.data,
-//   };
-// };
+
 export const crearResponsable = () => {
 
   const fetcher = (
