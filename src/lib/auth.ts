@@ -1,5 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
+import { errorHandler } from "../app/api/common/errors/error.handler";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -17,17 +19,15 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        if (
-          credentials.correo !== "andres@correo.com" ||
-          credentials.contraseña !== "12345"
-        ) {
-          throw new Error("error");
+        try {
+          const {id,nombre,password} = await obtenerUsuarioCorreo(credentials.correo);
+          if(password !== credentials.contraseña){
+            return null
+          }
+          return {id,nombre};
+        } catch (error) {
+          throw new Error('no autorizado')
         }
-        return {
-          id: "123",
-          holi: "mindu",
-          nombre: "andres",
-        };
       },
     }),
   ],
@@ -46,6 +46,5 @@ export const authOptions: NextAuthOptions = {
       session.user = token.user as {};
       return session;
     },
-    
   },
 };

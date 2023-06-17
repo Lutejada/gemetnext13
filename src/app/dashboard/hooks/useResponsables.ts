@@ -4,7 +4,7 @@ import { Responsable } from "../types";
 import { httpBase } from "../../config/api-base";
 import useSWR, { mutate } from "swr";
 
-import { crearResponsableDto } from "../../api/responsables/dtos/crearResponsable.dto";
+import { CrearResponsableDto } from "../../api/responsables/dtos/crearResponsable.dto";
 
 export const obtenerResponsables = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
@@ -24,7 +24,7 @@ export const crearResponsable = () => {
 
   const fetcher = (
     url: string,
-    { arg }: { arg: crearResponsableDto }
+    { arg }: { arg: CrearResponsableDto }
   ) => httpBase.post(url, arg).then((res) => res.data);
 
 

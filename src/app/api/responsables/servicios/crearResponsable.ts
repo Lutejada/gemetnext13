@@ -1,8 +1,8 @@
-import { crearResponsableDto } from "../dtos/crearResponsable.dto";
+import { CrearResponsableDto } from "../dtos/crearResponsable.dto";
 import { ResponsableYaExiste } from "../errors";
 import { responsableRepositorio } from "../repositorio/responsableRepositorio";
 
-export const crearResponsable = async (responsable: crearResponsableDto) => {
+export const crearResponsable = async (responsable: CrearResponsableDto) => {
   const responsableIdent = await responsableRepositorio.obtenerResponsableIdent(
     responsable.identificacion
   );

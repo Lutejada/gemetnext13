@@ -34,7 +34,7 @@ export default function ProfileForm () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       correo: 'andres@correo.com',
-      contraseña: '12345'
+      contraseña: 'andres123'
     }
   })
 
@@ -48,12 +48,10 @@ export default function ProfileForm () {
       redirect:false
     })
 
+    console.log(res);
     if(res?.error) return
-
     router.push('/dashboard')
-    
-    console.log(res)
-  }
+    }
 
   return (
     <Form {...form}>
