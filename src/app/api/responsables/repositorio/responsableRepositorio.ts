@@ -32,8 +32,18 @@ const obtenerResponsableIdent = async (
   return res;
 };
 
+const obtenerResponsableID = (id: string) => {
+  const prisma = new PrismaClient();
+  return prisma.responsable.findUnique({
+    where: {
+      id,
+    },
+  });
+};
+
 export const responsableRepositorio: ResponsableRepositorio = {
   crearResponsable: crearResponsable,
   obtenerResponsables,
   obtenerResponsableIdent: obtenerResponsableIdent,
+  obtenerResponsableID: obtenerResponsableID,
 };

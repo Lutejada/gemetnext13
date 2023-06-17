@@ -6,4 +6,5 @@ export interface ResponsableRepositorio {
   obtenerResponsableIdent: (
     identificacion: string
   ) => Promise<Responsable | null>;
+  obtenerResponsableID:(id:string)=>Promise<Responsable | null>
 }

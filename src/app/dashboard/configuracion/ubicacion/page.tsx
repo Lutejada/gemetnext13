@@ -20,27 +20,48 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { useResponsables } from '../../hooks/useResponsables'
+import { obtenerResponsables } from '../../hooks/useResponsables'
+import { crearUbicacion } from '../../hooks/useUbicaciones'
+import { useToast } from '@/components/ui/use-toast'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { AlertCircle, Loader2 } from 'lucide-react'
 
 const formSchema = z.object({
   nombre: z.string().min(2, { message: 'requerido' }),
-  responsables: z.string().min(2, { message: 'requerido' })
+  responsable: z
+    .string({ required_error: 'Seleccione un responsable' })
+    .min(2, { message: 'requerido' }),
+  email: z
+    .string({
+      required_error: 'Please select an email to display.'
+    })
+    .email()
 })
 
 export default function Ubicacion () {
-  const { obtenerResponsables } = useResponsables()
-  const responsables = obtenerResponsables()
+  const { isError, responsables } = obtenerResponsables()
+  const { crear, error, errorMsg, isLoading, responsable } = crearUbicacion()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nombre: '',
-      responsables: ''
+      nombre: ''
     }
   })
 
-  // 2. Define a submit handler.
+  const { toast } = useToast()
+
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    console.log(values);
+    console.log(values)
+    await crear({
+      nombre: values.nombre,
+      responsable_id: values.responsable
+    })
+    form.reset()
+    toast({
+      title: 'Ubicacion se guardo correctamente',
+      variant: 'success'
+    })
   }
 
   return (
@@ -49,6 +70,7 @@ export default function Ubicacion () {
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+        <div className='grid grid-cols-2 grid-rows-1 gap-2'>
           <FormField
             control={form.control}
             name='nombre'
@@ -68,23 +90,23 @@ export default function Ubicacion () {
 
           <FormField
             control={form.control}
-            name='responsables'
+            name='responsable'
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Responsable</FormLabel>
                 <Select
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder='Select a verified email to display' />
+                      <SelectValue placeholder='Seleccione un responsable' />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {responsables.responsables?.map((res) => (
+                    {responsables.map(res => (
                       <>
-                        <SelectItem value={res.id} key={res.id} >
+                        <SelectItem value={res.id} key={res.id}>
                           {res.nombre}
                         </SelectItem>
                       </>
@@ -96,7 +118,23 @@ export default function Ubicacion () {
             )}
           />
 
-          <Button type='submit'>Crear</Button>
+            </div>
+          <Button type='submit' disabled={isLoading} className='mx-auto'>
+            <Loader2
+              className={
+                'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')
+              }
+            />
+            Crear Responsable
+          </Button>
+
+          {error && (
+            <Alert variant='destructive'>
+              <AlertCircle className='h-4 w-4' />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>{errorMsg}</AlertDescription>
+            </Alert>
+          )}
         </form>
       </Form>
     </>
