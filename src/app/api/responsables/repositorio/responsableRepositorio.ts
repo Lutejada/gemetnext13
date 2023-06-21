@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import { ResponsableRepositorio } from ".";
-import { crearResponsableDto } from "../dtos/crearResponsable.dto";
+import { CrearResponsableDto } from "../dtos/crearResponsable.dto";
 import { Responsable } from "../types";
 
 const crearResponsable = async (
-  responsable: crearResponsableDto
+  responsable: CrearResponsableDto
 ): Promise<void> => {
   const prisma = new PrismaClient();
   await prisma.responsable.create({

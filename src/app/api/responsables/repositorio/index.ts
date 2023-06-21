@@ -1,7 +1,7 @@
-import { crearResponsableDto } from "../dtos/crearResponsable.dto";
+import { CrearResponsableDto } from "../dtos/crearResponsable.dto";
 import { Responsable } from "../types";
 export interface ResponsableRepositorio {
-  crearResponsable: (responsable: crearResponsableDto) => Promise<void>;
+  crearResponsable: (responsable: CrearResponsableDto) => Promise<void>;
   obtenerResponsables: () => Promise<Responsable[]>;
   obtenerResponsableIdent: (
     identificacion: string
