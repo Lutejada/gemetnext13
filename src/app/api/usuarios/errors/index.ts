@@ -1,0 +1,9 @@
+export class UsuarioNoExiste extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="El Usuario no existe"
+        this.cause="negocio"
+        this.status = 400;
+    }
+}

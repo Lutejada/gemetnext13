@@ -7,7 +7,7 @@ export default function DashboardLayout ({
   children: React.ReactNode
 }) {
   return (
-    <div className='h-full grid grid-cols-[220px_1fr] grid-rows-[70px_1fr] '>
+    <div className='h-full grid grid-cols-[220px_1fr] grid-rows-[70px_1fr]'>
       <Sidebar />
       <Navbar />
       <main className='col-start-2 p-4'>{children}</main>

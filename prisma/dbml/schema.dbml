@@ -17,7 +17,7 @@ Table equipo {
 
 Table responsable {
   id String [pk]
-  alias String [unique, not null]
+  identificacion String [unique, not null]
   nombre String [not null]
   apellido String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
@@ -27,7 +27,7 @@ Table responsable {
 
 Table ubicacion {
   id String [pk]
-  descripcion String [not null]
+  nombre String [not null]
   responsable_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
@@ -36,10 +36,10 @@ Table ubicacion {
 
 Table marca {
   id String [pk]
-  alias String [not null]
+  identificacion String [not null]
   descripcion String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
+  fechaCreacion DateTime [default: `now()`, not null]
+  fechaactualizacion DateTime [not null]
   fecha_inactivacion DateTime
 }
 
@@ -47,17 +47,17 @@ Table tipo_actividad {
   id String [pk]
   descripcion String [not null]
   tipo_actividad_id String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
+  fechaCreacion DateTime [default: `now()`, not null]
+  fechaactualizacion DateTime [not null]
   fecha_inactivacion DateTime
 }
 
 Table rol {
   id_rol String [pk]
   descricion String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
-  fecha_inactivacion DateTime
+  status enum_status [not null, default: 'activo']
+  fechaCreacion DateTime [default: `now()`, not null]
+  fechaActualizacion DateTime [not null]
 }
 
 Table equipo_actividad_frecuencia {
@@ -79,9 +79,33 @@ Table frecuencia {
   fecha_inactivacion DateTime
 }
 
-Table tipo_patron {
-  id_tipo_patron String [pk]
+Table usuario {
+  id String [pk]
+  usuario String [not null]
+  nombre String [not null]
+  apellido String [not null]
+  rol Role [not null]
+  correo String [unique, not null]
+  password String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
+Table magnitud {
+  id String [pk]
+  alias String [not null]
   descripcion String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
+Table variable {
+  id String [pk]
+  alias String [not null]
+  descripcion String [not null]
+  magnitud_id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
@@ -91,6 +115,15 @@ Enum enum_status {
   activo
   inactivo
 }
+
+Enum Role {
+  Admin
+  Metrologo
+  Auxiliar
+  Consulta
+}
+
+Ref: equipo.ubicacion_id > ubicacion.id
 
 Ref: equipo.responsable_id > responsable.id
 
@@ -103,3 +136,5 @@ Ref: tipo_actividad.tipo_actividad_id > equipo_actividad_frecuencia.id
 Ref: equipo_actividad_frecuencia.equipo_actividad_frecuencia_id > equipo.id
 
 Ref: frecuencia.frecuencia_id > equipo_actividad_frecuencia.id
+
+Ref: variable.magnitud_id > magnitud.id

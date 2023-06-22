@@ -28,7 +28,7 @@ ALTER COLUMN "descripcion" SET DATA TYPE VARCHAR(60);
 CREATE TABLE "responsable" (
     "id" TEXT NOT NULL,
     "equipoid" TEXT NOT NULL,
-    "alias" VARCHAR(10) NOT NULL,
+    "identificacion" VARCHAR(10) NOT NULL,
     "descripcion" VARCHAR(40) NOT NULL,
     "fechaCreacio" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "fechaactualizacion" TIMESTAMP(3) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE "ubicacion" (
 -- CreateTable
 CREATE TABLE "marca" (
     "id" TEXT NOT NULL,
-    "alias" TEXT NOT NULL,
+    "identificacion" TEXT NOT NULL,
     "descripcion" TEXT NOT NULL,
     "equipoid" TEXT NOT NULL,
     "fechaCreacion" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -95,7 +95,7 @@ CREATE TABLE "equipo_actividad" (
 CREATE UNIQUE INDEX "responsable_equipoid_key" ON "responsable"("equipoid");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "responsable_alias_key" ON "responsable"("alias");
+CREATE UNIQUE INDEX "responsable_identificacion_key" ON "responsable"("identificacion");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ubicacion_equipoid_key" ON "ubicacion"("equipoid");

@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { equipoRespositoryImpl } from "../infraestructura/equipoRespositorioImp";
 import { obtenerEquipo } from "../aplicacion/obtenerEquipo";
-import { errorHandler } from "../infraestructura/error.handler";
+import { errorHandler } from "../../common/errors/error.handler";
 import { string } from "zod";
 interface Params {
   params: { id: string };

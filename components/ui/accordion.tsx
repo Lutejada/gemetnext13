@@ -14,7 +14,7 @@ const AccordionItem = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <AccordionPrimitive.Item
     ref={ref}
-    className={cn('bg-blue-900 rounded hover:bg-blue-950', className)}
+    className={cn('bg-blue-900 rounded hover:bg-blue-950 transition duration-150 ease-out hover:ease-in', className)}
     {...props}
   />
 ))
@@ -54,7 +54,7 @@ const AccordionContent = React.forwardRef<
     )}
     {...props}
   >
-    <div className='px-1 py-1 pt-0'>{children}</div>
+    <div className='px-1 py-2 '>{children}</div>
   </AccordionPrimitive.Content>
 ))
 AccordionContent.displayName = AccordionPrimitive.Content.displayName
