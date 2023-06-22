@@ -116,6 +116,7 @@ model usuario {
   usuario             String    @db.VarChar(40)
   nombre              String    @db.VarChar(40)
   apellido            String    @db.VarChar(40)
+  cargo               String    @db.VarChar(40)
   rol                 Role
   correo              String    @unique @db.VarChar(50)
   password            String    @db.VarChar(50)
