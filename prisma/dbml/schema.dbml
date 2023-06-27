@@ -153,6 +153,7 @@ Table datos_metrologicos_patrones {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  patrones_id String [unique, not null]
 }
 
 Enum Role {
@@ -180,8 +181,6 @@ Ref: frecuencia.frecuencia_id > equipo_actividad_frecuencia.id
 
 Ref: variable.magnitud_id > magnitud.id
 
-Ref: patrones.datos_metrologicos_patronesId > datos_metrologicos_patrones.id
-
 Ref: patrones.responsable_id - responsable.id
 
 Ref: patrones.marca_id - marca.id
@@ -189,3 +188,5 @@ Ref: patrones.marca_id - marca.id
 Ref: patrones.ubicacionId > ubicacion.id
 
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
+
+Ref: datos_metrologicos_patrones.patrones_id - patrones.id

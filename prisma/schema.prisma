@@ -160,7 +160,7 @@ model patrones {
   modelo      String @db.VarChar(40)
   serie       String @db.VarChar(40)
 
-  datos_metrologicos datos_metrologicos_patrones? @relation(fields: [datos_metrologicos_patronesId], references: [id])
+  datos_metrologicos datos_metrologicos_patrones?
 
   responsable_patron responsable @relation(fields: [responsable_id], references: [id])
   responsable_id     String      @unique
@@ -191,18 +191,18 @@ model datos_metrologicos_equipos {
 }
 
 model datos_metrologicos_patrones {
-  id String @id @default(cuid())
-
-  emp                 Float      @db.DoublePrecision()
+  id                  String    @id @default(cuid())
+  emp                 Float     @db.DoublePrecision()
   division_escala     Float
   resolucion          Float
   rango_minimo        Float
   rango_maximo        Float
   valor_nominal       Float
-  fecha_creacion      DateTime   @default(now())
-  fecha_actualizacion DateTime   @updatedAt
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
-  patrones            patrones[]
+  patrones            patrones  @relation(fields: [patrones_id], references: [id])
+  patrones_id         String    @unique
 }
 
 // Lugar para los Enum
