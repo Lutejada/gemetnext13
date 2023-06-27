@@ -68,6 +68,7 @@ Table equipo_actividad_frecuencia {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  patronesId String
 }
 
 Table frecuencia {
@@ -113,7 +114,22 @@ Table variable {
   fecha_inactivacion DateTime
 }
 
-Table datos_metrologicos {
+Table patrones {
+  id String [pk]
+  codigo String [unique, not null]
+  descripcion String [not null]
+  modelo String [not null]
+  serie String [not null]
+  responsable_id String [unique, not null]
+  marca_id String [unique, not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+  ubicacionId String
+  datos_metrologicos_patronesId String
+}
+
+Table datos_metrologicos_equipos {
   id String [pk]
   equipo_id String [unique, not null]
   emp Float [not null]
@@ -126,9 +142,17 @@ Table datos_metrologicos {
   fecha_inactivacion DateTime
 }
 
-Enum enum_status {
-  activo
-  inactivo
+Table datos_metrologicos_patrones {
+  id String [pk]
+  emp Float [not null]
+  division_escala Float [not null]
+  resolucion Float [not null]
+  rango_minimo Float [not null]
+  rango_maximo Float [not null]
+  valor_nominal Float [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
 }
 
 Enum Role {
@@ -150,8 +174,18 @@ Ref: tipo_actividad.tipo_actividad_id > equipo_actividad_frecuencia.id
 
 Ref: equipo_actividad_frecuencia.equipo_actividad_frecuencia_id > equipo.id
 
+Ref: equipo_actividad_frecuencia.patronesId > patrones.id
+
 Ref: frecuencia.frecuencia_id > equipo_actividad_frecuencia.id
 
 Ref: variable.magnitud_id > magnitud.id
 
-Ref: datos_metrologicos.equipo_id - equipo.id
+Ref: patrones.datos_metrologicos_patronesId > datos_metrologicos_patrones.id
+
+Ref: patrones.responsable_id - responsable.id
+
+Ref: patrones.marca_id - marca.id
+
+Ref: patrones.ubicacionId > ubicacion.id
+
+Ref: datos_metrologicos_equipos.equipo_id - equipo.id
