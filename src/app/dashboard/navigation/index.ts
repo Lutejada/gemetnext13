@@ -40,7 +40,15 @@ export const routes: Route[] = [
       {
         name:'Ubicacion',
         path:'/ubicacion',
-      }
+      },
+      {
+        name:'Magnitud',
+        path:'/magnitud',
+      },
+      {
+        name:'Variables',
+        path:'/variables',
+      },
     ]
   },
 ];

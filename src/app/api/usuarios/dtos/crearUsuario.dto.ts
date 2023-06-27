@@ -4,6 +4,7 @@ export interface CrearUsuarioDto {
   nombre: string;
   correo: string;
   password: string;
+  apellido:string;
 }
 
 export const validarCrearUsuarioDto = (dto: CrearUsuarioDto) => {
@@ -11,5 +12,6 @@ export const validarCrearUsuarioDto = (dto: CrearUsuarioDto) => {
     correo: string().email(),
     password: string(),
     nombre: string(),
+    apellido:string()
   }).parse(dto);
 };

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { errorHandler } from "../common/errors/error.handler";
 import { validarCrearMagnitud } from "./dtos/crearMagnitud.dto";
 import { crearMagnitud } from "./servicios/crearMagnitud";
+import { obtenerMagnitudes } from "./servicios/obtenerMaginitudes";
 
 export async function POST(request: Request) {
     try {
@@ -17,6 +18,8 @@ export async function POST(request: Request) {
   
   export async function GET(_request: Request) {
     try {
+      const magnitudes = await obtenerMagnitudes()
+      return NextResponse.json(magnitudes)
     } catch (error: any) {
       return errorHandler(error);
     }

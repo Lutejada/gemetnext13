@@ -12,10 +12,14 @@ export const magnitudRespositorio:MagnitudRepositorio={
             }
         });
     },
-    obtenerMagnitudPorId: function (id: string): Promise<Magnitud> {
-        throw new Error("Function not implemented.");
+    obtenerMagnitudPorId: async function (id: string): Promise<Magnitud | null> {
+        return prisma.magnitud.findUnique({
+            where:{
+                id
+            }
+        })
     },
     obtenerTodo: function (): Promise<Magnitud[]> {
-        throw new Error("Function not implemented.");
+        return prisma.magnitud.findMany()
     }
 }
