@@ -22,12 +22,9 @@ model equipo {
   descripcion String @db.VarChar(60)
   modelo      String @db.VarChar(40)
   serie       String @db.VarChar(40)
-
   datos_metrologicos datos_metrologicos_equipos?
-
   responsable    responsable @relation(fields: [responsable_id], references: [id])
   responsable_id String      @unique
-
   marca                       marca                         @relation(fields: [marca_id], references: [id])
   marca_id                    String                        @unique
   equipo_actividad_frecuencia equipo_actividad_frecuencia[]
@@ -159,12 +156,9 @@ model patrones {
   descripcion String @db.VarChar(60)
   modelo      String @db.VarChar(40)
   serie       String @db.VarChar(40)
-
   datos_metrologicos datos_metrologicos_patrones?
-
   responsable_patron responsable @relation(fields: [responsable_id], references: [id])
   responsable_id     String      @unique
-
   marca                         marca                         @relation(fields: [marca_id], references: [id])
   marca_id                      String                        @unique
   equipo_actividad_frecuencia   equipo_actividad_frecuencia[]
@@ -179,6 +173,7 @@ model patrones {
 model datos_metrologicos_equipos {
   id                  String    @id @default(cuid())
   equipo              equipo    @relation(fields: [equipo_id], references: [id])
+  
   equipo_id           String    @unique
   emp                 Float     @db.DoublePrecision()
   division_escala     Float
@@ -203,6 +198,15 @@ model datos_metrologicos_patrones {
   fecha_inactivacion  DateTime?
   patrones            patrones  @relation(fields: [patrones_id], references: [id])
   patrones_id         String    @unique
+}
+
+model tipo_patron {
+  id                  String    @id @default(cuid())
+  alias               String
+  descripcion         String
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Lugar para los Enum
