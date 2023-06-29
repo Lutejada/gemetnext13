@@ -34,7 +34,7 @@ export default function ProfileForm () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       correo: 'andres@correo.com',
-      contraseña: 'andres123'
+      contraseña: '12345'
     }
   })
 

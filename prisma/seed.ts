@@ -3,8 +3,14 @@ const prisma = new PrismaClient();
 async function main() {
   await prisma.usuario.createMany({
     data: [
-      { correo: "andres@correo.com", nombre: "andres", password: "12345" },
-      { correo: "luis@correo.com", nombre: "luis", password: "12345" },
+      {
+        correo: "andres@correo.com",
+        nombre: "andres",
+        password: "12345",
+        apellido: "tejada",
+        rol: "Admin",
+        usuario: "admin",
+      },
     ],
   });
 }

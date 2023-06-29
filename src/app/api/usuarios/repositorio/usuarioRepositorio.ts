@@ -11,9 +11,12 @@ export const usuarioResitorio: UsuarioRepositorio = {
 function crearUsuario(dto: CrearUsuarioDto): Promise<Usuario> {
   return prisma.usuario.create({
     data: {
-      nombre: dto.nombre,
+      nombre: dto.nombre,           
       correo: dto.correo,
       password: dto.password,
+      apellido:dto.apellido,
+      rol:'Admin',
+      usuario:'admin',      
     },
   });
 }
