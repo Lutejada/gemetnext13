@@ -216,4 +216,5 @@ enum Role {
   Metrologo
   Auxiliar
   Consulta
+  Cordinador
 }
