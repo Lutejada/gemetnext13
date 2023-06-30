@@ -17,26 +17,26 @@ datasource db {
 }
 
 model equipo {
-  id                          String                        @id @default(cuid())
-  codigo                      String                        @unique @db.VarChar(20)
-  descripcion                 String                        @db.VarChar(60)
-  modelo                      String                        @db.VarChar(40)
-  serie                       String                        @db.VarChar(40)
-  ubicacion                   ubicacion                     @relation(fields: [ubicacion_id], references: [id])
-  responsable                 responsable                   @relation(fields: [responsable_id], references: [id])
-  responsable_id              String                        @unique
-  ubicacion_id                String                        @unique
+  id          String @id @default(cuid())
+  codigo      String @unique @db.VarChar(20)
+  descripcion String @db.VarChar(60)
+  modelo      String @db.VarChar(40)
+  serie       String @db.VarChar(40)
+  datos_metrologicos datos_metrologicos_equipos?
+  responsable    responsable @relation(fields: [responsable_id], references: [id])
+  responsable_id String      @unique
   marca                       marca                         @relation(fields: [marca_id], references: [id])
   marca_id                    String                        @unique
   equipo_actividad_frecuencia equipo_actividad_frecuencia[]
   fecha_creacion              DateTime                      @default(now())
   fecha_actualizacion         DateTime                      @updatedAt
   fecha_inactivacion          DateTime?
+  ubicacion                   ubicacion?                    @relation(fields: [ubicacionId], references: [id])
+  ubicacionId                 String?
 }
 
 model responsable {
   id                  String      @id @default(cuid())
-  equipo              equipo[]
   ubicacion           ubicacion[]
   identificacion      String      @unique @db.VarChar(10)
   nombre              String      @db.VarChar(40)
@@ -44,6 +44,8 @@ model responsable {
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
+  equipo              equipo?
+  patron              patrones?
 }
 
 model ubicacion {
@@ -55,6 +57,7 @@ model ubicacion {
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
+  patrones            patrones[]
 }
 
 model marca {
@@ -65,6 +68,7 @@ model marca {
   fechaCreacion      DateTime  @default(now())
   fechaactualizacion DateTime  @updatedAt
   fecha_inactivacion DateTime?
+  patrones           patrones?
 }
 
 model tipo_actividad {
@@ -72,17 +76,17 @@ model tipo_actividad {
   descripcion                 String
   equipo_actividad_frecuencia equipo_actividad_frecuencia @relation(fields: [tipo_actividad_id], references: [id])
   tipo_actividad_id           String
-  fechaCreacion               DateTime                    @default(now())
-  fechaactualizacion          DateTime                    @updatedAt
+  fecha_creacion              DateTime                    @default(now())
+  fecha_actualizacion         DateTime                    @updatedAt
   fecha_inactivacion          DateTime?
 }
 
 model rol {
-  id_rol             String      @id @default(cuid())
-  descricion         String
-  status             enum_status @default(activo)
-  fechaCreacion      DateTime    @default(now())
-  fechaActualizacion DateTime    @updatedAt
+  id_rol              String    @id @default(cuid())
+  descricion          String
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Tabla intermedia
@@ -96,6 +100,8 @@ model equipo_actividad_frecuencia {
   fecha_creacion                 DateTime         @default(now())
   fecha_actualizacion            DateTime         @updatedAt
   fecha_inactivacion             DateTime?
+  patrones                       patrones?        @relation(fields: [patronesId], references: [id])
+  patronesId                     String?
 }
 
 model frecuencia {
@@ -114,6 +120,7 @@ model usuario {
   usuario             String    @db.VarChar(40)
   nombre              String    @db.VarChar(40)
   apellido            String    @db.VarChar(40)
+  cargo               String    @db.VarChar(40)
   rol                 Role
   correo              String    @unique @db.VarChar(50)
   password            String    @db.VarChar(50)
@@ -140,19 +147,74 @@ model variable {
   magnitud_id         String
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
-  fecha_inactivacion  DateTime?  
+  fecha_inactivacion  DateTime?
+}
+
+model patrones {
+  id          String @id @default(cuid())
+  codigo      String @unique @db.VarChar(20)
+  descripcion String @db.VarChar(60)
+  modelo      String @db.VarChar(40)
+  serie       String @db.VarChar(40)
+  datos_metrologicos datos_metrologicos_patrones?
+  responsable_patron responsable @relation(fields: [responsable_id], references: [id])
+  responsable_id     String      @unique
+  marca                         marca                         @relation(fields: [marca_id], references: [id])
+  marca_id                      String                        @unique
+  equipo_actividad_frecuencia   equipo_actividad_frecuencia[]
+  fecha_creacion                DateTime                      @default(now())
+  fecha_actualizacion           DateTime                      @updatedAt
+  fecha_inactivacion            DateTime?
+  ubicacion                     ubicacion?                    @relation(fields: [ubicacionId], references: [id])
+  ubicacionId                   String?
+  datos_metrologicos_patronesId String?
+}
+
+model datos_metrologicos_equipos {
+  id                  String    @id @default(cuid())
+  equipo              equipo    @relation(fields: [equipo_id], references: [id])
+  
+  equipo_id           String    @unique
+  emp                 Float     @db.DoublePrecision()
+  division_escala     Float
+  resolucion          Float
+  rango_minimo        Float
+  rango_maximo        Float
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
+}
+
+model datos_metrologicos_patrones {
+  id                  String    @id @default(cuid())
+  emp                 Float     @db.DoublePrecision()
+  division_escala     Float
+  resolucion          Float
+  rango_minimo        Float
+  rango_maximo        Float
+  valor_nominal       Float
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
+  patrones            patrones  @relation(fields: [patrones_id], references: [id])
+  patrones_id         String    @unique
+}
+
+model tipo_patron {
+  id                  String    @id @default(cuid())
+  alias               String
+  descripcion         String
+  fecha_creacion      DateTime  @default(now())
+  fecha_actualizacion DateTime  @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Lugar para los Enum
-
-enum enum_status {
-  activo
-  inactivo
-}
 
 enum Role {
   Admin
   Metrologo
   Auxiliar
   Consulta
+  Cordinador
 }
