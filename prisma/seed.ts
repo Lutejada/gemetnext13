@@ -9,6 +9,7 @@ async function main() {
         password: "12345",
         apellido: "tejada",
         rol: "Admin",
+        cargo:'dev',
         usuario: "admin",
       },
     ],
