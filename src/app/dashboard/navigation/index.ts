@@ -49,6 +49,14 @@ export const routes: Route[] = [
         name:'Variables',
         path:'/variables',
       },
+      {
+        name:'Actividades',
+        path:'/actividades',
+      },
+      {
+        name:'Frecuencias',
+        path:'/frecuencias',
+      },
     ]
   },
 ];
