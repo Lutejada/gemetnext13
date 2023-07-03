@@ -1,15 +1,13 @@
-import { object, string } from "zod";
+import { number, object, string } from "zod";
 
-export interface CrearDto {
+export interface CrearFrecuenciaDto {
   identificacion: string;
-  nombre: string;
-  apellido:string
+  cantidadDias: number;
 }
 
-export const validarCrearResponsable = (responsable: CrearDto) => {
+export const validarCrearFrecuencia = (frecuencia: CrearFrecuenciaDto) => {
   object({
-    nombre: string({ description: "nombre es requerido" }),
     identificacion: string({ description: "identificacion es requerido" }),
-    apellido: string({ description: "apellido es requerido" }),
-  }).parse(responsable);
+    cantidadDias: number({ description: "cantidad dias es requerido" }).positive(),
+  }).parse(frecuencia);
 };
