@@ -23,7 +23,7 @@ const formSchema = z.object({
     .string()
     .min(2, { message: 'requerido' })
     .max(20, 'los caracteres maximos son 20'),
-  cantidadDias :z.number().positive().min(5)
+  cantidadDias :z.string().transform((val)=>Number(val))
 })
 
 export default function Marca () {
@@ -75,7 +75,7 @@ export default function Marca () {
               name='cantidadDias'
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descripcion</FormLabel>
+                  <FormLabel>Cantidad Dias</FormLabel>
                   <FormControl>
                     <Input placeholder='Ingrese una cantidad en dias' {...field} type='number' />
                   </FormControl>

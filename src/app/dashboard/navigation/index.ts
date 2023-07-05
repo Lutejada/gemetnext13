@@ -51,11 +51,11 @@ export const routes: Route[] = [
       },
       {
         name:'Actividades',
-        path:'/actividades',
+        path:'/actividad',
       },
       {
         name:'Frecuencias',
-        path:'/frecuencias',
+        path:'/frecuencia',
       },
     ]
   },

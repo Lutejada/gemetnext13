@@ -7,7 +7,7 @@ export const frecuenciaRepositorio : FrecuenciaRepositorio= {
         return prisma.frecuencia.create({
             data:{
                 cantidad_dias:dto.cantidadDias,
-                descripcion:dto.identificacion
+                descripcion:dto.descripcion
             }
         })
     },
