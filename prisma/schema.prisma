@@ -80,7 +80,6 @@ model tipo_actividad {
 }
 
 
-
 model frecuencia {
   id_frecuencia               String                      @id @default(cuid())
   descripcion                 String
@@ -96,7 +95,7 @@ model usuario {
   nombre              String    @db.VarChar(40)
   apellido            String    @db.VarChar(40)
   cargo               String    @db.VarChar(40)
-  rol                 Role
+  rol                 Role      @default(Consulta)
   correo              String    @unique @db.VarChar(50)
   password            String    @db.VarChar(50)
   fecha_creacion      DateTime  @default(now())

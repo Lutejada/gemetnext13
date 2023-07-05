@@ -15,8 +15,9 @@ function crearUsuario(dto: CrearUsuarioDto): Promise<Usuario> {
       correo: dto.correo,
       password: dto.password,
       apellido:dto.apellido,
-      rol:'Admin',
-      usuario:'admin',      
+      cargo:dto.cargo,
+      usuario:dto.cargo,
+      rol:dto.rol,             
     },
   });
 }

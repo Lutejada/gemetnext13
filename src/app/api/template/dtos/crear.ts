@@ -6,10 +6,10 @@ export interface CrearDto {
   apellido:string
 }
 
-export const validarCrearResponsable = (responsable: CrearDto) => {
+export const validarCrear = (value: CrearDto) => {
   object({
     nombre: string({ description: "nombre es requerido" }),
     identificacion: string({ description: "identificacion es requerido" }),
     apellido: string({ description: "apellido es requerido" }),
-  }).parse(responsable);
+  }).parse(value);
 };

@@ -1,10 +1,14 @@
-import { object, string } from "zod";
+import { object, string , nativeEnum } from "zod";
+import { Role } from "../dominio";
 
 export interface CrearUsuarioDto {
+  usuario:string;
   nombre: string;
+  apellido:string;
+  cargo:string
+  rol:Role;
   correo: string;
   password: string;
-  apellido:string;
 }
 
 export const validarCrearUsuarioDto = (dto: CrearUsuarioDto) => {
@@ -12,6 +16,9 @@ export const validarCrearUsuarioDto = (dto: CrearUsuarioDto) => {
     correo: string().email(),
     password: string(),
     nombre: string(),
-    apellido:string()
+    apellido:string(),
+    cargo:string(),
+    usuario:string(),
+    rol:nativeEnum(Role).optional()
   }).parse(dto);
 };
