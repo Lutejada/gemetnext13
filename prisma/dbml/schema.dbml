@@ -47,35 +47,15 @@ Table marca {
 Table tipo_actividad {
   id String [pk]
   descripcion String [not null]
-  tipo_actividad_id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
-}
-
-Table rol {
-  id_rol String [pk]
-  descricion String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
-  fecha_inactivacion DateTime
-}
-
-Table equipo_actividad_frecuencia {
-  id String [pk]
-  descripcion String [not null]
-  equipo_actividad_frecuencia_id String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
-  fecha_inactivacion DateTime
-  patronesId String
 }
 
 Table frecuencia {
   id_frecuencia String [pk]
   descripcion String [not null]
   cantidad_dias Int [not null]
-  frecuencia_id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
@@ -156,11 +136,21 @@ Table datos_metrologicos_patrones {
   patrones_id String [unique, not null]
 }
 
+Table tipo_patron {
+  id String [pk]
+  alias String [not null]
+  descripcion String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
 Enum Role {
   Admin
   Metrologo
   Auxiliar
   Consulta
+  Cordinador
 }
 
 Ref: equipo.responsable_id - responsable.id
@@ -170,14 +160,6 @@ Ref: equipo.marca_id > marca.id
 Ref: equipo.ubicacionId > ubicacion.id
 
 Ref: ubicacion.responsable_id > responsable.id
-
-Ref: tipo_actividad.tipo_actividad_id > equipo_actividad_frecuencia.id
-
-Ref: equipo_actividad_frecuencia.equipo_actividad_frecuencia_id > equipo.id
-
-Ref: equipo_actividad_frecuencia.patronesId > patrones.id
-
-Ref: frecuencia.frecuencia_id > equipo_actividad_frecuencia.id
 
 Ref: variable.magnitud_id > magnitud.id
 
