@@ -6,14 +6,14 @@ import useSWR from "swr";
 import { Marca } from "../../api/marca/dominio";
 import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
 
-export const obtenerMarca = () => {
+export const obtenerMarcas = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
   const { data, error, isLoading } = useSWR<Marca[]>(
     "/marca",
     fetcher
   );
   return {
-    responsables: data ?? [],
+    marcas: data ?? [],
     isLoading,
     isError: error,
   };

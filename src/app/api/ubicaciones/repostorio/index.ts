@@ -6,4 +6,5 @@ export interface UbicacionRepositorio {
   obtenerUbicacionPorResponsableId: (
     responsableID: string
   ) => Promise<Ubicacion | null>;
+  obtenerUbicaciones:()=>Promise<Ubicacion[]>
 }
