@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../common/errors/error.handler";
+import { validarCrearEquipo } from "./dtos/crear";
+import { crearEquipo } from "./servicios/crearEquipo";
 
 export async function POST(request: Request) {
     try {
       const body = await request.json();
-      return NextResponse.json({msg:'equipo creado'})
+      validarCrearEquipo(body)
+      const equipo = await crearEquipo(body)
+      return NextResponse.json({msg:'equipo creado',equipo})
     } catch (error: any) {
       return errorHandler(error);
     }

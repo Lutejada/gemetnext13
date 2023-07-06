@@ -10,9 +10,8 @@ export const equipoRepositorio:EquipoRepositorio = {
                 descripcion:dto.descripcion,
                 modelo:dto.modelo,
                 serie:dto.serie,
-                responsable_id:dto.responsable_id,
-                marca_id:dto.marca_id,
-                ubicacionId:dto.ubicacionId,
+                marca_id:dto.marcaId,
+                ubicacion_id:dto.ubicacionId,
             }
         })
     }
