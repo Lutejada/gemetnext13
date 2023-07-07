@@ -57,6 +57,10 @@ export const routes: Route[] = [
         name:'Frecuencias',
         path:'/frecuencia',
       },
+      {
+        name:'Marca',
+        path:'/marca',
+      },
     ]
   },
 ];

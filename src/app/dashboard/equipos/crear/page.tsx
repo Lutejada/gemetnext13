@@ -20,46 +20,58 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { obtenerResponsables } from '../../hooks/useResponsables'
-import { crearUbicacion, obtenerUbicaciones } from '../../hooks/useUbicaciones'
+import {  obtenerUbicaciones } from '../../hooks/useUbicaciones'
 import { useToast } from '@/components/ui/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Loader2 } from 'lucide-react'
-import { equipoSchema } from '@/src/app/api/equipos/dtos/crear'
 import { obtenerMarcas } from '../../hooks/useMarca'
+import { crearEquipo } from '../../hooks/useEquipo'
 
 
-
+const formSchema = z.object({
+  codigo: z.string().min(2, { message: 'codigo requerido' }),
+  descripcion: z.string().min(2, { message: 'descripcion requerido' }),
+  modelo: z.string().min(2, { message: 'modelo requerido' }),
+  serie: z.string().min(2, { message: 'serie requerido' }),
+  marcaId: z.string().min(2, { message: 'marcaId requerido' }),
+  ubicacionId: z.string().min(2, { message: 'ubicacionId requerido' }),
+})
+   
 export default function Equipo () {
   const {marcas} = obtenerMarcas()
   const {ubicaciones} = obtenerUbicaciones()
-  const { crear, error, errorMsg, isLoading, responsable } = crearUbicacion()
+  const { crear, error, errorMsg, isLoading } = crearEquipo()
 
-  const form = useForm<z.infer<typeof equipoSchema>>({
-    resolver: zodResolver(equipoSchema),
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo:''
-    }
+    },
   })
+
+  console.log(form);
 
   const { toast } = useToast()
 
-  async function onSubmit (values: z.infer<typeof equipoSchema>) {
-    console.log(values)
+  async function onSubmit (values: z.infer<typeof formSchema>) {
+    console.log(form.formState)
     await crear({
-      nombre: values.nombre,
-      responsable_id: values.responsable
+      codigo: values.codigo,
+      descripcion: values.descripcion,
+      modelo: values.modelo,
+      serie: values.serie,
+      marcaId: values.marcaId,
+      ubicacionId: values.ubicacionId,
     })
     form.reset()
     toast({
-      title: 'Ubicacion se guardo correctamente',
+      title: 'Equipo se guardo correctamente',
       variant: 'success'
     })
   }
 
   return (
     <>
-      <h2 className='text-center mb-4 font-semibold'>Crear Ubicaciones</h2>
+      <h2 className='text-center mb-4 font-semibold'>Crear Equipo</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
@@ -73,6 +85,22 @@ export default function Equipo () {
                 <FormControl>
                   <Input
                     placeholder='Ingrese nombre de la Codigo'
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name='descripcion'
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Descripcion</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder='Ingrese nombre de la Descripcion'
                     {...field}
                   />
                 </FormControl>
