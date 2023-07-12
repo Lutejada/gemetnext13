@@ -1,6 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { UbicacionRepositorio } from ".";
 import { crearUbicacionDto } from "../dtos/crearUbicacion.dto";
+import { Ubicacion } from "../types";
+import { prisma } from "@/src/lib/prisma";
 
 const crearUbicacion =async (ubicacion: crearUbicacionDto)=>{
     const prisma = new PrismaClient();
@@ -22,5 +24,8 @@ const obtenerUbicacionPorResponsableId =(responsable_id:string)=>{
 }
 export const ubicacionRepositorio:UbicacionRepositorio = {
     crearUbicacion: crearUbicacion,
-    obtenerUbicacionPorResponsableId:obtenerUbicacionPorResponsableId
+    obtenerUbicacionPorResponsableId: obtenerUbicacionPorResponsableId,
+    obtenerUbicaciones: function (): Promise<Ubicacion[]> {
+        return prisma.ubicacion.findMany()
+    }
 }

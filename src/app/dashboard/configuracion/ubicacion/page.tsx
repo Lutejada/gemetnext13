@@ -31,22 +31,17 @@ const formSchema = z.object({
   responsable: z
     .string({ required_error: 'Seleccione un responsable' })
     .min(2, { message: 'requerido' }),
-  email: z
-    .string({
-      required_error: 'Please select an email to display.'
-    })
-    .email()
 })
 
 export default function Ubicacion () {
-  const { isError, responsables } = obtenerResponsables()
-  const { crear, error, errorMsg, isLoading, responsable } = crearUbicacion()
+  const {  responsables } = obtenerResponsables()
+  const { crear, error, errorMsg, isLoading } = crearUbicacion()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       nombre: ''
-    }
+    },    
   })
 
   const { toast } = useToast()
@@ -125,7 +120,7 @@ export default function Ubicacion () {
                 'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')
               }
             />
-            Crear Responsable
+            Crear Ubicacion
           </Button>
 
           {error && (

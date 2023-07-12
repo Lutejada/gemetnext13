@@ -2,40 +2,39 @@ import  { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
+import { Equipo } from "../../api/equipos/dominio";
+import { CrearEquipoDto } from "../../api/equipos/dtos/crear";
 
-import { Marca } from "../../api/marca/dominio";
-import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
-
-export const obtenerMarcas = () => {
+export const obtenerEquipos = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
-  const { data, error, isLoading } = useSWR<Marca[]>(
-    "/marca",
+  const { data, error, isLoading } = useSWR<Equipo[]>(
+    "/equipos",
     fetcher
   );
   return {
-    marcas: data ?? [],
+    equipos: data ?? [],
     isLoading,
     isError: error,
   };
 };
 
 
-export const crearMarca = () => {
+export const crearEquipo = () => {
 
   const fetcher = (
     url: string,
-    { arg }: { arg: CrearMarcaDto }
+    { arg }: { arg: CrearEquipoDto }
   ) => httpBase.post(url, arg).then((res) => res.data);
 
 
   const { data, error, trigger, isMutating } = useSWRMutation(
-    "/marca",
+    "/equipos",
     fetcher
   );
 
   return {
     isLoading: isMutating,
-    marca: data,
+    equipo: data,
     crear:trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
