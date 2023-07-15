@@ -99,7 +99,6 @@ Table patrones {
   descripcion String [not null]
   modelo String [not null]
   serie String [not null]
-  responsable_id String [unique, not null]
   marca_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
@@ -159,8 +158,6 @@ Ref: equipo.ubicacion_id > ubicacion.id
 Ref: ubicacion.responsable_id > responsable.id
 
 Ref: variable.magnitud_id > magnitud.id
-
-Ref: patrones.responsable_id - responsable.id
 
 Ref: patrones.marca_id - marca.id
 

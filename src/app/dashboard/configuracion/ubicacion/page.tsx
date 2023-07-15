@@ -40,7 +40,7 @@ export default function Ubicacion () {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nombre: ''
+      nombre: '',
     },    
   })
 
@@ -53,6 +53,7 @@ export default function Ubicacion () {
       responsable_id: values.responsable
     })
     form.reset()
+
     toast({
       title: 'Ubicacion se guardo correctamente',
       variant: 'success'

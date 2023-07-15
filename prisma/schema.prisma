@@ -41,7 +41,6 @@ model responsable {
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
-  patron              patrones?
 }
 
 model ubicacion {
@@ -126,8 +125,6 @@ model patrones {
   modelo                        String                       @db.VarChar(40)
   serie                         String                       @db.VarChar(40)
   datos_metrologicos            datos_metrologicos_patrones?
-  responsable_patron            responsable                  @relation(fields: [responsable_id], references: [id])
-  responsable_id                String                       @unique
   marca                         marca                        @relation(fields: [marca_id], references: [id])
   marca_id                      String                       @unique
   fecha_creacion                DateTime                     @default(now())
