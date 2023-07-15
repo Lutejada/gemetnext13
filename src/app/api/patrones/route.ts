@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../common/errors/error.handler";
+import { validarCrearPatron } from "./dtos/crear";
+import { crearPatron } from "./servicios/crearPatron";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    return NextResponse.json({ msg: "equipo creado" });
+    validarCrearPatron(body);
+    const patron = crearPatron(body);
+    return NextResponse.json({ msg: "patron creado creado", patron });
   } catch (error: any) {
     return errorHandler(error);
   }

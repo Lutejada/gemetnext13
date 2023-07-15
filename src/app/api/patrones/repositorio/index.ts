@@ -1,4 +1,5 @@
-import { Patrones } from '../dominio/index';
+import { Patron } from "../dominio/index";
+import { CrearPatronDto } from "../dtos/crear";
 export interface PatronRepositorio {
-    crearPatron:()=>Patrones
+  crearPatron: (dto:CrearPatronDto) => Promise<Patron>;
 }
