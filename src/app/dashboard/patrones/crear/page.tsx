@@ -47,9 +47,10 @@ export default function Patron () {
     defaultValues:{
       codigo:'',
       descripcion:'',
-      marcaId:'',
       modelo:'',
       serie:'',
+      marcaId:'',
+      ubicacionId:''
     }
   })
 
@@ -58,7 +59,7 @@ export default function Patron () {
   const { toast } = useToast()
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    console.log(form.formState)
+    
     await crear({
       codigo: values.codigo,
       descripcion: values.descripcion,
@@ -68,6 +69,7 @@ export default function Patron () {
       ubicacionId: values.ubicacionId,
     })
     form.reset()
+    console.log(form.getValues());
     toast({
       title: 'Patron se guardo correctamente',
       variant: 'success'
@@ -154,7 +156,6 @@ export default function Patron () {
                 <FormLabel>Marca</FormLabel>
                 <Select
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
                 >
                   <FormControl>
                     <SelectTrigger>

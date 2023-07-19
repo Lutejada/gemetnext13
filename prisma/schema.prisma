@@ -45,10 +45,10 @@ model responsable {
 
 model ubicacion {
   id                  String      @id @default(cuid())
-  nombre              String      @db.VarChar(40)
+  nombre              String      @db.VarChar(40) @unique
   equipos             equipo[]
   responsable         responsable @relation(fields: [responsable_id], references: [id])
-  responsable_id      String      @unique
+  responsable_id      String      
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
@@ -63,7 +63,7 @@ model marca {
   fechaCreacion      DateTime  @default(now())
   fechaactualizacion DateTime  @updatedAt
   fecha_inactivacion DateTime?
-  patrones           patrones?
+  patrones           patrones[]
 }
 
 model tipo_actividad {
@@ -126,12 +126,12 @@ model patrones {
   serie                         String                       @db.VarChar(40)
   datos_metrologicos            datos_metrologicos_patrones?
   marca                         marca                        @relation(fields: [marca_id], references: [id])
-  marca_id                      String                       @unique
+  marca_id                      String                       
   fecha_creacion                DateTime                     @default(now())
   fecha_actualizacion           DateTime                     @updatedAt
   fecha_inactivacion            DateTime?
-  ubicacion                     ubicacion?                   @relation(fields: [ubicacionId], references: [id])
-  ubicacionId                   String?
+  ubicacion                     ubicacion                   @relation(fields: [ubicacionId], references: [id])
+  ubicacionId                   String
   datos_metrologicos_patronesId String?
 }
 

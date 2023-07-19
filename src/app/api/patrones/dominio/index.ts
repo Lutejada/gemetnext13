@@ -4,7 +4,6 @@ export interface Patron {
   descripcion: string;
   modelo: string;
   serie: string;
-  responsable_id: string;
   marca_id: string;
   fecha_creacion: Date;
   fecha_actualizacion: Date;

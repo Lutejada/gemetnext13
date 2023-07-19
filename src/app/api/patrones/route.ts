@@ -7,7 +7,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     validarCrearPatron(body);
-    const patron = crearPatron(body);
+    const patron = await crearPatron(body);
     return NextResponse.json({ msg: "patron creado creado", patron });
   } catch (error: any) {
     return errorHandler(error);

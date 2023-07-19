@@ -4,7 +4,7 @@ import { CrearPatronDto } from "../dtos/crear";
 import { PatronRepositorio } from "./index";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
-    return prisma.patrones.create({
+    const patron = await prisma.patrones.create({
       data: {
         codigo: dto.codigo,
         descripcion: dto.descripcion,
@@ -14,12 +14,17 @@ export const patronRepositorio: PatronRepositorio = {
         ubicacionId: dto.ubicacionId,
       },
     });
+    console.log(patron);
+    return patron;
   },
-  obtenerPatronPorCodigo: function (codigo: string): Promise<Patron | null> {
-    return prisma.patrones.findUnique({
+  obtenerPatronPorCodigo: async function (
+    codigo: string
+  ): Promise<Patron | null> {
+    const patron = await prisma.patrones.findUnique({
       where: {
         codigo,
       },
     });
+    return patron;
   },
 };
