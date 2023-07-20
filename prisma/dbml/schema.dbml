@@ -143,12 +143,32 @@ Table tipo_patron {
   fecha_inactivacion DateTime
 }
 
+Table datos_complementarios {
+  id String [pk]
+  descripcion_especificaciones String [not null]
+  cumple_especificacion_instalaciones cumple [not null]
+  utiliza_software cumple [not null]
+  descripcion_software String [not null]
+  version_software String [not null]
+  firware String [not null]
+  observaciones String [not null]
+  equipo_id String [unique, not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
 Enum Role {
   Admin
   Metrologo
   Auxiliar
   Consulta
   Cordinador
+}
+
+Enum cumple {
+  Si
+  No
 }
 
 Ref: equipo.marca_id > marca.id
@@ -166,3 +186,5 @@ Ref: patrones.ubicacionId > ubicacion.id
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
 
 Ref: datos_metrologicos_patrones.patrones_id - patrones.id
+
+Ref: datos_complementarios.equipo_id - equipo.id

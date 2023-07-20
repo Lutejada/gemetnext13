@@ -17,19 +17,20 @@ datasource db {
 }
 
 model equipo {
-  id                  String                      @id @default(cuid())
-  codigo              String                      @unique @db.VarChar(20)
-  descripcion         String                      @db.VarChar(60)
-  modelo              String                      @db.VarChar(40)
-  serie               String                      @db.VarChar(40)
-  datos_metrologicos  datos_metrologicos_equipos?
-  marca               marca                       @relation(fields: [marca_id], references: [id])
-  marca_id            String
-  fecha_creacion      DateTime                    @default(now())
-  fecha_actualizacion DateTime                    @updatedAt
-  fecha_inactivacion  DateTime?
-  ubicacion           ubicacion                   @relation(fields: [ubicacion_id], references: [id])
-  ubicacion_id        String
+  id                    String                      @id @default(cuid())
+  codigo                String                      @unique @db.VarChar(20)
+  descripcion           String                      @db.VarChar(60)
+  modelo                String                      @db.VarChar(40)
+  serie                 String                      @db.VarChar(40)
+  datos_metrologicos    datos_metrologicos_equipos?
+  datos_complementarios datos_complementarios?
+  marca                 marca                       @relation(fields: [marca_id], references: [id])
+  marca_id              String
+  fecha_creacion        DateTime                    @default(now())
+  fecha_actualizacion   DateTime                    @updatedAt
+  fecha_inactivacion    DateTime?
+  ubicacion             ubicacion                   @relation(fields: [ubicacion_id], references: [id])
+  ubicacion_id          String
 }
 
 model responsable {
@@ -45,10 +46,10 @@ model responsable {
 
 model ubicacion {
   id                  String      @id @default(cuid())
-  nombre              String      @db.VarChar(40) @unique
+  nombre              String      @unique @db.VarChar(40)
   equipos             equipo[]
   responsable         responsable @relation(fields: [responsable_id], references: [id])
-  responsable_id      String      
+  responsable_id      String
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
@@ -56,12 +57,12 @@ model ubicacion {
 }
 
 model marca {
-  id                 String    @id @default(cuid())
+  id                 String     @id @default(cuid())
   identificacion     String
   descripcion        String
   equipos            equipo[]
-  fechaCreacion      DateTime  @default(now())
-  fechaactualizacion DateTime  @updatedAt
+  fechaCreacion      DateTime   @default(now())
+  fechaactualizacion DateTime   @updatedAt
   fecha_inactivacion DateTime?
   patrones           patrones[]
 }
@@ -126,11 +127,11 @@ model patrones {
   serie                         String                       @db.VarChar(40)
   datos_metrologicos            datos_metrologicos_patrones?
   marca                         marca                        @relation(fields: [marca_id], references: [id])
-  marca_id                      String                       
+  marca_id                      String
   fecha_creacion                DateTime                     @default(now())
   fecha_actualizacion           DateTime                     @updatedAt
   fecha_inactivacion            DateTime?
-  ubicacion                     ubicacion                   @relation(fields: [ubicacionId], references: [id])
+  ubicacion                     ubicacion                    @relation(fields: [ubicacionId], references: [id])
   ubicacionId                   String
   datos_metrologicos_patronesId String?
 }
@@ -174,6 +175,22 @@ model tipo_patron {
   fecha_inactivacion  DateTime?
 }
 
+model datos_complementarios {
+  id                                  String    @id @default(cuid())
+  descripcion_especificaciones        String
+  cumple_especificacion_instalaciones cumple
+  utiliza_software                    cumple
+  descripcion_software                String
+  version_software                    String
+  firware                             String
+  observaciones                       String
+  equipo                              equipo    @relation(fields: [equipo_id], references: [id])
+  equipo_id                           String    @unique
+  fecha_creacion                      DateTime  @default(now())
+  fecha_actualizacion                 DateTime  @updatedAt
+  fecha_inactivacion                  DateTime?
+}
+
 // Lugar para los Enum
 
 enum Role {
@@ -182,4 +199,9 @@ enum Role {
   Auxiliar
   Consulta
   Cordinador
+}
+
+enum cumple {
+  Si
+  No
 }
