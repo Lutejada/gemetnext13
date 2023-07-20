@@ -17,3 +17,12 @@ export class ResponsableYaTieneUbicacion extends Error{
         this.status = 400;
     }
 }
+export class UbicacionExiste extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="Esa Ubicacion ya tiene un responsable asignado"
+        this.cause="negocio"
+        this.status = 400;
+    }
+}

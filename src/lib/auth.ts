@@ -20,8 +20,8 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
+          console.log({credentials});
           const {id,nombre,password} = await obtenerUsuarioCorreo(credentials.correo);
-          console.log({nombre,password});
           if(password !== credentials.contraseña){
             return null
           }
@@ -43,7 +43,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session({ session, token }) {
-      console.log("callback", session);
       session.user = token.user as {};
       return session;
     },

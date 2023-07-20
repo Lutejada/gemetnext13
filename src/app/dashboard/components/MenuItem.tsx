@@ -18,7 +18,7 @@ const MenuItem = ({ path, name, subRoute }: Props) => {
     <Accordion type='single' collapsible className='text-secondary'>
       <AccordionItem value={name}>
         <AccordionTrigger>{name}</AccordionTrigger>
-        <div className='flex flex-col gap-1 content-center flex-wrap' >
+        <div className='flex flex-col content-center flex-wrap' >
           {subRoute?.length
             ? subRoute.map(sub => (
                 <Link className='block w-11/12 ' key={sub.name} href={'/dashboard' + `${path + sub.path}`}>
