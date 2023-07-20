@@ -20,6 +20,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
+          console.log({credentials});
           const {id,nombre,password} = await obtenerUsuarioCorreo(credentials.correo);
           if(password !== credentials.contraseña){
             return null
