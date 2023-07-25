@@ -43,7 +43,14 @@ function CrearEquiposBasicos() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {},
+    defaultValues: {
+      codigo:'',
+      descripcion:'',
+      marcaId:'',
+      modelo:'',
+      serie:'',
+      ubicacionId:'',
+    },
   });
 
   console.log(form);
@@ -141,7 +148,7 @@ function CrearEquiposBasicos() {
                   <FormLabel>Marca</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -170,7 +177,7 @@ function CrearEquiposBasicos() {
                   <FormLabel>Ubicacion</FormLabel>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>

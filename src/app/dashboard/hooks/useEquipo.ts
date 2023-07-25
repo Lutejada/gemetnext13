@@ -3,7 +3,7 @@ import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
 import { Equipo } from "../../api/equipos/dominio";
-import { CrearEquipoDto } from "../../api/equipos/dtos/crear";
+import { CrearEquipoDto } from "../../api/equipos/dtos/crearEquipo.dto";
 
 export const obtenerEquipos = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
