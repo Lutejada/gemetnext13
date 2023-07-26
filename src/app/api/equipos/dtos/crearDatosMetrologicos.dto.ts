@@ -1,7 +1,7 @@
-import { number, object } from "zod";
+import { number, object, string } from "zod";
 
 export interface CrearDatosMetrologicosDto {
-  equipoId: string
+  codigo:string;
   emp: number
   divisionEscala: number
   resolucion: number
@@ -10,7 +10,7 @@ export interface CrearDatosMetrologicosDto {
 }
 
 export const equipoSchema = object({
-   equipoId: number({description:'equipo_id requerido'}),
+   codigo: string({description:'equipo_id requerido'}),
    emp: number({description:'emp requerido'}),
    divisionEscala: number({description:'division_escala requerido'}),
    resolucion: number({description:'resolucion requerido'}),
