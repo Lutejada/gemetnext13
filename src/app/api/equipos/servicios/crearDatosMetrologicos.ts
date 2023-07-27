@@ -1,12 +1,21 @@
-import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto"
+import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { EquipoNoExiste } from "../errors";
-import { equipoRepositorio } from "../repositorio/equipoRepositorio"
+import { equipoRepositorio } from "../repositorio/equipoRepositorio";
+import { DatosMetrologicosYaExisten } from '../errors/index';
 
-export const crearDatosMetrologicos =async(dto:CrearDatosMetrologicosDto)=>{
-    const equipoExiste = await equipoRepositorio.obtenerEquiporPorCodigo(dto.codigo)
-    if(!equipoExiste){
-        throw new EquipoNoExiste();
-    }
+export const crearDatosMetrologicos = async (
+  dto: CrearDatosMetrologicosDto
+) => {
+  const equipoExiste = await equipoRepositorio.obtenerEquiporPorCodigo(
+    dto.codigo
+  );
+  if (!equipoExiste) {
+    throw new EquipoNoExiste();
+  }
 
-    return equipoRepositorio.crearDatosMetrologicos(dto,equipoExiste.id)
-}
+  if (equipoExiste.datos_metrologicos) {
+    throw new DatosMetrologicosYaExisten();
+  }
+
+  return equipoRepositorio.crearDatosMetrologicos(dto, equipoExiste.id);
+};

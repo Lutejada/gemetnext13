@@ -4,7 +4,11 @@ import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto) => Promise<Equipo>;
-  crearDatosMetrologicos:(dto:CrearDatosMetrologicosDto)=>Promise<DatosMetrologicosEquipos>
-  obtenerEquiporPorCodigo:(codigo:string)=>Promise<Equipo|null>
-  obtenerEquipoPorId:(id:string)=>Promise<Equipo|null>
+  crearDatosMetrologicos: (
+    dto: CrearDatosMetrologicosDto,
+    equipoId: string
+  ) => Promise<DatosMetrologicosEquipos>;
+  obtenerEquiporPorCodigo: (codigo: string) => Promise<Equipo | null>;
+  obtenerEquipoPorId: (id: string) => Promise<Equipo | null>;
+
 }

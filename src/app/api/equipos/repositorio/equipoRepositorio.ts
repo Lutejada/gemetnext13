@@ -31,12 +31,18 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  obtenerEquiporPorCodigo: function (codigo: string): Promise<Equipo | null> {
-    return prisma.equipo.findUnique({
+  obtenerEquiporPorCodigo: async function (
+    codigo: string
+  ): Promise<Equipo | null> {
+    const equipo = await prisma.equipo.findUnique({
       where: {
         codigo,
       },
+      include: {
+        datos_metrologicos: true,
+      },
     });
+    return equipo;
   },
   obtenerEquipoPorId: async function (id: string): Promise<Equipo | null> {
     return prisma.equipo.findUnique({
