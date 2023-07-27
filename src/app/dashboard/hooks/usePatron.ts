@@ -2,7 +2,7 @@ import  { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
-import { CrearPatronDto } from "../../api/patrones/dtos/crear";
+import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
 import { Patron } from "../../api/patrones/dominio";
 
 export const obtenerPatrones = () => {
