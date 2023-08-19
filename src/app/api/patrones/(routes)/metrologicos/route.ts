@@ -1,14 +1,15 @@
 import { NextResponse } from "next/server";
-import { errorHandler } from "../../common/errors/error.handler";
-import { validarCrearPatron } from "../dtos/crear";
-import { crearPatron } from "../servicios/crearPatron";
+import { errorHandler } from "../../../common/errors/error.handler";
+import { validarCrearDatosMetrologicos } from "../../dtos/crearDatosMetrologicos";
+import { crearDatosMetrologicos } from "../../servicios/crearDatosMetrologicos";
+
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    validarCrearPatron(body);
-    const patron = await crearPatron(body);
-    return NextResponse.json({ msg: "patron creado creado", patron });
+    validarCrearDatosMetrologicos(body);
+    const metrologicos = await crearDatosMetrologicos(body);
+    return NextResponse.json({ msg: "patron creado creado", metrologicos });
   } catch (error: any) {
     return errorHandler(error);
   }

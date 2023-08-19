@@ -16,5 +16,5 @@ export const crearDatosMetrologicos = async (
     throw new DatosMetrologicosYaExisten();
   }
 
-  patronRepositorio.crearDatosMetrologicos(dto, patronExiste.id);
+  return patronRepositorio.crearDatosMetrologicos(dto, patronExiste.id);
 };

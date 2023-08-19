@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
+import { crearPatron } from "../servicios/crearPatron";
 import { errorHandler } from "../../common/errors/error.handler";
 import { validarCrearPatron } from "../dtos/crearPatrones";
-import { crearPatron } from "../servicios/crearPatron";
 
 export async function POST(request: Request) {
   try {
