@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CrearEquiposBasicos from "./basicos";
+import CrearDatosmetrologicos from "./metrologicos";
 
 export default function Equipo() {
   return (
@@ -10,13 +11,16 @@ export default function Equipo() {
       <Tabs defaultValue="basicos">
         <TabsList>
           <TabsTrigger  value="basicos">Basicos</TabsTrigger>
-          <TabsTrigger value="matrologicos">Metrologicos</TabsTrigger>
+          <TabsTrigger value="metrologicos">Metrologicos</TabsTrigger>
           <TabsTrigger value="complementarios">Complementarios</TabsTrigger>
         </TabsList>
         <TabsContent value="basicos">
           <CrearEquiposBasicos />
         </TabsContent>
-        <TabsContent value="password">Change your password here.</TabsContent>
+        <TabsContent value="metrologicos">
+          <CrearDatosmetrologicos />
+        </TabsContent>
+        
       </Tabs>
     </>
   );

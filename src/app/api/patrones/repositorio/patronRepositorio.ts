@@ -1,7 +1,8 @@
 import { prisma } from "@/src/lib/prisma";
-import { Patron } from "../dominio";
-import { CrearPatronDto } from "../dtos/crear";
+import { DatosMetrologicosPatrones, Patron } from "../dominio";
+import { CrearPatronDto } from "../dtos/crearPatrones";
 import { PatronRepositorio } from "./index";
+import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -24,7 +25,26 @@ export const patronRepositorio: PatronRepositorio = {
       where: {
         codigo,
       },
+      include: {
+        datos_metrologicos: true,
+      },
     });
     return patron;
+  },
+  crearDatosMetrologicos: function (
+    dto: CrearDatosMetrologicosDto,
+    patronId: string
+  ): Promise<DatosMetrologicosPatrones> {
+    return prisma.datos_metrologicos_patrones.create({
+      data: {
+        division_escala: dto.divisionEscala,
+        rango_maximo: dto.rangoMaximo,
+        emp: dto.emp,
+        rango_minimo: dto.rangoMinimo,
+        resolucion: dto.resolucion,
+        patrones_id: patronId,
+        valor_nominal: dto.valorNominal,
+      },
+    });
   },
 };

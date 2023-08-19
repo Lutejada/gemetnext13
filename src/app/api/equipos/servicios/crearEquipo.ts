@@ -1,6 +1,12 @@
-import { CrearEquipoDto } from "../dtos/crear"
+import { CrearEquipoDto } from "../dtos/crearEquipo.dto"
+import { EquipoExiste } from "../errors";
 import { equipoRepositorio } from "../repositorio/equipoRepositorio"
+import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 
-export const crearEquipo =(dto:CrearEquipoDto)=>{
+export const crearEquipo =async(dto:CrearEquipoDto)=>{
+    const equipoExiste = await obtenerPorCodigo(dto.codigo)
+    if(equipoExiste){
+        throw new EquipoExiste()
+    }
     return equipoRepositorio.crearEquipo(dto);
 }

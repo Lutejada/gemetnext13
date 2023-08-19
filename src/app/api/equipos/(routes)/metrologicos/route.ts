@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { errorHandler } from "../common/errors/error.handler";
-import { validarCrearEquipo } from "./dtos/crear";
-import { crearEquipo } from "./servicios/crearEquipo";
+import { errorHandler } from "../../../common/errors/error.handler";
+import { crearDatosMetrologicos } from "../../servicios/crearDatosMetrologicos";
+
 
 export async function POST(request: Request) {
     try {
       const body = await request.json();
-      validarCrearEquipo(body)
-      const equipo = await crearEquipo(body)
-      return NextResponse.json({msg:'equipo creado',equipo})
+      const datosMetrologicos = await crearDatosMetrologicos(body)
+      return NextResponse.json({msg:'Datos guardados',datosMetrologicos})
     } catch (error: any) {
       return errorHandler(error);
     }
