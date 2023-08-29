@@ -31,6 +31,7 @@ model equipo {
   fecha_inactivacion    DateTime?
   ubicacion             ubicacion                   @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id          String
+  actividades           tipo_actividad[]
 }
 
 model responsable {
@@ -68,19 +69,25 @@ model marca {
 }
 
 model tipo_actividad {
-  id                  String    @id @default(cuid())
+  id                  String          @id @default(cuid())
   descripcion         String
-  fecha_creacion      DateTime  @default(now())
-  fecha_actualizacion DateTime  @updatedAt
+  equipo              equipo          @relation(fields: [equipoId], references: [id])
+  equipoId            String
+  frecuencia          frecuencia      @relation(fields: [frecuenciaId], references: [id])
+  frecuenciaId        String
+  fecha_inicio        fecha_inicial[]
+  fecha_creacion      DateTime        @default(now())
+  fecha_actualizacion DateTime        @updatedAt
   fecha_inactivacion  DateTime?
 }
 
 model frecuencia {
-  id_frecuencia       String    @id @default(cuid())
+  id                  String           @id @default(cuid())
   descripcion         String
-  cantidad_dias       Int       @db.Integer
-  fecha_creacion      DateTime  @default(now())
-  fecha_actualizacion DateTime  @updatedAt
+  cantidad_dias       Int              @db.Integer
+  actividades         tipo_actividad[]
+  fecha_creacion      DateTime         @default(now())
+  fecha_actualizacion DateTime         @updatedAt
   fecha_inactivacion  DateTime?
 }
 
@@ -189,6 +196,15 @@ model datos_complementarios {
   fecha_creacion                      DateTime  @default(now())
   fecha_actualizacion                 DateTime  @updatedAt
   fecha_inactivacion                  DateTime?
+}
+
+model fecha_inicial {
+  id                  String         @id @default(cuid())
+  actividad           tipo_actividad @relation(fields: [actividadId], references: [id])
+  actividadId         String
+  fecha_creacion      DateTime       @default(now())
+  fecha_actualizacion DateTime       @updatedAt
+  fecha_inactivacion  DateTime?
 }
 
 // Lugar para los Enum
