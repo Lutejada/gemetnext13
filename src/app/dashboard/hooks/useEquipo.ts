@@ -3,7 +3,8 @@ import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
 import { Equipo } from "../../api/equipos/dominio";
-import { CrearEquipoDto } from "../../api/equipos/dtos/crear";
+import { CrearEquipoDto } from "../../api/equipos/dtos/crearEquipo.dto";
+import { CrearDatosMetrologicosDto } from "../../api/equipos/dtos/crearDatosMetrologicos.dto";
 
 export const obtenerEquipos = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
@@ -35,6 +36,28 @@ export const crearEquipo = () => {
   return {
     isLoading: isMutating,
     equipo: data,
+    crear:trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+
+export const crearDatosMetrologicos = () => {
+
+  const fetcher = (
+    url: string,
+    { arg }: { arg: CrearDatosMetrologicosDto }
+  ) => httpBase.post(url, arg).then((res) => res.data);
+
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/equipos/metrologicos",
+    fetcher
+  );
+
+  return {
+    isLoading: isMutating,
+    metrologicos: data,
     crear:trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,

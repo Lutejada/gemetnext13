@@ -11,13 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { obtenerUbicaciones } from "../../hooks/useUbicaciones";
@@ -25,48 +19,55 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearEquipo } from "../../hooks/useEquipo";
+import { crearDatosMetrologicos, crearEquipo } from "../../hooks/useEquipo";
 
 const formSchema = z.object({
-  codigo: z.string().min(2, { message: "codigo requerido" }),
-  descripcion: z.string().min(2, { message: "descripcion requerido" }),
-  modelo: z.string().min(2, { message: "modelo requerido" }),
-  serie: z.string().min(2, { message: "serie requerido" }),
-  marcaId: z.string().min(2, { message: "marcaId requerido" }),
-  ubicacionId: z.string().min(2, { message: "ubicacionId requerido" }),
+  codigo: z.string({ description: "codigo requerido" }),
+  emp: z
+    .string({ description: "emp requerido" })
+    .transform((val) => Number(val)),
+  divisionEscala: z
+    .string({ description: "division_escala requerido" })
+    .transform((val) => Number(val)),
+  resolucion: z
+    .string({ description: "resolucion requerido" })
+    .transform((val) => Number(val)),
+  rangoMinimo: z
+    .string({ description: "rango_minimo requerido" })
+    .transform((val) => Number(val)),
+  rangoMaximo: z
+    .string({ description: "rango_maximo requerido" })
+    .transform((val) => Number(val)),
 });
 
-function CrearEquiposBasicos() {
-  const { marcas } = obtenerMarcas();
-  const { ubicaciones } = obtenerUbicaciones();
-  const { crear, error, errorMsg, isLoading } = crearEquipo();
+function CrearDatosmetrologicos() {
+  const { crear, error, errorMsg, isLoading } = crearDatosMetrologicos();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo:'',
-      descripcion:'',
-      marcaId:'',
-      modelo:'',
-      serie:'',
-      ubicacionId:'',
+      codigo: "",
+      divisionEscala: 0,
+      emp: 0,
+      rangoMaximo: 0,
+      rangoMinimo: 0,
+      resolucion: 0,
     },
   });
-
-  console.log(form);
 
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(form.formState);
+    console.log({ values });
     await crear({
       codigo: values.codigo,
-      descripcion: values.descripcion,
-      modelo: values.modelo,
-      serie: values.serie,
-      marcaId: values.marcaId,
-      ubicacionId: values.ubicacionId,
+      divisionEscala: values.divisionEscala,
+      emp:values.emp,
+      rangoMaximo:values.rangoMaximo,
+      rangoMinimo:values.rangoMinimo,
+      resolucion:values.resolucion
     });
+
     form.reset();
     toast({
       title: "Equipo se guardo correctamente",
@@ -83,10 +84,24 @@ function CrearEquiposBasicos() {
               name="codigo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Codigo</FormLabel>
+                  <FormLabel>Codigo Equipo</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ingrese codigo del equipo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="divisionEscala"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Division de escala</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la Codigo"
+                      type="number"
+                      placeholder="Ingrese division de escala"
                       {...field}
                     />
                   </FormControl>
@@ -96,13 +111,27 @@ function CrearEquiposBasicos() {
             />
             <FormField
               control={form.control}
-              name="descripcion"
+              name="emp"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Descripcion</FormLabel>
+                  <FormLabel>Emp</FormLabel>
+                  <FormControl>
+                    <Input type="number" placeholder="Ingrese EMP" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rangoMaximo"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Rango Maximo</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la Descripcion"
+                      type="number"
+                      placeholder="Ingrese Rango Maximo"
                       {...field}
                     />
                   </FormControl>
@@ -112,26 +141,14 @@ function CrearEquiposBasicos() {
             />
             <FormField
               control={form.control}
-              name="modelo"
+              name="rangoMinimo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Modelo</FormLabel>
-                  <FormControl>
-                    <Input placeholder="Ingrese nombre del Modelo" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="serie"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Serie</FormLabel>
+                  <FormLabel>Rango Minimo</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la series"
+                      type="number"
+                      placeholder="Ingrese Rango Minimo"
                       {...field}
                     />
                   </FormControl>
@@ -139,61 +156,19 @@ function CrearEquiposBasicos() {
                 </FormItem>
               )}
             />
-
             <FormField
               control={form.control}
-              name="marcaId"
+              name="resolucion"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Marca</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccione un Descripcion" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {marcas.map((res) => (
-                        <>
-                          <SelectItem value={res.id} key={res.id}>
-                            {res.descripcion}
-                          </SelectItem>
-                        </>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ubicacionId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ubicacion</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccione una Ubicacion" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {ubicaciones.map((res) => (
-                        <>
-                          <SelectItem value={res.id} key={res.id}>
-                            {res.nombre}
-                          </SelectItem>
-                        </>
-                      ))}
-                    </SelectContent>
-                  </Select>
+                  <FormLabel>Resolucion</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="Ingrese Resolucion"
+                      {...field}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -221,4 +196,4 @@ function CrearEquiposBasicos() {
   );
 }
 
-export default CrearEquiposBasicos;
+export default CrearDatosmetrologicos;
