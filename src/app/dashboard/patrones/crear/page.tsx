@@ -3,6 +3,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import CrearPatronesBasicos from "./basicos";
 import CrearDatosmetrologicos from "./metrologicos";
+import CrearDatosComplementarios from "./complementarios";
 
 export default function Equipo() {
   return (
@@ -19,6 +20,9 @@ export default function Equipo() {
         </TabsContent>
         <TabsContent value="metrologicos">
           <CrearDatosmetrologicos/>
+        </TabsContent>
+        <TabsContent value="complementarios">
+          <CrearDatosComplementarios/>
         </TabsContent>
         
       </Tabs>
