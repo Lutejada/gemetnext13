@@ -46,6 +46,7 @@ Table marca {
 Table tipo_actividad {
   id String [pk]
   descripcion String [not null]
+  patronId String [not null]
   equipoId String [not null]
   frecuenciaId String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
@@ -145,7 +146,7 @@ Table tipo_patron {
   fecha_inactivacion DateTime
 }
 
-Table datos_complementarios {
+Table datos_complementarios_equipo {
   id String [pk]
   descripcion_especificaciones String [not null]
   cumple_especificacion_instalaciones cumple [not null]
@@ -160,9 +161,32 @@ Table datos_complementarios {
   fecha_inactivacion DateTime
 }
 
-Table fecha_inicial {
+Table datos_complementarios_patrones {
+  id String [pk]
+  descripcion_especificaciones String [not null]
+  cumple_especificacion_instalaciones cumple [not null]
+  utiliza_software cumple [not null]
+  descripcion_software String [not null]
+  version_software String [not null]
+  firware String [not null]
+  observaciones String [not null]
+  patron_id String [unique, not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
+Table fecha_inicial_equipos {
   id String [pk]
   actividadId String [not null]
+  fecha_creacion DateTime [default: `now()`, not null]
+  fecha_actualizacion DateTime [not null]
+  fecha_inactivacion DateTime
+}
+
+Table fecha_inicial_patrones {
+  id String [pk]
+  actividad_Id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
@@ -189,6 +213,8 @@ Ref: ubicacion.responsable_id > responsable.id
 
 Ref: tipo_actividad.equipoId > equipo.id
 
+Ref: tipo_actividad.patronId > patrones.id
+
 Ref: tipo_actividad.frecuenciaId > frecuencia.id
 
 Ref: variable.magnitud_id > magnitud.id
@@ -201,6 +227,10 @@ Ref: datos_metrologicos_equipos.equipo_id - equipo.id
 
 Ref: datos_metrologicos_patrones.patrones_id - patrones.id
 
-Ref: datos_complementarios.equipo_id - equipo.id
+Ref: datos_complementarios_equipo.equipo_id - equipo.id
 
-Ref: fecha_inicial.actividadId > tipo_actividad.id
+Ref: datos_complementarios_patrones.patron_id - patrones.id
+
+Ref: fecha_inicial_equipos.actividadId > tipo_actividad.id
+
+Ref: fecha_inicial_patrones.actividad_Id > tipo_actividad.id
