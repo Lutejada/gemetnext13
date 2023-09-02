@@ -205,13 +205,13 @@ model datos_complementarios_equipo {
 
 model datos_complementarios_patrones {
   id                                  String    @id @default(cuid())
-  descripcion_especificaciones        String
-  cumple_especificacion_instalaciones cumple
-  utiliza_software                    cumple
-  descripcion_software                String
-  version_software                    String
-  fireware                             String
-  observaciones                       String
+  descripcion_especificaciones        String?
+  cumple_especificacion_instalaciones cumple    @default(NO)
+  utiliza_software                    cumple    @default(NO)
+  descripcion_software                String?
+  version_software                    String?
+  fireware                            String?
+  observaciones                       String?
   patron                              patrones  @relation(fields: [patron_id], references: [id])
   patron_id                           String    @unique
   fecha_creacion                      DateTime  @default(now())
