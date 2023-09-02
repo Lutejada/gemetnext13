@@ -1,18 +1,32 @@
-import { number, object, string } from "zod";
+import { number, object, string , nativeEnum } from "zod";
+import { cumple } from "../dominio";
 
 export interface CrearDatosComplementariosDto {
-
+  descripcionEspecificaciones?: string | null;
+  codigo:string;
+  cumpleEspecificacionInstalaciones?: cumple;
+  utilizaSoftware: cumple;
+  descripcionSoftware?: string | null;
+  versionSoftware?: string | null;
+  firware?: string | null;
+  observaciones?: string | null;
 }
 
 export const equipoSchema = object({
-   codigo: string({description:'equipo_id requerido'}),
-   emp: number({description:'emp requerido'}),
-   divisionEscala: number({description:'division_escala requerido'}),
-   resolucion: number({description:'resolucion requerido'}),
-   rangoMinimo: number({description:'rango_minimo requerido'}),
-   rangoMaximo: number({description:'rango_maximo requerido'}),
- });
- 
-export const validarCrearComplementarios = (complementarios: CrearDatosComplementariosDto) => {
-  equipoSchema.parse(complementarios)
+  codigo: string({description:'codigo del equipo requerido'}),
+  descripcionEspecificaciones: string({
+    description: "descripcionEspecificaciones requerido",
+  }).optional(),
+  cumpleEspecificacionInstalaciones: nativeEnum(cumple),
+  utilizaSoftware: nativeEnum(cumple),
+  descripcionSoftware: string({ description: "descripcionSoftware requerido" }).optional(),
+  versionSoftware: string({ description: "versionSoftware requerido" }).optional(),
+  fireware: string({ description: "firware requerido" }).optional(),
+  observaciones: string({ description: "observaciones requerido" }).optional(),
+});
+
+export const validarCrearComplementarios = (
+  complementarios: CrearDatosComplementariosDto
+) => {
+  equipoSchema.parse(complementarios);
 };

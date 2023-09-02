@@ -1,12 +1,15 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { crearDatosMetrologicos } from "../../servicios/crearDatosMetrologicos";
+import { validarCrearComplementarios } from "../../dtos/crearDatosComplementarios.dto";
+import { crearDatosComplementarios } from '../../servicios/crearDatosComplementarios';
 
 
 export async function POST(request: Request) {
     try {
       const body = await request.json();
-      return NextResponse.json({msg:'Datos guardados'})
+      validarCrearComplementarios(body)
+      const complementarios = await crearDatosComplementarios(body)
+      return NextResponse.json({msg:'Datos guardados',complementarios})
     } catch (error: any) {
       return errorHandler(error);
     }

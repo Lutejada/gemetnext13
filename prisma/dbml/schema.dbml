@@ -148,13 +148,13 @@ Table tipo_patron {
 
 Table datos_complementarios_equipo {
   id String [pk]
-  descripcion_especificaciones String [not null]
-  cumple_especificacion_instalaciones cumple [not null]
-  utiliza_software cumple [not null]
-  descripcion_software String [not null]
-  version_software String [not null]
-  firware String [not null]
-  observaciones String [not null]
+  descripcion_especificaciones String
+  cumple_especificacion_instalaciones cumple [not null, default: 'NO']
+  utiliza_software cumple [not null, default: 'NO']
+  descripcion_software String
+  version_software String
+  fireware String
+  observaciones String
   equipo_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
@@ -168,7 +168,7 @@ Table datos_complementarios_patrones {
   utiliza_software cumple [not null]
   descripcion_software String [not null]
   version_software String [not null]
-  firware String [not null]
+  fireware String [not null]
   observaciones String [not null]
   patron_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
@@ -201,8 +201,8 @@ Enum Role {
 }
 
 Enum cumple {
-  Si
-  No
+  SI
+  NO
 }
 
 Ref: equipo.marca_id > marca.id
@@ -229,4 +229,8 @@ Ref: datos_metrologicos_patrones.patrones_id - patrones.id
 
 Ref: datos_complementarios_equipo.equipo_id - equipo.id
 
-Ref: fecha_inicial.actividadId > tipo_actividad.id
+Ref: datos_complementarios_patrones.patron_id - patrones.id
+
+Ref: fecha_inicial_equipos.actividadId > tipo_actividad.id
+
+Ref: fecha_inicial_patrones.actividad_Id > tipo_actividad.id
