@@ -9,7 +9,8 @@ export interface Patron {
   fecha_actualizacion: Date;
   fecha_inactivacion: Date | null;
   ubicacionId?: string | null;
-  datos_metrologicos?: DatosMetrologicosPatrones|null;
+  datos_metrologicos?: DatosMetrologicosPatrones | null;
+  datos_complementarios?: DatosComplementariosPatrones | null;
 }
 
 export interface DatosMetrologicosPatrones {
@@ -24,4 +25,24 @@ export interface DatosMetrologicosPatrones {
   fecha_actualizacion: Date;
   fecha_inactivacion?: Date | null;
   patrones_id: string;
+}
+
+export interface DatosComplementariosPatrones {
+  id: string;
+  descripcion_especificaciones?: string | null;
+  cumple_especificacion_instalaciones: cumple;
+  utiliza_software: cumple;
+  descripcion_software?: string | null;
+  version_software?: string | null;
+  fireware?: string | null;
+  observaciones?: string | null;
+  patron_id: string;
+  fecha_creacion: Date;
+  fecha_actualizacion: Date;
+  fecha_inactivacion?: Date | null;
+}
+
+export enum cumple {
+  SI = "SI",
+  NO = "NO",
 }

@@ -8,7 +8,7 @@ export interface CrearDatosComplementariosDto {
   utilizaSoftware: cumple;
   descripcionSoftware?: string | null;
   versionSoftware?: string | null;
-  firware?: string | null;
+  fireware?: string | null;
   observaciones?: string | null;
 }
 
@@ -21,7 +21,7 @@ export const equipoSchema = object({
   utilizaSoftware: nativeEnum(cumple),
   descripcionSoftware: string({ description: "descripcionSoftware requerido" }).optional(),
   versionSoftware: string({ description: "versionSoftware requerido" }).optional(),
-  fireware: string({ description: "firware requerido" }).optional(),
+  fireware: string({ description: "fireware requerido" }).optional(),
   observaciones: string({ description: "observaciones requerido" }).optional(),
 });
 

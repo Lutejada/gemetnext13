@@ -33,7 +33,7 @@ export interface DatosComplementariosEquipo {
   utiliza_software: cumple;
   descripcion_software?: string | null;
   version_software?: string | null;
-  firware?: string | null;
+  fireware?: string | null;
   observaciones?: string | null;
   equipo_id: string;
   fecha_creacion: Date;

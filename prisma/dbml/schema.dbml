@@ -163,13 +163,13 @@ Table datos_complementarios_equipo {
 
 Table datos_complementarios_patrones {
   id String [pk]
-  descripcion_especificaciones String [not null]
-  cumple_especificacion_instalaciones cumple [not null]
-  utiliza_software cumple [not null]
-  descripcion_software String [not null]
-  version_software String [not null]
-  fireware String [not null]
-  observaciones String [not null]
+  descripcion_especificaciones String
+  cumple_especificacion_instalaciones cumple [not null, default: 'NO']
+  utiliza_software cumple [not null, default: 'NO']
+  descripcion_software String
+  version_software String
+  fireware String
+  observaciones String
   patron_id String [unique, not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]

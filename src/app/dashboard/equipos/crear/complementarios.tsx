@@ -41,7 +41,7 @@ const formSchema = z
     versionSoftware: z
       .string({ description: "versionSoftware requerido" })
       .optional(),
-    fireware: z.string({ description: "firware requerido" }).optional(),
+    fireware: z.string({ description: "fireware requerido" }).optional(),
     observaciones: z
       .string({ description: "observaciones requerido" })
       .optional(),
