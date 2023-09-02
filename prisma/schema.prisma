@@ -17,19 +17,19 @@ datasource db {
 }
 
 model equipo {
-  id                    String                      @id @default(cuid())
-  codigo                String                      @unique @db.VarChar(20)
-  descripcion           String                      @db.VarChar(60)
-  modelo                String                      @db.VarChar(40)
-  serie                 String                      @db.VarChar(40)
+  id                    String                        @id @default(cuid())
+  codigo                String                        @unique @db.VarChar(20)
+  descripcion           String                        @db.VarChar(60)
+  modelo                String                        @db.VarChar(40)
+  serie                 String                        @db.VarChar(40)
   datos_metrologicos    datos_metrologicos_equipos?
-  datos_complementarios datos_complementarios?
-  marca                 marca                       @relation(fields: [marca_id], references: [id])
+  datos_complementarios datos_complementarios_equipo?
+  marca                 marca                         @relation(fields: [marca_id], references: [id])
   marca_id              String
-  fecha_creacion        DateTime                    @default(now())
-  fecha_actualizacion   DateTime                    @updatedAt
+  fecha_creacion        DateTime                      @default(now())
+  fecha_actualizacion   DateTime                      @updatedAt
   fecha_inactivacion    DateTime?
-  ubicacion             ubicacion                   @relation(fields: [ubicacion_id], references: [id])
+  ubicacion             ubicacion                     @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id          String
   actividades           tipo_actividad[]
 }
@@ -69,15 +69,18 @@ model marca {
 }
 
 model tipo_actividad {
-  id                  String          @id @default(cuid())
+  id                  String                   @id @default(cuid())
   descripcion         String
-  equipo              equipo          @relation(fields: [equipoId], references: [id])
+  equipo              equipo                   @relation(fields: [equipoId], references: [id])
+  patron              patrones                 @relation(fields: [patronId], references: [id])
+  patronId            String
   equipoId            String
-  frecuencia          frecuencia      @relation(fields: [frecuenciaId], references: [id])
+  frecuencia          frecuencia               @relation(fields: [frecuenciaId], references: [id])
   frecuenciaId        String
-  fecha_inicio        fecha_inicial[]
-  fecha_creacion      DateTime        @default(now())
-  fecha_actualizacion DateTime        @updatedAt
+  fecha_inicio_equipo fecha_inicial_equipos[]
+  fecha_inicio_patron fecha_inicial_patrones[]
+  fecha_creacion      DateTime                 @default(now())
+  fecha_actualizacion DateTime                 @updatedAt
   fecha_inactivacion  DateTime?
 }
 
@@ -133,12 +136,14 @@ model patrones {
   modelo                        String                          @db.VarChar(40)
   serie                         String                          @db.VarChar(40)
   datos_metrologicos            datos_metrologicos_patrones?
-  marca                         marca                        @relation(fields: [marca_id], references: [id])
+  datos_complementarios         datos_complementarios_patrones?
+  marca                         marca                           @relation(fields: [marca_id], references: [id])
   marca_id                      String
-  fecha_creacion                DateTime                     @default(now())
-  fecha_actualizacion           DateTime                     @updatedAt
+  actividad                     tipo_actividad[]
+  fecha_creacion                DateTime                        @default(now())
+  fecha_actualizacion           DateTime                        @updatedAt
   fecha_inactivacion            DateTime?
-  ubicacion                     ubicacion                    @relation(fields: [ubicacionId], references: [id])
+  ubicacion                     ubicacion                       @relation(fields: [ubicacionId], references: [id])
   ubicacionId                   String
   datos_metrologicos_patronesId String?
 }
@@ -182,7 +187,7 @@ model tipo_patron {
   fecha_inactivacion  DateTime?
 }
 
-model datos_complementarios {
+model datos_complementarios_equipo {
   id                                  String    @id @default(cuid())
   descripcion_especificaciones        String
   cumple_especificacion_instalaciones cumple
@@ -198,10 +203,35 @@ model datos_complementarios {
   fecha_inactivacion                  DateTime?
 }
 
-model fecha_inicial {
+model datos_complementarios_patrones {
+  id                                  String    @id @default(cuid())
+  descripcion_especificaciones        String
+  cumple_especificacion_instalaciones cumple
+  utiliza_software                    cumple
+  descripcion_software                String
+  version_software                    String
+  firware                             String
+  observaciones                       String
+  patron                              patrones  @relation(fields: [patron_id], references: [id])
+  patron_id                           String    @unique
+  fecha_creacion                      DateTime  @default(now())
+  fecha_actualizacion                 DateTime  @updatedAt
+  fecha_inactivacion                  DateTime?
+}
+
+model fecha_inicial_equipos {
   id                  String         @id @default(cuid())
   actividad           tipo_actividad @relation(fields: [actividadId], references: [id])
   actividadId         String
+  fecha_creacion      DateTime       @default(now())
+  fecha_actualizacion DateTime       @updatedAt
+  fecha_inactivacion  DateTime?
+}
+
+model fecha_inicial_patrones {
+  id                  String         @id @default(cuid())
+  actividad           tipo_actividad @relation(fields: [actividad_Id], references: [id])
+  actividad_Id        String
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?

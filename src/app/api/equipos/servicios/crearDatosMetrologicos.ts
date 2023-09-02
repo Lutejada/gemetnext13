@@ -1,12 +1,13 @@
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { EquipoNoExiste } from "../errors";
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
 import { DatosMetrologicosYaExisten } from '../errors/index';
+import { equipoRepositorio } from "../repositorio/equipoRepositorio";
+import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 
 export const crearDatosMetrologicos = async (
   dto: CrearDatosMetrologicosDto
 ) => {
-  const equipoExiste = await equipoRepositorio.obtenerEquiporPorCodigo(
+  const equipoExiste = await obtenerPorCodigo(
     dto.codigo
   );
   if (!equipoExiste) {
