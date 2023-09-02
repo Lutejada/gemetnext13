@@ -127,11 +127,11 @@ model variable {
 }
 
 model patrones {
-  id                            String                       @id @default(cuid())
-  codigo                        String                       @unique @db.VarChar(20)
-  descripcion                   String                       @db.VarChar(60)
-  modelo                        String                       @db.VarChar(40)
-  serie                         String                       @db.VarChar(40)
+  id                            String                          @id @default(cuid())
+  codigo                        String                          @unique @db.VarChar(20)
+  descripcion                   String                          @db.VarChar(60)
+  modelo                        String                          @db.VarChar(40)
+  serie                         String                          @db.VarChar(40)
   datos_metrologicos            datos_metrologicos_patrones?
   marca                         marca                        @relation(fields: [marca_id], references: [id])
   marca_id                      String
