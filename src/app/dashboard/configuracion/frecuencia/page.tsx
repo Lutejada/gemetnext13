@@ -53,7 +53,7 @@ export default function Marca () {
 
   return (
     <>
-      <h2 className='text-center mb-4 font-semibold'>Crear Actividad</h2>
+      <h2 className='text-center mb-4 font-semibold'>Crear Frecuencia</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <div className='grid grid-cols-2 grid-rows-1 gap-2'>

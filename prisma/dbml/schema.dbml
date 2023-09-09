@@ -46,9 +46,6 @@ Table marca {
 Table tipo_actividad {
   id String [pk]
   descripcion String [not null]
-  patronId String [not null]
-  equipoId String [not null]
-  frecuenciaId String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
@@ -176,17 +173,23 @@ Table datos_complementarios_patrones {
   fecha_inactivacion DateTime
 }
 
-Table fecha_inicial_equipos {
+Table programacion_equipos {
   id String [pk]
-  actividadId String [not null]
+  actividad_id String [not null]
+  frecuencia_id String [not null]
+  equipo_id String [not null]
+  fecha_programacion DateTime [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
 }
 
-Table fecha_inicial_patrones {
+Table programacion_patrones {
   id String [pk]
-  actividad_Id String [not null]
+  actividad_id String [not null]
+  frecuencia_id String [not null]
+  patron_id String [not null]
+  fecha_programacion DateTime [not null]
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
@@ -211,12 +214,6 @@ Ref: equipo.ubicacion_id > ubicacion.id
 
 Ref: ubicacion.responsable_id > responsable.id
 
-Ref: tipo_actividad.equipoId > equipo.id
-
-Ref: tipo_actividad.patronId > patrones.id
-
-Ref: tipo_actividad.frecuenciaId > frecuencia.id
-
 Ref: variable.magnitud_id > magnitud.id
 
 Ref: patrones.marca_id > marca.id
@@ -231,6 +228,14 @@ Ref: datos_complementarios_equipo.equipo_id - equipo.id
 
 Ref: datos_complementarios_patrones.patron_id - patrones.id
 
-Ref: fecha_inicial_equipos.actividadId > tipo_actividad.id
+Ref: programacion_equipos.actividad_id > tipo_actividad.id
 
-Ref: fecha_inicial_patrones.actividad_Id > tipo_actividad.id
+Ref: programacion_equipos.frecuencia_id > frecuencia.id
+
+Ref: programacion_equipos.equipo_id > equipo.id
+
+Ref: programacion_patrones.actividad_id > tipo_actividad.id
+
+Ref: programacion_patrones.frecuencia_id > frecuencia.id
+
+Ref: programacion_patrones.patron_id > patrones.id
