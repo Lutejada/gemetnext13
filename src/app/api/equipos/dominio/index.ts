@@ -45,3 +45,14 @@ export enum cumple {
   SI = "SI",
   NO = "NO",
 }
+
+export interface ProgramacionEquipos {
+  id: string;
+  actividad_id: string;
+  frecuencia_id: string;
+  equipo_id: string;
+  fecha_programacion: Date;
+  fecha_creacion: Date;
+  fecha_actualizacion: Date;
+  fecha_inactivacion?: Date | null;
+}
