@@ -26,12 +26,12 @@ model equipo {
   datos_complementarios datos_complementarios_equipo?
   marca                 marca                         @relation(fields: [marca_id], references: [id])
   marca_id              String
+  programacion_equipos  programacion_equipos[]
   fecha_creacion        DateTime                      @default(now())
   fecha_actualizacion   DateTime                      @updatedAt
   fecha_inactivacion    DateTime?
   ubicacion             ubicacion                     @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id          String
-  actividades           tipo_actividad[]
 }
 
 model responsable {
@@ -69,29 +69,24 @@ model marca {
 }
 
 model tipo_actividad {
-  id                  String                   @id @default(cuid())
-  descripcion         String
-  equipo              equipo                   @relation(fields: [equipoId], references: [id])
-  patron              patrones                 @relation(fields: [patronId], references: [id])
-  patronId            String
-  equipoId            String
-  frecuencia          frecuencia               @relation(fields: [frecuenciaId], references: [id])
-  frecuenciaId        String
-  fecha_inicio_equipo fecha_inicial_equipos[]
-  fecha_inicio_patron fecha_inicial_patrones[]
-  fecha_creacion      DateTime                 @default(now())
-  fecha_actualizacion DateTime                 @updatedAt
-  fecha_inactivacion  DateTime?
+  id                    String                  @id @default(cuid())
+  descripcion           String
+  programacion_equipos  programacion_equipos[]
+  fecha_creacion        DateTime                @default(now())
+  fecha_actualizacion   DateTime                @updatedAt
+  fecha_inactivacion    DateTime?
+  programacion_patrones programacion_patrones[]
 }
 
 model frecuencia {
-  id                  String           @id @default(cuid())
-  descripcion         String
-  cantidad_dias       Int              @db.Integer
-  actividades         tipo_actividad[]
-  fecha_creacion      DateTime         @default(now())
-  fecha_actualizacion DateTime         @updatedAt
-  fecha_inactivacion  DateTime?
+  id                    String                  @id @default(cuid())
+  descripcion           String
+  cantidad_dias         Int                     @db.Integer
+  fecha_creacion        DateTime                @default(now())
+  fecha_actualizacion   DateTime                @updatedAt
+  fecha_inactivacion    DateTime?
+  programacion_equipos  programacion_equipos[]
+  programacion_patrones programacion_patrones[]
 }
 
 model usuario {
@@ -139,13 +134,13 @@ model patrones {
   datos_complementarios         datos_complementarios_patrones?
   marca                         marca                           @relation(fields: [marca_id], references: [id])
   marca_id                      String
-  actividad                     tipo_actividad[]
   fecha_creacion                DateTime                        @default(now())
   fecha_actualizacion           DateTime                        @updatedAt
   fecha_inactivacion            DateTime?
   ubicacion                     ubicacion                       @relation(fields: [ubicacionId], references: [id])
   ubicacionId                   String
   datos_metrologicos_patronesId String?
+  programacion_patrones         programacion_patrones[]
 }
 
 model datos_metrologicos_equipos {
@@ -189,13 +184,13 @@ model tipo_patron {
 
 model datos_complementarios_equipo {
   id                                  String    @id @default(cuid())
-  descripcion_especificaciones        String
-  cumple_especificacion_instalaciones cumple
-  utiliza_software                    cumple
-  descripcion_software                String
-  version_software                    String
-  firware                             String
-  observaciones                       String
+  descripcion_especificaciones        String?
+  cumple_especificacion_instalaciones cumple    @default(NO)
+  utiliza_software                    cumple    @default(NO)
+  descripcion_software                String?
+  version_software                    String?
+  fireware                            String?
+  observaciones                       String?
   equipo                              equipo    @relation(fields: [equipo_id], references: [id])
   equipo_id                           String    @unique
   fecha_creacion                      DateTime  @default(now())
@@ -205,13 +200,13 @@ model datos_complementarios_equipo {
 
 model datos_complementarios_patrones {
   id                                  String    @id @default(cuid())
-  descripcion_especificaciones        String
-  cumple_especificacion_instalaciones cumple
-  utiliza_software                    cumple
-  descripcion_software                String
-  version_software                    String
-  firware                             String
-  observaciones                       String
+  descripcion_especificaciones        String?
+  cumple_especificacion_instalaciones cumple    @default(NO)
+  utiliza_software                    cumple    @default(NO)
+  descripcion_software                String?
+  version_software                    String?
+  fireware                            String?
+  observaciones                       String?
   patron                              patrones  @relation(fields: [patron_id], references: [id])
   patron_id                           String    @unique
   fecha_creacion                      DateTime  @default(now())
@@ -219,23 +214,42 @@ model datos_complementarios_patrones {
   fecha_inactivacion                  DateTime?
 }
 
-model fecha_inicial_equipos {
+model programacion_equipos {
   id                  String         @id @default(cuid())
-  actividad           tipo_actividad @relation(fields: [actividadId], references: [id])
-  actividadId         String
+  actividad           tipo_actividad @relation(fields: [actividad_id], references: [id])
+  actividad_id        String
+  frecuencia          frecuencia     @relation(fields: [frecuencia_id], references: [id])
+  frecuencia_id       String
+  equipo              equipo         @relation(fields: [equipo_id], references: [id])
+  equipo_id           String
+  fecha_programacion  DateTime
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
 }
 
-model fecha_inicial_patrones {
+model programacion_patrones {
   id                  String         @id @default(cuid())
-  actividad           tipo_actividad @relation(fields: [actividad_Id], references: [id])
-  actividad_Id        String
+  actividad           tipo_actividad @relation(fields: [actividad_id], references: [id])
+  actividad_id        String
+  frecuencia          frecuencia     @relation(fields: [frecuencia_id], references: [id])
+  frecuencia_id       String
+  patron              patrones       @relation(fields: [patron_id], references: [id])
+  patron_id           String
+  fecha_programacion  DateTime
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
 }
+
+// model fecha_inicial_patrones {
+//   id                  String         @id @default(cuid())
+//   actividad           tipo_actividad @relation(fields: [actividad_Id], references: [id])
+//   actividad_Id        String
+//   fecha_creacion      DateTime       @default(now())
+//   fecha_actualizacion DateTime       @updatedAt
+//   fecha_inactivacion  DateTime?
+// }
 
 // Lugar para los Enum
 
@@ -248,6 +262,6 @@ enum Role {
 }
 
 enum cumple {
-  Si
-  No
+  SI
+  NO
 }

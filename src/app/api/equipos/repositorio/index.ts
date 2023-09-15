@@ -1,4 +1,9 @@
-import { DatosMetrologicosEquipos, Equipo } from "../dominio";
+import {
+  DatosMetrologicosEquipos,
+  Equipo,
+  DatosComplementariosEquipo,
+} from "../dominio";
+import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
 
@@ -10,5 +15,8 @@ export interface EquipoRepositorio {
   ) => Promise<DatosMetrologicosEquipos>;
   obtenerEquiporPorCodigo: (codigo: string) => Promise<Equipo | null>;
   obtenerEquipoPorId: (id: string) => Promise<Equipo | null>;
-
+  crearDatosComplementarios: (
+    equipoId: string,
+    dto: CrearDatosComplementariosDto
+  ) => Promise<DatosComplementariosEquipo>;
 }

@@ -25,3 +25,13 @@ export class DatosMetrologicosYaExisten extends Error{
         this.status = 400;
     }
 }
+
+export class DatosComplementariosYaExisten extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="Los datos complementarios de este patron ya Existen"
+        this.cause="negocio"
+        this.status = 400;
+    }
+}

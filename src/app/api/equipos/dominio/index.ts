@@ -10,6 +10,7 @@ export interface Equipo {
   fecha_actualizacion: Date | string;
   fecha_inactivacion?: Date | string | null;
   datos_metrologicos?: DatosMetrologicosEquipos | null;
+  datos_complementarios: DatosComplementariosEquipo | null;
 }
 
 export interface DatosMetrologicosEquipos {
@@ -23,4 +24,24 @@ export interface DatosMetrologicosEquipos {
   fecha_creacion: Date;
   fecha_actualizacion: Date;
   fecha_inactivacion?: Date | null;
+}
+
+export interface DatosComplementariosEquipo {
+  id: string;
+  descripcion_especificaciones?: string | null;
+  cumple_especificacion_instalaciones: cumple;
+  utiliza_software: cumple;
+  descripcion_software?: string | null;
+  version_software?: string | null;
+  fireware?: string | null;
+  observaciones?: string | null;
+  equipo_id: string;
+  fecha_creacion: Date;
+  fecha_actualizacion: Date;
+  fecha_inactivacion?: Date | null;
+}
+
+export enum cumple {
+  SI = "SI",
+  NO = "NO",
 }

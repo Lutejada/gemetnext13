@@ -14,39 +14,52 @@ import {
 
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { obtenerUbicaciones } from "../../hooks/useUbicaciones";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearDatosMetrologicos, crearEquipo } from "../../hooks/useEquipo";
+import { crearDatosComplementarios } from "../../hooks/usePatron";
+import { cumple } from "@/src/app/api/equipos/dominio";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
-const formSchema = z.object({
-  codigo: z.string({ description: "codigo requerido" }),
-  emp: z
-    .string({ description: "emp requerido" })
-    .transform((val) => Number(val)),
-  divisionEscala: z
-    .string({ description: "division_escala requerido" })
-    .transform((val) => Number(val)),
-  resolucion: z
-    .string({ description: "resolucion requerido" })
-    .transform((val) => Number(val)),
-  rangoMinimo: z
-    .string({ description: "rango_minimo requerido" })
-    .transform((val) => Number(val)),
-  rangoMaximo: z
-    .string({ description: "rango_maximo requerido" })
-    .transform((val) => Number(val)),
-});
-
-function CrearDatosComplementarios() {
-  const { crear, error, errorMsg, isLoading } = crearDatosMetrologicos();
+const formSchema = z
+  .object({
+    codigo: z.string({ description: "codigo requerido" }),
+    descripcionEspecificaciones: z
+      .string({
+        description: "descripcionEspecificaciones requerido",
+      })
+      .optional(),
+    cumpleEspecificacionInstalaciones: z.nativeEnum(cumple),
+    utilizaSoftware: z.nativeEnum(cumple),
+    descripcionSoftware: z.string().optional(),
+    versionSoftware: z
+      .string({ description: "versionSoftware requerido" })
+      .optional(),
+    fireware: z.string({ description: "fireware requerido" }).optional(),
+    observaciones: z
+      .string({ description: "observaciones requerido" })
+      .optional(),
+  })
+function CrearDatosmetrologicos() {
+  const { crear, error, errorMsg, isLoading } = crearDatosComplementarios();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       codigo: "",
+      cumpleEspecificacionInstalaciones: cumple.NO,
+      descripcionEspecificaciones: "",
+      descripcionSoftware: "",
+      fireware: "",
+      observaciones: "",
+      utilizaSoftware: cumple.NO,
+      versionSoftware: "",
     },
   });
 
@@ -55,17 +68,12 @@ function CrearDatosComplementarios() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ values });
     await crear({
-      codigo: values.codigo,
-      divisionEscala: values.divisionEscala,
-      emp:values.emp,
-      rangoMaximo:values.rangoMaximo,
-      rangoMinimo:values.rangoMinimo,
-      resolucion:values.resolucion
+      ...values,
     });
 
     form.reset();
     toast({
-      title: "Datos complementarios se guardaron correctamente",
+      title: "Dato complementarios se guardaron correctamente",
       variant: "success",
     });
   }
@@ -79,9 +87,122 @@ function CrearDatosComplementarios() {
               name="codigo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Codigo Patron</FormLabel>
+                  <FormLabel>Codigo Equipo</FormLabel>
                   <FormControl>
                     <Input placeholder="Ingrese codigo del equipo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="descripcionEspecificaciones"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripcion Especificaciones</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ingrese division de escala"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="versionSoftware"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Version software</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Ingrese version de software"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="cumpleEspecificacionInstalaciones"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cumple especificaciones instalaciones</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="elija una opcion" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={cumple.NO}>No</SelectItem>
+                      <SelectItem value={cumple.SI}>Si</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="utilizaSoftware"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Utiliza software</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="elija una opcion" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value={cumple.NO}>No</SelectItem>
+                      <SelectItem value={cumple.SI}>Si</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="descripcionSoftware"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Descripcion software</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ingrese Rango Maximo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="fireware"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>fireware</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ingrese Rango Minimo" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="observaciones"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Observaciones</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Ingrese Resolucion" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -94,7 +215,7 @@ function CrearDatosComplementarios() {
                 "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
               }
             />
-            Crear Datos Complementarios
+            Crear datos complementarios
           </Button>
 
           {error && (
@@ -110,4 +231,4 @@ function CrearDatosComplementarios() {
   );
 }
 
-export default CrearDatosComplementarios;
+export default CrearDatosmetrologicos;
