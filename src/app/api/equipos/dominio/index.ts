@@ -1,3 +1,5 @@
+export { equipo } from '@prisma/client'
+
 export interface Equipo {
   id: string;
   codigo: string;
@@ -10,7 +12,7 @@ export interface Equipo {
   fecha_actualizacion: Date | string;
   fecha_inactivacion?: Date | string | null;
   datos_metrologicos?: DatosMetrologicosEquipos | null;
-  datos_complementarios: DatosComplementariosEquipo | null;
+  datos_complementarios?: DatosComplementariosEquipo | null;
 }
 
 export interface DatosMetrologicosEquipos {

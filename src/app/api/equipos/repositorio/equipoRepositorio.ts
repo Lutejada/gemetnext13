@@ -76,14 +76,17 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  crearProgramacionEquipo: function (dto:CrearProgramacionEquipoDto): Promise<ProgramacionEquipos> {
+  crearProgramacionEquipo: function (dto: CrearProgramacionEquipoDto): Promise<ProgramacionEquipos> {
     return prisma.programacion_equipos.create({
-      data:{
-        equipo_id:dto.equipoId,
-        frecuencia_id:dto.frecuenciaId,
-        fecha_programacion:dto.fechaProgramacion,
-        actividad_id:dto.actividadId
+      data: {
+        equipo_id: dto.equipoId,
+        frecuencia_id: dto.frecuenciaId,
+        fecha_programacion: dto.fechaProgramacion,
+        actividad_id: dto.actividadId
       }
-    })
+    });
+  },
+  obtenerEquipos: function (): Promise<Equipo[]> {
+    return prisma.equipo.findMany()
   }
 };
