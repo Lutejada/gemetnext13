@@ -10,6 +10,12 @@ async function getData(): Promise<Equipo[]> {
       marca: "marca del equipo",
       responsable: "Andres Tejada",
     },
+    {
+      codigo: "578",
+      descripcion: "some descripcion 2 ",
+      marca: "marca del equipo 2 ",
+      responsable: "Luis Tejada",
+    },
   ];
 }
 
