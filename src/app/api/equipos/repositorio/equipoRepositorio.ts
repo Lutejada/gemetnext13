@@ -47,7 +47,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
       include: {
         datos_metrologicos: true,
-        datos_complementarios: true
+        datos_complementarios: true,
       },
     });
     return equipo;
@@ -66,7 +66,8 @@ export const equipoRepositorio: EquipoRepositorio = {
     return prisma.datos_complementarios_equipo.create({
       data: {
         fireware: dto.fireware,
-        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         observaciones: dto.observaciones,
@@ -76,17 +77,24 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  crearProgramacionEquipo: function (dto: CrearProgramacionEquipoDto): Promise<ProgramacionEquipos> {
+  crearProgramacionEquipo: function (
+    dto: CrearProgramacionEquipoDto
+  ): Promise<ProgramacionEquipos> {
     return prisma.programacion_equipos.create({
       data: {
         equipo_id: dto.equipoId,
         frecuencia_id: dto.frecuenciaId,
         fecha_programacion: dto.fechaProgramacion,
-        actividad_id: dto.actividadId
-      }
+        actividad_id: dto.actividadId,
+      },
     });
   },
-  obtenerEquipos: function (): Promise<Equipo[]> {
-    return prisma.equipo.findMany()
-  }
+  obtenerEquipos: function (limit = 5): Promise<Equipo[]> {
+    return prisma.equipo.findMany({
+      take: limit,
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+    });
+  },
 };

@@ -21,6 +21,7 @@ export const obtenerEquipos = () => {
 };
 
 
+
 export const crearEquipo = () => {
 
   const fetcher = (

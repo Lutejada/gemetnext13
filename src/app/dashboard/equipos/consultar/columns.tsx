@@ -10,15 +10,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Equipo } from "@/src/app/api/equipos/dominio";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-export type Equipo = {
-  codigo: string;
-  descripcion: string;
-  marca: string;
-  responsable: string;
-};
+
 
 export const columns: ColumnDef<Equipo>[] = [
   {
