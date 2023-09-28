@@ -97,4 +97,13 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
+  obtenerEquiposPorCodigo: function (codigo: string): Promise<Equipo[]> {
+    return prisma.equipo.findMany({
+      where: {
+        codigo: {
+          contains: codigo,
+        },
+      },
+    });
+  },
 };

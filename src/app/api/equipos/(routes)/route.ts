@@ -15,10 +15,12 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const termino = searchParams.get("termino");
+    console.log(termino);
     const equipos = await obtenerEquipos();
-    console.log(equipos);
     return NextResponse.json(equipos);
   } catch (error: any) {
     return errorHandler(error);

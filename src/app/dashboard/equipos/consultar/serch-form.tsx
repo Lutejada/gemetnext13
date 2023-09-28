@@ -20,32 +20,30 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { obtenerResponsables } from "../../hooks/useResponsables";
-import { crearUbicacion } from "../../hooks/useUbicaciones";
-import { useToast } from "@/components/ui/use-toast";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle, Loader2 } from "lucide-react";
+
+import { obtenerEquiposPorTermino } from "../../hooks/useEquipo";
 
 const formSchema = z.object({
-  nombre: z.string().min(2, { message: "requerido" }),
-  responsable: z
-    .string({ required_error: "Seleccione un responsable" })
-    .min(2, { message: "requerido" }),
+  termino: z.string().min(3, { message: "requerido" }),
+  valor: z
+    .string({ required_error: "requerido" })
+    .min(3, { message: "requerido" }),
 });
 
 export default function SearchForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      nombre: "",
-      responsable: "",
+      termino: "",
+      valor: "",
     },
   });
 
-  const { toast } = useToast();
+  const { trigger } = obtenerEquiposPorTermino();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    await trigger({ termino: values.termino, valor: values.valor });
+    form.reset();
   }
 
   return (
@@ -57,10 +55,10 @@ export default function SearchForm() {
         >
           <FormField
             control={form.control}
-            name="responsable"
+            name="termino"
             render={({ field }) => (
               <FormItem className="col-span-1/2">
-                <Select onValueChange={field.onChange} >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Buscar por" />
@@ -76,21 +74,18 @@ export default function SearchForm() {
           />
           <FormField
             control={form.control}
-            name="nombre"
+            name="valor"
             render={({ field }) => (
               <FormItem className="col-span-3">
                 <FormControl>
-                  <Input
-                    placeholder="Ingrese el valor"
-                    {...field}
-                  />
+                  <Input placeholder="Ingrese el valor" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
 
-          <Button type="submit" className="col-span-1" >
+          <Button type="submit" className="col-span-1">
             Buscar
           </Button>
         </form>

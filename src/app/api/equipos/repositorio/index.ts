@@ -23,4 +23,5 @@ export interface EquipoRepositorio {
   ) => Promise<DatosComplementariosEquipo>;
   crearProgramacionEquipo:(dto:CrearProgramacionEquipoDto)=>Promise<ProgramacionEquipos>
   obtenerEquipos:(limit?:number,)=>Promise<Equipo[]>
+  obtenerEquiposPorCodigo:(codigo:string)=>Promise<Equipo[]>
 }

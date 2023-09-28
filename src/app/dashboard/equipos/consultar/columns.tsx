@@ -45,8 +45,8 @@ export const columns: ColumnDef<Equipo>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem>
+            <DropdownMenuItem>Ver Equipo</DropdownMenuItem>
+            <DropdownMenuItem>Programar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

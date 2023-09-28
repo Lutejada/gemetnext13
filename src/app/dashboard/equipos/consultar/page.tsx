@@ -1,14 +1,10 @@
-'use client'
-import { useEffect } from "react";
-import { obtenerEquipos } from "../../hooks/useEquipo";
+"use client";
+import { addTodo, obtenerEquipos, todos } from "../../hooks/useEquipo";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
-
-
+import { EquiposContext } from "@/src/app/context/equiposProvider";
 export default function DemoPage() {
-
-  const { equipos } = obtenerEquipos()
-  
+  const { equipos } = obtenerEquipos();
 
   return (
     <div className="container mx-auto py-10">
