@@ -20,8 +20,8 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-
-import { obtenerEquiposPorTermino } from "../../hooks/useEquipo";
+import { useEquipos, obtenerEquiposPorTermino } from "../../hooks/useEquipo";
+import { useEquiposStore } from "@/src/app/stores/equiposStore";
 
 const formSchema = z.object({
   termino: z.string().min(3, { message: "requerido" }),
@@ -31,6 +31,8 @@ const formSchema = z.object({
 });
 
 export default function SearchForm() {
+  const { obtenerEquipos } = obtenerEquiposPorTermino();
+  const store = useEquiposStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,11 +41,15 @@ export default function SearchForm() {
     },
   });
 
-  const { trigger } = obtenerEquiposPorTermino();
-
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await trigger({ termino: values.termino, valor: values.valor });
+    values.termino;
     form.reset();
+    const equipos = await obtenerEquipos({
+      termino: values.termino,
+      valor: values.valor,
+    });
+    console.log(equipos);
+    store.addEquipos(equipos);
   }
 
   return (
@@ -66,6 +72,7 @@ export default function SearchForm() {
                   </FormControl>
                   <SelectContent>
                     <SelectItem value="codigo">codigo</SelectItem>
+                    <SelectItem value="marca">Marca</SelectItem>
                   </SelectContent>
                 </Select>
                 <FormMessage />

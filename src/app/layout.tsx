@@ -2,7 +2,6 @@ import React from "react";
 import "./globals.css";
 import { Toast } from "@/components/ui/toast";
 import { Toaster } from "@/components/ui/toaster";
-import { CounterContextProvider } from "./context/equiposProvider";
 export const metadata = {
   title: "Gemet",
   description: "Gestion Metrologica",
@@ -16,7 +15,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="h-screen">
-        <CounterContextProvider>{children}</CounterContextProvider>
+        {children}
 
         <Toaster />
       </body>

@@ -15,13 +15,16 @@ export interface EquipoRepositorio {
     dto: CrearDatosMetrologicosDto,
     equipoId: string
   ) => Promise<DatosMetrologicosEquipos>;
-  obtenerEquiporPorCodigo: (codigo: string) => Promise<Equipo | null>;
+  obtenerEquipoPorCodigo: (codigo: string) => Promise<Equipo | null>;
   obtenerEquipoPorId: (id: string) => Promise<Equipo | null>;
   crearDatosComplementarios: (
     equipoId: string,
     dto: CrearDatosComplementariosDto
   ) => Promise<DatosComplementariosEquipo>;
-  crearProgramacionEquipo:(dto:CrearProgramacionEquipoDto)=>Promise<ProgramacionEquipos>
-  obtenerEquipos:(limit?:number,)=>Promise<Equipo[]>
-  obtenerEquiposPorCodigo:(codigo:string)=>Promise<Equipo[]>
+  crearProgramacionEquipo: (
+    dto: CrearProgramacionEquipoDto
+  ) => Promise<ProgramacionEquipos>;
+  obtenerEquipos: (limit?: number) => Promise<ObtenerEquiposDtoOutput[]>;
+  obtenerEquiposPorCodigo: (codigo: string) => Promise<ObtenerEquiposDtoOutput[]>;
+  obtenerEquiposPorMarca: (marca: string) => Promise<Equipo[]>;
 }

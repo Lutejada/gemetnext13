@@ -69,7 +69,7 @@ export default function CrearPatronesBasicos () {
       ubicacionId: values.ubicacionId,
     })
     form.reset()
-    console.log(form.getValues());
+
     toast({
       title: 'Patron se guardo correctamente',
       variant: 'success'

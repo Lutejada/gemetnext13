@@ -36,7 +36,7 @@ export const columns: ColumnDef<Equipo>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      console.log('columns file ',row.original);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

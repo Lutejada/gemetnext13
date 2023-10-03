@@ -23,7 +23,6 @@ export async function GET(_request: Request) {
     if(!session){
       throw new Error('no esta autenticado')
     }
-    console.log('session desde el server',session);
     const responsables = await obtenerResponsables()
     return NextResponse.json(responsables)
   } catch (error: any) {

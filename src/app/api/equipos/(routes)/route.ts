@@ -3,6 +3,7 @@ import { errorHandler } from "../../common/errors/error.handler";
 import { validarCrearEquipo } from "../dtos/crearEquipo.dto";
 import { crearEquipo } from "../servicios/crearEquipo";
 import { obtenerEquipos } from "../servicios/obtenerEquipos";
+import { obtenerPorCodigo } from "../servicios/ObtenerPorCodigo";
 
 export async function POST(request: Request) {
   try {
@@ -19,8 +20,8 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const termino = searchParams.get("termino");
-    console.log(termino);
-    const equipos = await obtenerEquipos();
+    const valor = searchParams.get("valor");
+    const equipos = await obtenerEquipos(termino, valor);
     return NextResponse.json(equipos);
   } catch (error: any) {
     return errorHandler(error);
