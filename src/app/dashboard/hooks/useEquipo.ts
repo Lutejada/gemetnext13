@@ -10,24 +10,21 @@ import { useEquiposStore } from "@/src/app/stores/equiposStore";
 import { useEffect } from "react";
 
 export const useEquipos = () => {
-  //const { equipos, trigger } = obtenerEquiposPorTermino();
-  const equipos: Equipo[] = [];
-  console.log({ equipos });
-  //const store = useEquiposStore();
+  const { obtenerEquipos } = obtenerEquiposPorTermino();
+  const store = useEquiposStore();
   useEffect(() => {
-    console.log("enjro");
-    //trigger({});
+    obtenerEquipos({}).then((equipos) => store.addEquipos(equipos));
   }, []);
 
-  useEffect(() => {
-    console.log(equipos);
-    //store.addEquipos(equipos);
-    console.log("agregar equipos");
-  }, [equipos]);
-
   return {
-    equipos: equipos,
-    // obtenerEquipos: trigger,
+    equipos: store.equipos,
+    obtenerEquipos: async (termino: string, valor: string) => {
+      const equipos = await obtenerEquipos({
+        termino: termino,
+        valor: valor,
+      });
+      store.addEquipos(equipos);
+    },
   };
 };
 

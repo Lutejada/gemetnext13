@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useEquipos, obtenerEquiposPorTermino } from "../../hooks/useEquipo";
+import { useEquipos } from "../../hooks/useEquipo";
 import { useEquiposStore } from "@/src/app/stores/equiposStore";
 
 const formSchema = z.object({
@@ -31,7 +31,7 @@ const formSchema = z.object({
 });
 
 export default function SearchForm() {
-  const { obtenerEquipos } = obtenerEquiposPorTermino();
+  const { obtenerEquipos } = useEquipos();
   const store = useEquiposStore();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,12 +44,7 @@ export default function SearchForm() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     values.termino;
     form.reset();
-    const equipos = await obtenerEquipos({
-      termino: values.termino,
-      valor: values.valor,
-    });
-    console.log(equipos);
-    store.addEquipos(equipos);
+    await obtenerEquipos(values.termino, values.valor);
   }
 
   return (
