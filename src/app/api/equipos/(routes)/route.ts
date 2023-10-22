@@ -19,6 +19,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
+    console.log(searchParams);
     const termino = searchParams.get("termino");
     const valor = searchParams.get("valor");
     const equipos = await obtenerEquipos(termino, valor);

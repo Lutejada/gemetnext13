@@ -57,6 +57,21 @@ export const obtenerEquiposPorTermino = () => {
   };
 };
 
+export const obtenerEquiposPorCodigo = (codigo: string) => {
+  const fetcher = (url: string) =>
+    httpBase.get<Equipo>(url).then((res) => res.data);
+  const { data, error, isMutating, trigger } = useSWRMutation(
+    `/equipos/${codigo}`,
+    fetcher
+  );
+  return {
+    equipo: data,
+    isLoading: isMutating,
+    isError: error,
+    obtener: trigger,
+  };
+};
+
 export const crearEquipo = () => {
   const fetcher = (url: string, { arg }: { arg: CrearEquipoDto }) =>
     httpBase.post(url, arg).then((res) => res.data);

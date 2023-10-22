@@ -123,7 +123,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       descripcion: equipo.descripcion,
       marca: equipo.marca.descripcion,
       responsable: equipo.ubicacion.responsable.nombre,
-      codigo:equipo.codigo
+      codigo: equipo.codigo,
     }));
   },
   obtenerEquiposPorCodigo: async function (codigo: string) {
@@ -140,7 +140,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       descripcion: equipo.descripcion,
       marca: equipo.marca.descripcion,
       responsable: equipo.ubicacion.responsable.nombre,
-      codigo:equipo.codigo
+      codigo: equipo.codigo,
     }));
   },
   obtenerEquiposPorMarca: function (marca: string) {

@@ -12,7 +12,7 @@ export const obtenerActividades = () => {
     fetcher
   );
   return {
-    responsables: data ?? [],
+    actividades: data ?? [],
     isLoading,
     isError: error,
   };

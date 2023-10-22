@@ -11,10 +11,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Equipo } from "@/src/app/api/equipos/dominio";
-
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
-
 
 export const columns: ColumnDef<Equipo>[] = [
   {
@@ -36,7 +36,6 @@ export const columns: ColumnDef<Equipo>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -45,8 +44,12 @@ export const columns: ColumnDef<Equipo>[] = [
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
+            <Link
+              href={`/dashboard/equipos/programar/${row.getValue("codigo")}`}
+            >
+              <DropdownMenuItem>Programar</DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Ver Equipo</DropdownMenuItem>
-            <DropdownMenuItem>Programar</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
