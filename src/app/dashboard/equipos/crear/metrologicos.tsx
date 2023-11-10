@@ -180,7 +180,7 @@ function CrearDatosmetrologicos() {
                 "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
               }
             />
-            Crear Equipo
+            Crear Datos Metrologicos Equipo
           </Button>
 
           {error && (
