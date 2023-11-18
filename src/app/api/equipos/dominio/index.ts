@@ -1,4 +1,4 @@
-export { equipo } from '@prisma/client'
+export { type equipo } from '@prisma/client'
 
 export interface Equipo {
   id: string;

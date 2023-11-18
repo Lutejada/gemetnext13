@@ -1,7 +1,10 @@
 "use client";
 import { useRouter, useParams } from "next/navigation";
 import React, { useEffect } from "react";
-import { obtenerEquiposPorCodigo } from "../../../hooks/useEquipo";
+import {
+  crearProgramacionEquipo,
+  obtenerEquipoPorCodigo,
+} from "../../../hooks/useEquipo";
 import {
   Form,
   FormControl,
@@ -27,26 +30,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { obtenerActividades } from "../../../hooks/useActividad";
 import { obtenerFrecuencias } from "../../../hooks/useFrecuencia";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/src/lib/utils";
 import { format } from "date-fns";
+import { es } from "date-fns/locale";
 
 const formSchema = z.object({
-  codigo: z.string().min(2, { message: "codigo requerido" }),
-  descripcion: z.string().min(2, { message: "descripcion requerido" }),
+  codigo: z.string(),
+  descripcion: z.string(),
   actividad: z.string().min(2, { message: "actividad requerida" }),
   frecuencia: z.string().min(2, { message: "frecuencia requerida" }),
-  fechaInicio: z.string().min(2, { message: "fechaInicio requerida" }),
+  fechaInicio: z.date({ required_error: "fechaInicio requerida" }),
 });
 export default function Programar() {
   const params = useParams<{ codigo: string }>();
+  const router = useRouter();
 
-  const { obtener, equipo } = obtenerEquiposPorCodigo(params.codigo);
+  const { toast } = useToast();
+  const { obtener, equipo } = obtenerEquipoPorCodigo(params.codigo);
   const { actividades } = obtenerActividades();
   const { frecuencias } = obtenerFrecuencias();
-  console.log(params);
+  const { crear, isLoading, error, errorMsg } = crearProgramacionEquipo();
   useEffect(() => {
     obtener();
   }, []);
@@ -55,7 +65,25 @@ export default function Programar() {
     resolver: zodResolver(formSchema),
     defaultValues: {},
   });
-  async function onSubmit(values: z.infer<typeof formSchema>) {}
+  useEffect(() => {
+    form.setValue("codigo", equipo?.codigo!);
+    form.setValue("descripcion", equipo?.descripcion!);
+  }, [equipo]);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log({ values });
+    await crear({
+      actividadId: values.actividad,
+      codigo: values.codigo,
+      fechaProgramacion: values.fechaInicio,
+      frecuenciaId: values.frecuencia,
+      equipoId: equipo?.id!,
+    });
+    toast({
+      title: "Equipo se guardo correctamente",
+      variant: "success",
+    });
+    router.push("/dashboard/equipos/consultar");
+  }
 
   return (
     <>
@@ -165,7 +193,7 @@ export default function Programar() {
                           )}
                         >
                           {field.value ? (
-                            format(field.value, "PPP")
+                            format(field.value, "PPP", { locale: es })
                           ) : (
                             <span>Seleccione una fecha</span>
                           )}
@@ -178,10 +206,9 @@ export default function Programar() {
                         mode="single"
                         selected={field.value}
                         onSelect={field.onChange}
-                        disabled={(date) =>
-                          date <= new Date()
-                        }
+                        disabled={(date) => date <= new Date()}
                         initialFocus
+                        locale={es}
                       />
                     </PopoverContent>
                   </Popover>
@@ -193,13 +220,13 @@ export default function Programar() {
               )}
             />
           </div>
-          {/* <Button type="submit" disabled={isLoading} className="mx-auto">
+          <Button type="submit" disabled={isLoading} className="mx-auto">
             <Loader2
               className={
                 "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
               }
             />
-            Crear Equipo
+            Programa Equipo
           </Button>
 
           {error && (
@@ -208,7 +235,7 @@ export default function Programar() {
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{errorMsg}</AlertDescription>
             </Alert>
-          )} */}
+          )}
         </form>
       </Form>
     </>

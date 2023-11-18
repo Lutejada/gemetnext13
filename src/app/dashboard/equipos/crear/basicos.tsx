@@ -53,7 +53,6 @@ function CrearEquiposBasicos() {
     },
   });
 
-  console.log(form);
 
   const { toast } = useToast();
 

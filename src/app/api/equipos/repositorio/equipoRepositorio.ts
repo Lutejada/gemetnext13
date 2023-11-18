@@ -10,6 +10,7 @@ import { EquipoRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
+import { ProgramarEquipoDto } from "../dtos/programarEquipoDto";
 
 const selectEquipoBasico = {
   id: true,

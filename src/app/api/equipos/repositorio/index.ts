@@ -8,6 +8,7 @@ import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
+import { ProgramarEquipoDto } from "../dtos/programarEquipoDto";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto) => Promise<Equipo>;
@@ -25,6 +26,7 @@ export interface EquipoRepositorio {
     dto: CrearProgramacionEquipoDto
   ) => Promise<ProgramacionEquipos>;
   obtenerEquipos: (limit?: number) => Promise<ObtenerEquiposDtoOutput[]>;
-  obtenerEquiposPorCodigo: (codigo: string) => Promise<ObtenerEquiposDtoOutput[]>;
+  obtenerEquiposPorCodigo: (
+    codigo: string
+  ) => Promise<ObtenerEquiposDtoOutput[]>;
   obtenerEquiposPorMarca: (marca: string) => Promise<Equipo[]>;
-}

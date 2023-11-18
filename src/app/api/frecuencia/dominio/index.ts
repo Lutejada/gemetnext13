@@ -1,5 +1,5 @@
 export interface Frecuencia {
-    id_frecuencia:string
+    id:string
     descripcion:string
     cantidad_dias:number
     fecha_creacion: Date | string
