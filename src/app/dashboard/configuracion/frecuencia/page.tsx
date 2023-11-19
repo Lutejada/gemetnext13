@@ -31,6 +31,7 @@ export default function Marca () {
     resolver: zodResolver(formSchema),
     defaultValues: {
       descripcion: '',
+      cantidadDias: 0,
     }
   })
 

@@ -14,7 +14,7 @@ export const obtenerFrecuencias = () => {
     fetcher
   );
   return {
-    responsables: data ?? [],
+    frecuencias: data ?? [],
     isLoading,
     isError: error,
   };

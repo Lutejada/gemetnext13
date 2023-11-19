@@ -3,11 +3,34 @@ import {
   DatosComplementariosEquipo,
   DatosMetrologicosEquipos,
   Equipo,
+  ProgramacionEquipos,
 } from "../dominio";
 import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
 import { EquipoRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
+import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
+
+const selectEquipoBasico = {
+  id: true,
+  codigo: true,
+  descripcion: true,
+  marca: {
+    select: {
+      descripcion: true,
+    },
+  },
+  ubicacion: {
+    select: {
+      responsable: {
+        select: {
+          nombre: true,
+        },
+      },
+    },
+  },
+};
+
 export const equipoRepositorio: EquipoRepositorio = {
   crearEquipo: function (dto: CrearEquipoDto): Promise<Equipo> {
     return prisma.equipo.create({
@@ -36,7 +59,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  obtenerEquiporPorCodigo: async function (
+  obtenerEquipoPorCodigo: async function (
     codigo: string
   ): Promise<Equipo | null> {
     const equipo = await prisma.equipo.findUnique({
@@ -45,7 +68,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
       include: {
         datos_metrologicos: true,
-        datos_complementarios:true
+        datos_complementarios: true,
       },
     });
     return equipo;
@@ -71,7 +94,81 @@ export const equipoRepositorio: EquipoRepositorio = {
         observaciones: dto.observaciones,
         equipo_id: equipoId,
         utiliza_software: dto.utilizaSoftware,
-        version_software: dto.versionSoftware,        
+        version_software: dto.versionSoftware,
+      },
+    });
+  },
+  crearProgramacionEquipo: function (
+    dto: CrearProgramacionEquipoDto
+  ): Promise<ProgramacionEquipos> {
+    return prisma.programacion_equipos.create({
+      data: {
+        equipo_id: dto.equipoId,
+        frecuencia_id: dto.frecuenciaId,
+        fecha_programacion: dto.fechaProgramacion,
+        actividad_id: dto.actividadId,
+      },
+    });
+  },
+  obtenerEquipos: async function (limit = 5) {
+    const equipos = await prisma.equipo.findMany({
+      take: limit,
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+      select: selectEquipoBasico,
+    });
+    return equipos.map((equipo) => ({
+      id: equipo.id,
+      descripcion: equipo.descripcion,
+      marca: equipo.marca.descripcion,
+      responsable: equipo.ubicacion.responsable.nombre,
+      codigo: equipo.codigo,
+    }));
+  },
+  obtenerEquiposPorCodigo: async function (codigo: string) {
+    const equipos = await prisma.equipo.findMany({
+      where: {
+        codigo: {
+          contains: codigo,
+        },
+      },
+      select: selectEquipoBasico,
+    });
+    return equipos.map((equipo) => ({
+      id: equipo.id,
+      descripcion: equipo.descripcion,
+      marca: equipo.marca.descripcion,
+      responsable: equipo.ubicacion.responsable.nombre,
+      codigo: equipo.codigo,
+    }));
+  },
+  obtenerEquiposPorMarca: function (marca: string) {
+    return prisma.equipo.findMany({
+      where: {
+        marca: {
+          descripcion: {
+            contains: marca,
+          },
+        },
+      },
+      select: {
+        id: true,
+        codigo: true,
+        marca: {
+          select: {
+            descripcion: true,
+          },
+        },
+        ubicacion: {
+          select: {
+            responsable: {
+              select: {
+                nombre: true,
+              },
+            },
+          },
+        },
       },
     });
   },

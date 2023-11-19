@@ -57,7 +57,7 @@ export default function Responsable () {
     })
   }
 
-  console.log(isLoading)
+
 
   return (
     <>

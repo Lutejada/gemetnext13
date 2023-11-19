@@ -48,7 +48,7 @@ export default function Magnitud () {
 
     form.reset()
     toast({
-      title: 'Responsable se guardo correctamente',
+      title: 'La Magnitud se guardo correctamente',
       variant: 'success'
     })
   }

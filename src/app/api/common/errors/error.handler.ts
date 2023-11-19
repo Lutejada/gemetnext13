@@ -9,7 +9,7 @@ export const errorHandler = (error: any) => {
   if (error instanceof ZodError) {
     error as ZodError;
     const errorMesage = error.errors.map((error) => `${error.path[0]} - ${error.message}`).toString();
-    console.log(errorMesage);
+
     return NextResponse.json({ error: errorMesage , typeError:'validation' }, { status: 400 });
   }
 

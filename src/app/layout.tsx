@@ -1,23 +1,24 @@
-import React from 'react'
-import './globals.css'
-import { Toast ,  } from '@/components/ui/toast'
-import { Toaster } from '@/components/ui/toaster'
+import React from "react";
+import "./globals.css";
+import { Toast } from "@/components/ui/toast";
+import { Toaster } from "@/components/ui/toaster";
 export const metadata = {
-  title: 'Gemet',
-  description: 'Gestion Metrologica'
-}
+  title: "Gemet",
+  description: "Gestion Metrologica",
+};
 
-export default function RootLayout ({
-  children
+export default function RootLayout({
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <html lang='en'>
-      <body className='h-screen'>
+    <html lang="en">
+      <body className="h-screen">
         {children}
-        <Toaster/>
+
+        <Toaster />
       </body>
     </html>
-  )
+  );
 }

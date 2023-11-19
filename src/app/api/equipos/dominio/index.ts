@@ -1,3 +1,5 @@
+export { equipo } from '@prisma/client'
+
 export interface Equipo {
   id: string;
   codigo: string;
@@ -10,7 +12,7 @@ export interface Equipo {
   fecha_actualizacion: Date | string;
   fecha_inactivacion?: Date | string | null;
   datos_metrologicos?: DatosMetrologicosEquipos | null;
-  datos_complementarios: DatosComplementariosEquipo | null;
+  datos_complementarios?: DatosComplementariosEquipo | null;
 }
 
 export interface DatosMetrologicosEquipos {
@@ -44,4 +46,15 @@ export interface DatosComplementariosEquipo {
 export enum cumple {
   SI = "SI",
   NO = "NO",
+}
+
+export interface ProgramacionEquipos {
+  id: string;
+  actividad_id: string;
+  frecuencia_id: string;
+  equipo_id: string;
+  fecha_programacion: Date;
+  fecha_creacion: Date;
+  fecha_actualizacion: Date;
+  fecha_inactivacion?: Date | null;
 }

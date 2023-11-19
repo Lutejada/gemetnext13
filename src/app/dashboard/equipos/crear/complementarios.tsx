@@ -103,7 +103,7 @@ function CrearDatosmetrologicos() {
                   <FormLabel>Descripcion Especificaciones</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese division de escala"
+                      placeholder="Ingrese Especificaciones"
                       {...field}
                     />
                   </FormControl>
@@ -176,7 +176,7 @@ function CrearDatosmetrologicos() {
                 <FormItem>
                   <FormLabel>Descripcion software</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese Rango Maximo" {...field} />
+                    <Input placeholder="Ingrese la Descripcion del Software" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -189,7 +189,7 @@ function CrearDatosmetrologicos() {
                 <FormItem>
                   <FormLabel>fireware</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese Rango Minimo" {...field} />
+                    <Input placeholder="Ingrese el Fireware" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -202,7 +202,7 @@ function CrearDatosmetrologicos() {
                 <FormItem>
                   <FormLabel>Observaciones</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese Resolucion" {...field} />
+                    <Input placeholder="Ingrese Las Observaciones" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -215,7 +215,7 @@ function CrearDatosmetrologicos() {
                 "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
               }
             />
-            Crear Equipo
+            Crear Datos Complementarios Equipo
           </Button>
 
           {error && (
