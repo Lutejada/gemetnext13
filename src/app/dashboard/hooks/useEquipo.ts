@@ -59,9 +59,10 @@ export const obtenerEquiposPorTermino = () => {
 };
 
 export const obtenerEquipoPorCodigo = (codigo: string) => {
+  console.log(codigo);
   const fetcher = (url: string) =>
     httpBase.get<Equipo>(url).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation(
+  const { data, error, isMutating, trigger } = useSWRMutation<Equipo>(
     `/equipos/${codigo}`,
     fetcher
   );

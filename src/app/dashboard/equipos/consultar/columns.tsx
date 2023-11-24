@@ -49,7 +49,9 @@ export const columns: ColumnDef<Equipo>[] = [
             >
               <DropdownMenuItem>Programar</DropdownMenuItem>
             </Link>
-            <DropdownMenuItem>Ver Equipo</DropdownMenuItem>
+            <Link href={`/dashboard/equipos/consultar/${row.getValue("codigo")}`}>
+              <DropdownMenuItem>Ver Equipo</DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       );

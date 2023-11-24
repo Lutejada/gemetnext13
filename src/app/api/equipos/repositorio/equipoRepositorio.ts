@@ -70,6 +70,8 @@ export const equipoRepositorio: EquipoRepositorio = {
       include: {
         datos_metrologicos: true,
         datos_complementarios: true,
+        marca: true,
+        ubicacion: true,
       },
     });
     return equipo;
