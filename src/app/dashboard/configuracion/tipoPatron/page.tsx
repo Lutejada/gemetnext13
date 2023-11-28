@@ -45,7 +45,7 @@ export default function TipoPatron () {
 
     form.reset()
     toast({
-      title: 'Responsable se guardo correctamente',
+      title: 'Tipo de Patron se guardo correctamente',
       variant: 'success'
     })
   }
@@ -54,7 +54,7 @@ export default function TipoPatron () {
 
   return (
     <>
-      <h2 className='text-center mb-4 font-semibold'>Crear Responsables</h2>
+      <h2 className='text-center mb-4 font-semibold'>Crear Tipo de Patron</h2>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <div className='grid grid-cols-2 grid-rows-1 gap-2'>
