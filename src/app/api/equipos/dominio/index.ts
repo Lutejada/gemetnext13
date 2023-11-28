@@ -1,4 +1,7 @@
-export { equipo } from '@prisma/client'
+import { Marca } from "../../marca/dominio";
+import { Ubicacion } from "../../ubicaciones/types";
+
+export { type equipo } from "@prisma/client";
 
 export interface Equipo {
   id: string;
@@ -7,6 +10,8 @@ export interface Equipo {
   modelo: string;
   serie: string;
   marca_id: string;
+  marca?: Marca;
+  ubicacion?: Ubicacion;
   ubicacion_id: string;
   fecha_creacion: Date | string;
   fecha_actualizacion: Date | string;

@@ -6,9 +6,6 @@ export interface CrearProgramacionEquipoDto {
   frecuenciaId: string;
   equipoId: string;
   fechaProgramacion: Date;
-  fechaCreacion: Date;
-  fechaActualizacion: Date;
-  fechaInactivacion?: Date | null;
 }
 
 export const programacionEquipo = object({

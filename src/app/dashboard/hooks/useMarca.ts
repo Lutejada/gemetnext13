@@ -1,17 +1,15 @@
-import  { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
 
 import { Marca } from "../../api/marca/dominio";
 import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
+import { Ubicacion } from "../../api/ubicaciones/types";
 
 export const obtenerMarcas = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
-  const { data, error, isLoading } = useSWR<Marca[]>(
-    "/marca",
-    fetcher
-  );
+  const { data, error, isLoading } = useSWR<Marca[]>("/marca", fetcher);
   return {
     marcas: data ?? [],
     isLoading,
@@ -19,14 +17,8 @@ export const obtenerMarcas = () => {
   };
 };
 
-
-export const crearMarca = () => {
-
-  const fetcher = (
-    url: string,
-    { arg }: { arg: CrearMarcaDto }
-  ) => httpBase.post(url, arg).then((res) => res.data);
-
+export const obtenerMarcasAsync = () => {
+  const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/marca",
@@ -36,7 +28,24 @@ export const crearMarca = () => {
   return {
     isLoading: isMutating,
     marca: data,
-    crear:trigger,
+    obtenerMarcas: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const crearMarca = () => {
+  const fetcher = (url: string, { arg }: { arg: CrearMarcaDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/marca",
+    fetcher
+  );
+
+  return {
+    isLoading: isMutating,
+    marca: data,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };

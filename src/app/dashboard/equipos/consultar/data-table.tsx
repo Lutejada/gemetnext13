@@ -7,7 +7,6 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-import { Button } from "@/components/ui/button";
 
 import {
   Table,
@@ -17,16 +16,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import SearchForm from "./serch-form";
 
 interface DataTableProps<TData, TValue> {
@@ -98,7 +87,6 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-
     </div>
   );
 }

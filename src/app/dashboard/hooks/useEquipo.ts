@@ -8,6 +8,7 @@ import { CrearDatosMetrologicosDto } from "../../api/equipos/dtos/crearDatosMetr
 import { CrearDatosComplementariosDto } from "../../api/equipos/dtos/crearDatosComplementarios.dto";
 import { useEquiposStore } from "@/src/app/stores/equiposStore";
 import { useEffect } from "react";
+import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearProgramation.dto";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
@@ -57,10 +58,11 @@ export const obtenerEquiposPorTermino = () => {
   };
 };
 
-export const obtenerEquiposPorCodigo = (codigo: string) => {
+export const obtenerEquipoPorCodigo = (codigo: string) => {
+  console.log(codigo);
   const fetcher = (url: string) =>
     httpBase.get<Equipo>(url).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation(
+  const { data, error, isMutating, trigger } = useSWRMutation<Equipo>(
     `/equipos/${codigo}`,
     fetcher
   );
@@ -125,3 +127,22 @@ export const crearDatosComplementarios = () => {
     errorMsg: error?.response?.data?.error,
   };
 };
+
+export const crearProgramacionEquipo=()=>{
+  const fetcher = (
+    url: string,
+    { arg }: { arg: CrearProgramacionEquipoDto }
+  ) => httpBase.post(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/equipos/programar",
+    fetcher
+  );
+
+  return {
+    isLoading: isMutating,
+    crear: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+}

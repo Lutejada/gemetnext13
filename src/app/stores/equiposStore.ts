@@ -6,7 +6,7 @@ interface State {
   addEquipos: (equipos: Equipo[]) => void;
 }
 
-export const useEquiposStore = create<State>((set) => ({
+export const useEquiposStore = create<State>()((set) => ({
   equipos: [],
   addEquipos: (equipos: Equipo[]) => {
     set({ equipos });

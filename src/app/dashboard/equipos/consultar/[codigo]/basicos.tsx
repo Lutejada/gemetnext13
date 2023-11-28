@@ -20,56 +20,77 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { obtenerUbicaciones } from "../../hooks/useUbicaciones";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearEquipo } from "../../hooks/useEquipo";
-
+import { Equipo } from "@/src/app/api/equipos/dominio";
+import { useEffect, useState } from "react";
+import { Marca } from "@/src/app/api/marca/dominio";
+import { obtenerMarcas, obtenerMarcasAsync } from "../../../hooks/useMarca";
+import {
+  obtenerUbicaciones,
+  obtenerUbicacionesAsync,
+} from "../../../hooks/useUbicaciones";
+import { Ubicacion } from "@/src/app/api/ubicaciones/types";
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),
   descripcion: z.string().min(2, { message: "descripcion requerido" }),
   modelo: z.string().min(2, { message: "modelo requerido" }),
   serie: z.string().min(2, { message: "serie requerido" }),
-  marcaId: z.string().min(2, { message: "marcaId requerido" }),
+  marcaId: z.string().min(2, { message: "marca requerido" }),
   ubicacionId: z.string().min(2, { message: "ubicacionId requerido" }),
 });
 
-function CrearEquiposBasicos() {
-  const { marcas } = obtenerMarcas();
-  const { ubicaciones } = obtenerUbicaciones();
-  const { crear, error, errorMsg, isLoading } = crearEquipo();
+interface Props {
+  equipo: Equipo;
+}
 
+function EditarEquiposBasicos({ equipo }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo:'',
-      descripcion:'',
-      marcaId:'',
-      modelo:'',
-      serie:'',
-      ubicacionId:'',
+      codigo: equipo.codigo,
+      descripcion: equipo.descripcion,
+      modelo: equipo.modelo,
+      serie: equipo.serie,
+      marcaId: equipo.marca_id,
+      ubicacionId: equipo.ubicacion_id,
     },
   });
 
+  const [isDisabled, setIsDisabled] = useState(true);
+  // const [marcas, setMarcas] = useState<Marca[]>([]);
+  // const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
+  const { marcas } = obtenerMarcas();
+  const { ubicaciones } = obtenerUbicaciones();
+
+  // useEffect(() => {
+  //   if (!isDisabled) {
+  //     obtenerMarcas().then((res) => setMarcas(res));
+  //     obtenerUbicaciones().then((res) => setUbicaciones(res));
+  //     // form.setValue("marcaId", equipo.marca_id);
+  //     // form.setValue("ubicacionId", equipo.ubicacion_id);
+  //     return;
+  //   }
+  // }, [isDisabled]);
 
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    await crear({
-      codigo: values.codigo,
-      descripcion: values.descripcion,
-      modelo: values.modelo,
-      serie: values.serie,
-      marcaId: values.marcaId,
-      ubicacionId: values.ubicacionId,
-    });
-    form.reset();
-    toast({
-      title: "Equipo se guardo correctamente",
-      variant: "success",
-    });
+    console.log(values);
+    // await crear({
+    //   codigo: values.codigo,
+    //   descripcion: values.descripcion,
+    //   modelo: values.modelo,
+    //   serie: values.serie,
+    //   marcaId: values.marcaId,
+    //   ubicacionId: values.ubicacionId,
+    // });
+    // form.reset();
+    // toast({
+    //   title: "Equipo se guardo correctamente",
+    //   variant: "success",
+    // });
   }
   return (
     <>
@@ -83,10 +104,7 @@ function CrearEquiposBasicos() {
                 <FormItem>
                   <FormLabel>Codigo</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Ingrese nombre de la Codigo"
-                      {...field}
-                    />
+                    <Input disabled {...field} value={equipo?.codigo} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -100,8 +118,9 @@ function CrearEquiposBasicos() {
                   <FormLabel>Descripcion</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la Descripcion"
                       {...field}
+                      disabled={isDisabled}
+                      value={equipo?.descripcion}
                     />
                   </FormControl>
                   <FormMessage />
@@ -115,7 +134,11 @@ function CrearEquiposBasicos() {
                 <FormItem>
                   <FormLabel>Modelo</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese nombre del Modelo" {...field} />
+                    <Input
+                      {...field}
+                      disabled={isDisabled}
+                      value={equipo?.modelo}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -129,8 +152,9 @@ function CrearEquiposBasicos() {
                   <FormLabel>Serie</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la series"
                       {...field}
+                      disabled={isDisabled}
+                      value={equipo?.serie}
                     />
                   </FormControl>
                   <FormMessage />
@@ -146,11 +170,13 @@ function CrearEquiposBasicos() {
                   <FormLabel>Marca</FormLabel>
                   <Select
                     onValueChange={field.onChange}
+                    disabled={isDisabled}
                     value={field.value}
+                    defaultValue={equipo.marca_id}
                   >
                     <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Seleccione un Descripcion" />
+                      <SelectTrigger >
+                        <SelectValue placeholder={'hola'} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -167,6 +193,7 @@ function CrearEquiposBasicos() {
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
               name="ubicacionId"
@@ -175,11 +202,13 @@ function CrearEquiposBasicos() {
                   <FormLabel>Ubicacion</FormLabel>
                   <Select
                     onValueChange={field.onChange}
+                    disabled={isDisabled}
                     value={field.value}
+                    defaultValue={equipo.ubicacion_id}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder="Seleccione una Ubicacion" />
+                        <SelectValue placeholder={equipo?.ubicacion?.nombre} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -197,26 +226,41 @@ function CrearEquiposBasicos() {
               )}
             />
           </div>
-          <Button type="submit" disabled={isLoading} className="mx-auto">
-            <Loader2
-              className={
-                "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
-              }
-            />
-            Crear Equipo
+
+          <Button
+            type="button"
+            style={{ display: !isDisabled ? "none" : "block" }}
+            onClick={() => setIsDisabled(false)}
+            className="mx-auto"
+          >
+            Editar Equipo
           </Button>
 
-          {error && (
+          <Button
+            type="submit"
+            disabled={false}
+            className="mx-auto"
+            style={{ display: isDisabled ? "none" : "block" }}
+          >
+            <Loader2
+              className={
+                "mr-2 h-4 w-4 animate-spin " + (!false ? "hidden" : "")
+              }
+            />
+            Guardar Cambios
+          </Button>
+
+          {/* {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{errorMsg}</AlertDescription>
             </Alert>
-          )}
+          )} */}
         </form>
       </Form>
     </>
   );
 }
 
-export default CrearEquiposBasicos;
+export default EditarEquiposBasicos;
