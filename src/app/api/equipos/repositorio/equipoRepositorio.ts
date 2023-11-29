@@ -10,7 +10,6 @@ import { EquipoRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
-import { ProgramarEquipoDto } from "../dtos/programarEquipoDto";
 
 const selectEquipoBasico = {
   id: true,
@@ -145,6 +144,20 @@ export const equipoRepositorio: EquipoRepositorio = {
       responsable: equipo.ubicacion.responsable.nombre,
       codigo: equipo.codigo,
     }));
+  },
+  editarEquipo: async (codigo: string, equipo: Partial<Equipo>) => {
+    await prisma.equipo.update({
+      where: {
+        codigo,
+      },
+      data: {
+        marca_id: equipo.marca_id,
+        descripcion: equipo.descripcion,
+        ubicacion_id: equipo.ubicacion_id,
+        serie: equipo.serie,
+        modelo: equipo.modelo,
+      },
+    });
   },
   obtenerEquiposPorMarca: function (marca: string) {
     return prisma.equipo.findMany({
