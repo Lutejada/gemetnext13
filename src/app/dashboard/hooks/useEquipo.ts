@@ -9,6 +9,7 @@ import { CrearDatosComplementariosDto } from "../../api/equipos/dtos/crearDatosC
 import { useEquiposStore } from "@/src/app/stores/equiposStore";
 import { useEffect } from "react";
 import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearProgramation.dto";
+import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
@@ -86,6 +87,22 @@ export const crearEquipo = () => {
     isLoading: isMutating,
     equipo: data,
     crear: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const editarEquipo = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarEquipoDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/equipos",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
+    equipo: data,
+    editar: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };

@@ -26,12 +26,15 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import { Equipo } from "@/src/app/api/equipos/dominio";
 import { useEffect, useState } from "react";
 import { Marca } from "@/src/app/api/marca/dominio";
-import { obtenerMarcas, obtenerMarcasAsync } from "../../../hooks/useMarca";
+import { obtenerMarcas } from "../../../hooks/useMarca";
+import { editarEquipo } from "../../../hooks/useEquipo";
+
 import {
   obtenerUbicaciones,
   obtenerUbicacionesAsync,
 } from "../../../hooks/useUbicaciones";
 import { Ubicacion } from "@/src/app/api/ubicaciones/types";
+import { useRouter } from "next/navigation";
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),
   descripcion: z.string().min(2, { message: "descripcion requerido" }),
@@ -46,6 +49,7 @@ interface Props {
 }
 
 function EditarEquiposBasicos({ equipo }: Props) {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -59,38 +63,27 @@ function EditarEquiposBasicos({ equipo }: Props) {
   });
 
   const [isDisabled, setIsDisabled] = useState(true);
-  // const [marcas, setMarcas] = useState<Marca[]>([]);
-  // const [ubicaciones, setUbicaciones] = useState<Ubicacion[]>([]);
   const { marcas } = obtenerMarcas();
   const { ubicaciones } = obtenerUbicaciones();
-
-  // useEffect(() => {
-  //   if (!isDisabled) {
-  //     obtenerMarcas().then((res) => setMarcas(res));
-  //     obtenerUbicaciones().then((res) => setUbicaciones(res));
-  //     // form.setValue("marcaId", equipo.marca_id);
-  //     // form.setValue("ubicacionId", equipo.ubicacion_id);
-  //     return;
-  //   }
-  // }, [isDisabled]);
+  const { editar, errorMsg, error } = editarEquipo();
 
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // await crear({
-    //   codigo: values.codigo,
-    //   descripcion: values.descripcion,
-    //   modelo: values.modelo,
-    //   serie: values.serie,
-    //   marcaId: values.marcaId,
-    //   ubicacionId: values.ubicacionId,
-    // });
-    // form.reset();
-    // toast({
-    //   title: "Equipo se guardo correctamente",
-    //   variant: "success",
-    // });
+    await editar({
+      codigo: values.codigo,
+      descripcion: values.descripcion,
+      modelo: values.modelo,
+      serie: values.serie,
+      marcaId: values.marcaId,
+      ubicacionId: values.ubicacionId,
+    });
+    form.reset();
+    toast({
+      title: "Equipo se edito correctament",
+      variant: "success",
+    });
+    router.push("/dashboard/equipos/consultar");
   }
   return (
     <>
@@ -117,11 +110,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Descripcion</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isDisabled}
-                      value={equipo?.descripcion}
-                    />
+                    <Input disabled={isDisabled} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -134,11 +123,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Modelo</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isDisabled}
-                      value={equipo?.modelo}
-                    />
+                    <Input disabled={isDisabled} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,11 +136,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Serie</FormLabel>
                   <FormControl>
-                    <Input
-                      {...field}
-                      disabled={isDisabled}
-                      value={equipo?.serie}
-                    />
+                    <Input {...field} disabled={isDisabled} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -175,8 +156,8 @@ function EditarEquiposBasicos({ equipo }: Props) {
                     defaultValue={equipo.marca_id}
                   >
                     <FormControl>
-                      <SelectTrigger >
-                        <SelectValue placeholder={'hola'} />
+                      <SelectTrigger>
+                        <SelectValue placeholder={"hola"} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -250,13 +231,13 @@ function EditarEquiposBasicos({ equipo }: Props) {
             Guardar Cambios
           </Button>
 
-          {/* {error && (
+          {error && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
               <AlertTitle>Error</AlertTitle>
               <AlertDescription>{errorMsg}</AlertDescription>
             </Alert>
-          )} */}
+          )}
         </form>
       </Form>
     </>
