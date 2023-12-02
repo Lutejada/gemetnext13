@@ -11,6 +11,7 @@ import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 
 const selectEquipoBasico = {
   id: true,
@@ -206,4 +207,25 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
+  editarDatosComplementarios: async function (
+    equipoId: string,
+    dto: EditarDatosComplementariosDto
+  ) {
+    await prisma.datos_complementarios_equipo.update({
+      where: {
+        equipo_id: equipoId,
+      },
+      data: {
+        cumple_especificacion_instalaciones:dto.cumpleEspecificacionInstalaciones,
+        descripcion_especificaciones:dto.descripcionEspecificaciones,
+        descripcion_software:dto.descripcionSoftware,
+        fireware:dto.fireware,
+        utiliza_software:dto.utilizaSoftware,
+        observaciones:dto.observaciones,
+        version_software:dto.versionSoftware,
+      },
+    });
+  },
+
+
 };

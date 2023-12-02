@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearProgramation.dto";
 import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/equipos/dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "@/app/api/equipos/dtos/editarDatosComplementarios.dto";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
@@ -114,6 +115,21 @@ export const editarDatosMetrologicos = () => {
 
   const { error, trigger, isMutating } = useSWRMutation(
     "/equipos/metrologicos",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
+    editar: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const editarDatosComplementarios = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarDatosComplementariosDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { error, trigger, isMutating } = useSWRMutation(
+    "/equipos/complementarios",
     fetcher
   );
   return {
