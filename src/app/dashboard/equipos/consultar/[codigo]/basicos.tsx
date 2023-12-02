@@ -24,16 +24,14 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { Equipo } from "@/src/app/api/equipos/dominio";
-import { useEffect, useState } from "react";
-import { Marca } from "@/src/app/api/marca/dominio";
+import {  useState } from "react";
 import { obtenerMarcas } from "../../../hooks/useMarca";
 import { editarEquipo } from "../../../hooks/useEquipo";
 
 import {
   obtenerUbicaciones,
-  obtenerUbicacionesAsync,
 } from "../../../hooks/useUbicaciones";
-import { Ubicacion } from "@/src/app/api/ubicaciones/types";
+
 import { useRouter } from "next/navigation";
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),

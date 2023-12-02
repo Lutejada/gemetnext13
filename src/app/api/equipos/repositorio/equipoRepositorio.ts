@@ -10,6 +10,7 @@ import { EquipoRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
+import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 
 const selectEquipoBasico = {
   id: true,
@@ -185,6 +186,23 @@ export const equipoRepositorio: EquipoRepositorio = {
             },
           },
         },
+      },
+    });
+  },
+
+  editarDatosMetrologicos: async function (
+    equipoId: string,
+    dto: EditarDatosMetrologicosDto
+  ) {
+    await prisma.datos_metrologicos_equipos.update({
+      where: {
+        equipo_id: equipoId,
+      },
+      data: {
+        division_escala: dto.divisionEscala,
+        rango_maximo: dto.rangoMaximo,
+        rango_minimo: dto.rangoMinimo,
+        resolucion: dto.resolucion,
       },
     });
   },
