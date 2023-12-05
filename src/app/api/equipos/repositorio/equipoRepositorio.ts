@@ -10,7 +10,8 @@ import { EquipoRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
-import { ProgramarEquipoDto } from "../dtos/programarEquipoDto";
+import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 
 const selectEquipoBasico = {
   id: true,
@@ -146,6 +147,20 @@ export const equipoRepositorio: EquipoRepositorio = {
       codigo: equipo.codigo,
     }));
   },
+  editarEquipo: async (codigo: string, equipo: Partial<Equipo>) => {
+    await prisma.equipo.update({
+      where: {
+        codigo,
+      },
+      data: {
+        marca_id: equipo.marca_id,
+        descripcion: equipo.descripcion,
+        ubicacion_id: equipo.ubicacion_id,
+        serie: equipo.serie,
+        modelo: equipo.modelo,
+      },
+    });
+  },
   obtenerEquiposPorMarca: function (marca: string) {
     return prisma.equipo.findMany({
       where: {
@@ -175,4 +190,42 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
+
+  editarDatosMetrologicos: async function (
+    equipoId: string,
+    dto: EditarDatosMetrologicosDto
+  ) {
+    await prisma.datos_metrologicos_equipos.update({
+      where: {
+        equipo_id: equipoId,
+      },
+      data: {
+        division_escala: dto.divisionEscala,
+        rango_maximo: dto.rangoMaximo,
+        rango_minimo: dto.rangoMinimo,
+        resolucion: dto.resolucion,
+      },
+    });
+  },
+  editarDatosComplementarios: async function (
+    equipoId: string,
+    dto: EditarDatosComplementariosDto
+  ) {
+    await prisma.datos_complementarios_equipo.update({
+      where: {
+        equipo_id: equipoId,
+      },
+      data: {
+        cumple_especificacion_instalaciones:dto.cumpleEspecificacionInstalaciones,
+        descripcion_especificaciones:dto.descripcionEspecificaciones,
+        descripcion_software:dto.descripcionSoftware,
+        fireware:dto.fireware,
+        utiliza_software:dto.utilizaSoftware,
+        observaciones:dto.observaciones,
+        version_software:dto.versionSoftware,
+      },
+    });
+  },
+
+
 };

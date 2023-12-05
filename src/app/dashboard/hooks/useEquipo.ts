@@ -9,6 +9,9 @@ import { CrearDatosComplementariosDto } from "../../api/equipos/dtos/crearDatosC
 import { useEquiposStore } from "@/src/app/stores/equiposStore";
 import { useEffect } from "react";
 import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearProgramation.dto";
+import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
+import { EditarDatosMetrologicosDto } from "@/app/api/equipos/dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "@/app/api/equipos/dtos/editarDatosComplementarios.dto";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
@@ -86,6 +89,52 @@ export const crearEquipo = () => {
     isLoading: isMutating,
     equipo: data,
     crear: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const editarEquipo = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarEquipoDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/equipos",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
+    equipo: data,
+    editar: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const editarDatosMetrologicos = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarDatosMetrologicosDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { error, trigger, isMutating } = useSWRMutation(
+    "/equipos/metrologicos",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
+    editar: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const editarDatosComplementarios = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarDatosComplementariosDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { error, trigger, isMutating } = useSWRMutation(
+    "/equipos/complementarios",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
+    editar: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };

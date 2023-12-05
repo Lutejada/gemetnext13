@@ -6,6 +6,8 @@ import { useParams } from "next/navigation";
 import EditarEquiposBasicos from "./basicos";
 import { useEffect } from "react";
 import Loading from "../../../loading";
+import EditarDatosmetrologicos from "./metrologicos";
+import EditarDatosComplementarios from "./complementarios";
 export default function Equipo() {
   const params = useParams<{ codigo: string }>();
   const { obtener, equipo, isLoading } = obtenerEquipoPorCodigo(params.codigo);
@@ -21,16 +23,21 @@ export default function Equipo() {
           <TabsTrigger value="metrologicos">Metrologicos</TabsTrigger>
           <TabsTrigger value="complementarios">Complementarios</TabsTrigger>
         </TabsList>
-        <TabsContent value="basicos">
-          {equipo === undefined ? (
-            <p>Loading</p>
-          ) : (
-            <EditarEquiposBasicos equipo={equipo} />
-          )}
-        </TabsContent>
-
-        <TabsContent value="metrologicos"></TabsContent>
-        <TabsContent value="complementarios"></TabsContent>
+        {equipo === undefined ? (
+          <p>Loading</p>
+        ) : (
+          <>
+            <TabsContent value="basicos">
+              <EditarEquiposBasicos equipo={equipo} />
+            </TabsContent>
+            <TabsContent value="metrologicos">
+              <EditarDatosmetrologicos equipo={equipo} />
+            </TabsContent>
+            <TabsContent value="complementarios">
+              <EditarDatosComplementarios equipo={equipo} />
+            </TabsContent>
+          </>
+        )}
       </Tabs>
     </>
   );
