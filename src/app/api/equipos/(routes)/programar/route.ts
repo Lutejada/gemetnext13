@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
 import { crearProgramacionEquipos } from "../../servicios/crearProgramacionEquipo";
+import { listarEquiposProgramados } from "../../servicios/listarEquiposProgramados";
 
 export async function POST(request: Request) {
   try {
@@ -14,6 +15,8 @@ export async function POST(request: Request) {
 
 export async function GET(_request: Request) {
   try {
+    const programacion = await listarEquiposProgramados();
+    return NextResponse.json(programacion);
   } catch (error: any) {
     return errorHandler(error);
   }

@@ -58,6 +58,7 @@ export interface ProgramacionEquipos {
   actividad_id: string;
   frecuencia_id: string;
   equipo_id: string;
+  equipo?: Equipo;
   fecha_programacion: Date;
   fecha_creacion: Date;
   fecha_actualizacion: Date;

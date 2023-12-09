@@ -20,8 +20,6 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { useEquipos } from "../../hooks/useEquipo";
-import { useEquiposStore } from "@/src/app/stores/equiposStore";
 
 const formSchema = z.object({
   termino: z.string().min(3, { message: "requerido" }),
@@ -30,9 +28,11 @@ const formSchema = z.object({
     .min(3, { message: "requerido" }),
 });
 
-export default function SearchForm() {
-  const { obtenerEquipos } = useEquipos();
-  const store = useEquiposStore();
+interface Props {
+  buscarPorTermino(termino: string, valor: any):Promise<void>;
+}
+
+export default function SearchForm({buscarPorTermino}: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,9 +42,8 @@ export default function SearchForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    values.termino;
     form.reset();
-    await obtenerEquipos(values.termino, values.valor);
+    await buscarPorTermino(values.termino, values.valor);
   }
 
   return (

@@ -60,6 +60,24 @@ export const obtenerEquiposPorTermino = () => {
     obtenerEquipos: trigger,
   };
 };
+export const obtenerProgramacionEquipos= () => {
+  interface EquipoTermino {
+    termino?: string;
+    valor?: string;
+  }
+  const fetcher = (url: string, { arg }: { arg?: EquipoTermino }) =>
+    httpBase.get(url, { params: arg }).then((res) => res.data);
+  const { data, error, isMutating, trigger } = useSWRMutation<ListaProgramacionEquiposDTO[]>(
+    "/equipos/programar",
+    fetcher
+  );
+  return {
+    equipos: data ?? [],
+    isLoading: isMutating,
+    isError: error,
+    obtenerEquipos: trigger,
+  };
+};
 
 export const obtenerEquipoPorCodigo = (codigo: string) => {
   console.log(codigo);

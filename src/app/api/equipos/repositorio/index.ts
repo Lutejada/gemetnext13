@@ -40,4 +40,5 @@ export interface EquipoRepositorio {
     equipoId: string,
     dto: EditarDatosComplementariosDto
   ) => Promise<void>;
+  listarEquiposProgramados: (limit?: number) => Promise<ListaProgramacionEquiposDTO[]>;
 }

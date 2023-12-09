@@ -12,6 +12,7 @@ import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
+import { format } from "date-fns";
 
 const selectEquipoBasico = {
   id: true,
@@ -216,16 +217,51 @@ export const equipoRepositorio: EquipoRepositorio = {
         equipo_id: equipoId,
       },
       data: {
-        cumple_especificacion_instalaciones:dto.cumpleEspecificacionInstalaciones,
-        descripcion_especificaciones:dto.descripcionEspecificaciones,
-        descripcion_software:dto.descripcionSoftware,
-        fireware:dto.fireware,
-        utiliza_software:dto.utilizaSoftware,
-        observaciones:dto.observaciones,
-        version_software:dto.versionSoftware,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
+        descripcion_especificaciones: dto.descripcionEspecificaciones,
+        descripcion_software: dto.descripcionSoftware,
+        fireware: dto.fireware,
+        utiliza_software: dto.utilizaSoftware,
+        observaciones: dto.observaciones,
+        version_software: dto.versionSoftware,
       },
     });
   },
 
-
+  listarEquiposProgramados: async (limit = 10) => {
+    const equipoProgramacion = await prisma.programacion_equipos.findMany({
+      take: limit,
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+      include: {
+        equipo: {
+          select: {
+            codigo: true,
+            descripcion: true,
+          },
+        },
+        actividad: {
+          select: {
+            descripcion: true,
+          },
+        },
+        frecuencia: {
+          select: {
+            descripcion: true,
+          },
+        },
+      },
+    });
+    const listadoProgramacion =
+      equipoProgramacion.map<ListaProgramacionEquiposDTO>((element) => ({
+        codigo: element.equipo.codigo,
+        actividad: element.actividad.descripcion,
+        descripcion: element.equipo.descripcion,
+        fechaProgramacion: format(element.fecha_programacion, "dd-MM-yyyy"),
+        frecuencia: element.frecuencia.descripcion,
+      }));
+    return listadoProgramacion;
+  },
 };
