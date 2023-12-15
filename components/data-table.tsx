@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 
 import {
   ColumnDef,
@@ -31,10 +32,12 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    
   });
 
   console.log(table.getRowModel().rows);
   return (
+    <>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -84,6 +87,7 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </div>      
+    </>
   );
 }

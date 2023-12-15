@@ -12,6 +12,7 @@ export default function Programacion() {
   
   return (
     <div className="container mx-auto py-10">
+      <h2 className="text-center mb-4 font-semibold">Programacion de equipos</h2>
       {/* <SearchForm buscarPorTermino={obtenerEquipos} /> */}
       <DataTable columns={columns} data={equipos} />
       {/* {equipos.length === 0 ? (

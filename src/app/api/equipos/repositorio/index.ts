@@ -26,7 +26,7 @@ export interface EquipoRepositorio {
   crearProgramacionEquipo: (
     dto: CrearProgramacionEquipoDto
   ) => Promise<ProgramacionEquipos>;
-  obtenerEquipos: (limit?: number) => Promise<ObtenerEquiposDtoOutput[]>;
+  obtenerEquipos: (page?: number) => Promise<ObtenerEquiposDtoOutput>;
   obtenerEquiposPorCodigo: (
     codigo: string
   ) => Promise<ObtenerEquiposDtoOutput[]>;

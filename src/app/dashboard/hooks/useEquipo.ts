@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
-import useSWR from "swr";
 import { Equipo } from "../../api/equipos/dominio";
 import { CrearEquipoDto } from "../../api/equipos/dtos/crearEquipo.dto";
 import { CrearDatosMetrologicosDto } from "../../api/equipos/dtos/crearDatosMetrologicos.dto";
@@ -12,12 +11,14 @@ import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearPrograma
 import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/equipos/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/equipos/dtos/editarDatosComplementarios.dto";
+import { ObtenerEquiposDto } from "../types";
+import { ObtenerEquiposDtoOutput } from "../../api/equipos/dtos/obtenerEquipos.dto.output";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
   const store = useEquiposStore();
   useEffect(() => {
-    obtenerEquipos({}).then((equipos) => store.addEquipos(equipos));
+    obtenerEquipos({ page: 3 }).then((equipos) => store.addEquipos(equipos));
   }, []);
 
   return {
@@ -26,6 +27,7 @@ export const useEquipos = () => {
       const equipos = await obtenerEquipos({
         termino: termino,
         valor: valor,
+        page: 1,
       });
       store.addEquipos(equipos);
     },
@@ -43,34 +45,30 @@ export const useEquipos = () => {
 // };
 
 export const obtenerEquiposPorTermino = () => {
-  interface EquipoTermino {
-    termino?: string;
-    valor?: string;
-  }
-  const fetcher = (url: string, { arg }: { arg?: EquipoTermino }) =>
+  const fetcher = (url: string, { arg }: { arg?: ObtenerEquiposDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation(
-    "/equipos",
-    fetcher
-  );
+  const { data, error, isMutating, trigger } =
+    useSWRMutation<ObtenerEquiposDtoOutput>("/equipos", fetcher);
+
   return {
-    equipos: data ?? [],
+    equipos: data?.equipos ?? [],
+    existeSiguientePagina: data?.existeSiguientePagina ?? false,
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: trigger,
+    obtenerEquipos: (args?: ObtenerEquiposDto) => trigger(args),
   };
 };
-export const obtenerProgramacionEquipos= () => {
+export const obtenerProgramacionEquipos = () => {
   interface EquipoTermino {
     termino?: string;
     valor?: string;
+    page?: number;
   }
-  const fetcher = (url: string, { arg }: { arg?: EquipoTermino }) =>
+  const fetcher = (url: string, { arg = {} }: { arg?: EquipoTermino }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation<ListaProgramacionEquiposDTO[]>(
-    "/equipos/programar",
-    fetcher
-  );
+  const { data, error, isMutating, trigger } = useSWRMutation<
+    ListaProgramacionEquiposDTO[]
+  >("/equipos/programar", fetcher);
   return {
     equipos: data ?? [],
     isLoading: isMutating,
@@ -143,8 +141,10 @@ export const editarDatosMetrologicos = () => {
   };
 };
 export const editarDatosComplementarios = () => {
-  const fetcher = (url: string, { arg }: { arg: EditarDatosComplementariosDto }) =>
-    httpBase.put(url, arg).then((res) => res.data);
+  const fetcher = (
+    url: string,
+    { arg }: { arg: EditarDatosComplementariosDto }
+  ) => httpBase.put(url, arg).then((res) => res.data);
 
   const { error, trigger, isMutating } = useSWRMutation(
     "/equipos/complementarios",
@@ -195,11 +195,9 @@ export const crearDatosComplementarios = () => {
   };
 };
 
-export const crearProgramacionEquipo=()=>{
-  const fetcher = (
-    url: string,
-    { arg }: { arg: CrearProgramacionEquipoDto }
-  ) => httpBase.post(url, arg).then((res) => res.data);
+export const crearProgramacionEquipo = () => {
+  const fetcher = (url: string, { arg }: { arg: CrearProgramacionEquipoDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/equipos/programar",
@@ -212,4 +210,4 @@ export const crearProgramacionEquipo=()=>{
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
-}
+};

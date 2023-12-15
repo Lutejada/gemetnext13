@@ -20,7 +20,7 @@ export const columns: ColumnDef<Equipo>[] = [
     accessorKey: "codigo",
     header: "codigo",
   },
-  {
+  { 
     accessorKey: "descripcion",
     header: "descripcion",
   },

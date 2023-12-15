@@ -115,21 +115,38 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  obtenerEquipos: async function (limit = 5) {
+  obtenerEquipos: async function (page: number) {
+    console.log(page);
+    const currentPage = Math.max(Number(page), 1);
+    const porPagina = 5;
+    const skip = (currentPage - 1) * porPagina;
     const equipos = await prisma.equipo.findMany({
-      take: limit,
       orderBy: {
         fecha_creacion: "desc",
       },
       select: selectEquipoBasico,
+      skip: skip,
+      take: 5,
     });
-    return equipos.map((equipo) => ({
-      id: equipo.id,
-      descripcion: equipo.descripcion,
-      marca: equipo.marca.descripcion,
-      responsable: equipo.ubicacion.responsable.nombre,
-      codigo: equipo.codigo,
-    }));
+
+    const nextpagecount = await prisma.equipo.count({
+      skip: skip + porPagina,
+      take: 5,
+    });
+
+    console.log({ nextpagecount });
+    const existeSiguientePagina = nextpagecount !== 0 ? true : false;
+
+    return {
+      equipos: equipos.map((equipo) => ({
+        id: equipo.id,
+        descripcion: equipo.descripcion,
+        marca: equipo.marca.descripcion,
+        responsable: equipo.ubicacion.responsable.nombre,
+        codigo: equipo.codigo,
+      })),
+      existeSiguientePagina,
+    };
   },
   obtenerEquiposPorCodigo: async function (codigo: string) {
     const equipos = await prisma.equipo.findMany({
