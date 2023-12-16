@@ -1,22 +1,26 @@
+'use client'
+import { ObtenerDatosDto } from "@/app/api/common/types";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { ObtenerEquiposDto } from "../../types";
 
 interface Props {
-  obtenerEquipos: (args?: ObtenerEquiposDto | undefined) => Promise<any>;
+  obtenervalores: (args?: ObtenerDatosDto) => Promise<any>;
   existeSiguientePagina: boolean;
 }
-const Paginador = ({ obtenerEquipos, existeSiguientePagina }: Props) => {
+const Paginador = ({
+  obtenervalores,
+  existeSiguientePagina,
+}: Props) => {
   const [currentPage, setCurrentPage] = useState(1);
   const siguientePagina = async () => {
     setCurrentPage(currentPage + 1);
-    await obtenerEquipos({ page: currentPage + 1 });
+    await obtenervalores({ page: currentPage + 1 });
   };
 
   const paginaAnterior = async () => {
     const page = Math.max(currentPage - 1, 1);
     setCurrentPage(page);
-    await obtenerEquipos({ page });
+    await obtenervalores({ page });
   };
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
@@ -28,7 +32,9 @@ const Paginador = ({ obtenerEquipos, existeSiguientePagina }: Props) => {
       >
         Anterior
       </Button>
-      <Button className="cursor-auto" variant="secondary">{currentPage}</Button>
+      <Button className="cursor-auto" variant="secondary">
+        {currentPage}
+      </Button>
       <Button
         variant="outline"
         size="sm"

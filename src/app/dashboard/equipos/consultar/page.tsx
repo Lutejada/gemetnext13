@@ -1,11 +1,10 @@
 "use client";
-import { useEquiposStore } from "@/src/app/stores/equiposStore";
-import { obtenerEquiposPorTermino, useEquipos } from "../../hooks/useEquipo";
+import { obtenerEquiposPorTermino } from "../../hooks/useEquipo";
 import { columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import SearchForm from "@/components/serch-form";
 import { useEffect } from "react";
-import Paginador from "./paginador";
+import Paginador from "../../../../../components/paginador";
 export default function DemoPage() {
   const { obtenerEquipos, equipos, existeSiguientePagina } = obtenerEquiposPorTermino();
   useEffect(() => {
@@ -17,7 +16,7 @@ export default function DemoPage() {
       <SearchForm buscarPorTermino={obtenerEquipos} />
       <DataTable columns={columns} data={equipos} />
       <Paginador
-        obtenerEquipos={obtenerEquipos}
+        obtenervalores={obtenerEquipos}
         existeSiguientePagina={existeSiguientePagina}
       />
     </div>

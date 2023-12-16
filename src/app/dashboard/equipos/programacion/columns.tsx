@@ -11,10 +11,11 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
+import { EquipoProgramacionDto } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<ListaProgramacionEquiposDTO>[] = [
+export const columns: ColumnDef<EquipoProgramacionDto>[] = [
   {
     accessorKey: "codigo",
     header: "codigo",
@@ -28,12 +29,12 @@ export const columns: ColumnDef<ListaProgramacionEquiposDTO>[] = [
     header: "Fecha programacion",
   },
   {
-    accessorKey:'actividad',
-    header:'Actividad'
+    accessorKey: "actividad",
+    header: "Actividad",
   },
   {
-    accessorKey:'frecuencia',
-    header:'Frecuencia'
+    accessorKey: "frecuencia",
+    header: "Frecuencia",
   },
   // {
   //   id: "actions",

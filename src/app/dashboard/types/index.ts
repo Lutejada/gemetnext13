@@ -7,8 +7,3 @@ export interface Responsable {
 }
 
 
-export interface ObtenerEquiposDto {
-  termino?: string;
-  valor?: string;
-  page?: number;
-}

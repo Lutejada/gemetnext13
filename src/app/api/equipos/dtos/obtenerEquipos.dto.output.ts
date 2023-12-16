@@ -1,10 +1,12 @@
 export interface ObtenerEquiposDtoOutput {
-  equipos: {
-    codigo: string;
-    id: string;
-    descripcion: string;
-    marca: string;
-    responsable: string;
-  }[];
+  equipos: EquiposResponse[];
   existeSiguientePagina: boolean;
+}
+
+export interface EquiposResponse {
+  codigo: string;
+  id: string;
+  descripcion: string;
+  marca: string;
+  responsable: string;
 }

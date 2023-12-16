@@ -11,8 +11,10 @@ import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearPrograma
 import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/equipos/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/equipos/dtos/editarDatosComplementarios.dto";
-import { ObtenerEquiposDto } from "../types";
+
 import { ObtenerEquiposDtoOutput } from "../../api/equipos/dtos/obtenerEquipos.dto.output";
+import { ListaProgramacionEquiposDTO } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
+import { ObtenerDatosDto } from "@/app/api/common/types";
 
 export const useEquipos = () => {
   const { obtenerEquipos } = obtenerEquiposPorTermino();
@@ -34,18 +36,8 @@ export const useEquipos = () => {
   };
 };
 
-// export const obtenerEquipos = () => {
-//   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
-//   const { data, error, isLoading } = useSWR<Equipo[]>("/equipos", fetcher);
-//   return {
-//     equipos: data ?? [],
-//     isLoading,
-//     isError: error,
-//   };
-// };
-
 export const obtenerEquiposPorTermino = () => {
-  const fetcher = (url: string, { arg }: { arg?: ObtenerEquiposDto }) =>
+  const fetcher = (url: string, { arg }: { arg?: ObtenerDatosDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } =
     useSWRMutation<ObtenerEquiposDtoOutput>("/equipos", fetcher);
@@ -55,25 +47,20 @@ export const obtenerEquiposPorTermino = () => {
     existeSiguientePagina: data?.existeSiguientePagina ?? false,
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: (args?: ObtenerEquiposDto) => trigger(args),
+    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
   };
 };
 export const obtenerProgramacionEquipos = () => {
-  interface EquipoTermino {
-    termino?: string;
-    valor?: string;
-    page?: number;
-  }
-  const fetcher = (url: string, { arg = {} }: { arg?: EquipoTermino }) =>
+  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation<
-    ListaProgramacionEquiposDTO[]
-  >("/equipos/programar", fetcher);
+  const { data, error, isMutating, trigger } =
+    useSWRMutation<ListaProgramacionEquiposDTO>("/equipos/programar", fetcher);
   return {
-    equipos: data ?? [],
+    equipos: data?.equiposProgramados ?? [],
     isLoading: isMutating,
     isError: error,
     obtenerEquipos: trigger,
+    existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };
 
