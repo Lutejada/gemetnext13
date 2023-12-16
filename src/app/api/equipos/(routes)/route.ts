@@ -21,9 +21,9 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    validarEditarEquipo(body)
-    await editarEquipo(body)
-    return NextResponse.json({ msg: "equipo editado", });
+    validarEditarEquipo(body);
+    await editarEquipo(body);
+    return NextResponse.json({ msg: "equipo editado" });
   } catch (error: any) {
     return errorHandler(error);
   }
@@ -32,10 +32,10 @@ export async function PUT(request: Request) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    console.log(searchParams);
     const termino = searchParams.get("termino");
     const valor = searchParams.get("valor");
-    const equipos = await obtenerEquipos(termino, valor);
+    const page = searchParams.get("page");
+    const equipos = await obtenerEquipos(termino, valor, page);
     return NextResponse.json(equipos);
   } catch (error: any) {
     return errorHandler(error);

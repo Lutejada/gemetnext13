@@ -1,4 +1,5 @@
 "use client";
+import { Button } from "@/components/ui/button";
 
 import {
   ColumnDef,
@@ -16,7 +17,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import SearchForm from "./serch-form";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,11 +32,12 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    
   });
 
+  console.log(table.getRowModel().rows);
   return (
-    <div>
-      <SearchForm />
+    <>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -86,7 +87,7 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
-    </div>
+      </div>      
+    </>
   );
 }

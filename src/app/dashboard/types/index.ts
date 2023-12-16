@@ -5,3 +5,5 @@ export interface Responsable {
   fecha_creacion: Date | string;
   fecha_actualizacion: Date | string;
 }
+
+

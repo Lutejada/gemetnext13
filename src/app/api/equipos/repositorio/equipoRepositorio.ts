@@ -12,6 +12,12 @@ import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
+import { format } from "date-fns";
+import {
+  EquipoProgramacionDto,
+  ListaProgramacionEquiposDTO,
+} from "../dtos/listaProgramacionEquipos.output";
+import { ObtenerDatosDto } from "../../common/types";
 
 const selectEquipoBasico = {
   id: true,
@@ -114,21 +120,34 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  obtenerEquipos: async function (limit = 5) {
+  obtenerEquipos: async function (page?: number) {
+    const { skip, porPagina } = calcularPagina(page ?? 1);
     const equipos = await prisma.equipo.findMany({
-      take: limit,
       orderBy: {
         fecha_creacion: "desc",
       },
       select: selectEquipoBasico,
+      skip: skip,
+      take: 5,
     });
-    return equipos.map((equipo) => ({
-      id: equipo.id,
-      descripcion: equipo.descripcion,
-      marca: equipo.marca.descripcion,
-      responsable: equipo.ubicacion.responsable.nombre,
-      codigo: equipo.codigo,
-    }));
+
+    const nextpagecount = await prisma.equipo.count({
+      skip: skip + porPagina,
+      take: 5,
+    });
+
+    const existeSiguientePagina = nextpagecount !== 0 ? true : false;
+
+    return {
+      equipos: equipos.map((equipo) => ({
+        id: equipo.id,
+        descripcion: equipo.descripcion,
+        marca: equipo.marca.descripcion,
+        responsable: equipo.ubicacion.responsable.nombre,
+        codigo: equipo.codigo,
+      })),
+      existeSiguientePagina,
+    };
   },
   obtenerEquiposPorCodigo: async function (codigo: string) {
     const equipos = await prisma.equipo.findMany({
@@ -216,16 +235,74 @@ export const equipoRepositorio: EquipoRepositorio = {
         equipo_id: equipoId,
       },
       data: {
-        cumple_especificacion_instalaciones:dto.cumpleEspecificacionInstalaciones,
-        descripcion_especificaciones:dto.descripcionEspecificaciones,
-        descripcion_software:dto.descripcionSoftware,
-        fireware:dto.fireware,
-        utiliza_software:dto.utilizaSoftware,
-        observaciones:dto.observaciones,
-        version_software:dto.versionSoftware,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
+        descripcion_especificaciones: dto.descripcionEspecificaciones,
+        descripcion_software: dto.descripcionSoftware,
+        fireware: dto.fireware,
+        utiliza_software: dto.utilizaSoftware,
+        observaciones: dto.observaciones,
+        version_software: dto.versionSoftware,
       },
     });
   },
 
+  listarEquiposProgramados: async (dto?: ObtenerDatosDto) => {
+    const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
 
+    const equipoProgramacion = await prisma.programacion_equipos.findMany({
+      take: porPagina,
+      skip,
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+      include: {
+        equipo: {
+          select: {
+            codigo: true,
+            descripcion: true,
+          },
+        },
+        actividad: {
+          select: {
+            descripcion: true,
+          },
+        },
+        frecuencia: {
+          select: {
+            descripcion: true,
+          },
+        },
+      },
+    });
+
+    const countNextPage = await prisma.programacion_equipos.count({
+      take: porPagina,
+      skip,
+    });
+
+    const existeSiguientePagina = countNextPage === 0 ? true : false;
+
+    const listadoProgramacion = equipoProgramacion.map<EquipoProgramacionDto>(
+      (element) => ({
+        codigo: element.equipo.codigo,
+        actividad: element.actividad.descripcion,
+        descripcion: element.equipo.descripcion,
+        fechaProgramacion: format(element.fecha_programacion, "dd-MM-yyyy"),
+        frecuencia: element.frecuencia.descripcion,
+      })
+    );
+    console.log(listadoProgramacion);
+    return {
+      equiposProgramados: listadoProgramacion,
+      existeSiguientePagina: existeSiguientePagina,
+    };
+  },
+};
+
+const calcularPagina = (pagina: string | number) => {
+  const currentPage = Math.max(Number(pagina), 1);
+  const porPagina = 5;
+  const skip = (currentPage - 1) * porPagina;
+  return { skip, porPagina };
 };
