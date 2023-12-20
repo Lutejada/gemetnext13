@@ -6,19 +6,21 @@ import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
 import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";
+import { ObtenerPatronesDtoOutput } from "@/app/api/patrones/dtos/obtenerPatrones.dto.output";
+import { ObtenerDatosDto } from "@/app/api/common/types";
 
-export const obtenerPatrones = () => {
-  const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
-  const { data, error, isLoading } = useSWR<Patron[]>(
-    "/patrones",
-    fetcher
-  );
-  return {
-    equipos: data ?? [],
-    isLoading,
-    isError: error,
-  };
-};
+// export const obtenerPatrones = () => {
+//   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
+//   const { data, error, isLoading } = useSWR<ObtenerPatronesDtoOutput>(
+//     "/patrones",
+//     fetcher
+//   );
+//   return {
+//     equipos: data ?? [],
+//     isLoading,
+//     isError: error,
+//   };
+// };
 
 
 export const crearPatron = () => {
@@ -83,5 +85,20 @@ export const crearDatosComplementarios = () => {
     crear:trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
+  };
+};
+
+
+export const useObtenerPatrones = () => {
+  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
+    httpBase.get(url, { params: arg }).then((res) => res.data);
+  const { data, error, isMutating, trigger } =
+    useSWRMutation<ObtenerPatronesDtoOutput>("/patrones", fetcher);
+  return {
+    patrones: data?.patrones ?? [],
+    isLoading: isMutating,
+    isError: error,
+    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

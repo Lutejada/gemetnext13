@@ -2,6 +2,9 @@ import { NextResponse } from "next/server";
 import { crearPatron } from "../servicios/crearPatron";
 import { errorHandler } from "../../common/errors/error.handler";
 import { validarCrearPatron } from "../dtos/crearPatrones";
+import { ObtenerDatosDto } from "../../common/types";
+import { obtenerPatrones } from "../servicios/obtenerPatrones";
+import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
 
 export async function POST(request: Request) {
   try {
@@ -14,8 +17,15 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   try {
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get("page");
+    const dto: ObtenerDatosDto = {
+      page: Number(page) || 1,
+    };
+    const response = await obtenerPatrones(dto);
+    return NextResponse.json<ObtenerPatronesDtoOutput>(response);
   } catch (error: any) {
     return errorHandler(error);
   }

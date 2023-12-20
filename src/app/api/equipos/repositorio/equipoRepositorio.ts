@@ -18,6 +18,7 @@ import {
   ListaProgramacionEquiposDTO,
 } from "../dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "../../common/types";
+import { calcularPagina } from "@/lib/queryUtils";
 
 const selectEquipoBasico = {
   id: true,
@@ -300,9 +301,4 @@ export const equipoRepositorio: EquipoRepositorio = {
   },
 };
 
-const calcularPagina = (pagina: string | number) => {
-  const currentPage = Math.max(Number(pagina), 1);
-  const porPagina = 5;
-  const skip = (currentPage - 1) * porPagina;
-  return { skip, porPagina };
-};
+

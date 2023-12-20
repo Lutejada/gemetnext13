@@ -59,7 +59,7 @@ export const obtenerProgramacionEquipos = () => {
     equipos: data?.equiposProgramados ?? [],
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: trigger,
+    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
     existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

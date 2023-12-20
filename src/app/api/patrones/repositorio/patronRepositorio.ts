@@ -8,6 +8,12 @@ import { CrearPatronDto } from "../dtos/crearPatrones";
 import { PatronRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
+import { ObtenerDatosDto } from "../../common/types";
+import {
+  ObtenerPatronesDtoOutput,
+  PatronesResponse,
+} from "../dtos/obtenerPatrones.dto.output";
+import { calcularPagina } from "@/lib/queryUtils";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -70,5 +76,55 @@ export const patronRepositorio: PatronRepositorio = {
         patron_id: patronId,
       },
     });
+  },
+  obtenerPatrones: async function (
+    dto?: ObtenerDatosDto | undefined
+  ): Promise<ObtenerPatronesDtoOutput> {
+    const { porPagina, skip } = calcularPagina(dto?.page ?? 1);
+    const dbResponse = await prisma.patrones.findMany({
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+      take: porPagina,
+      skip,
+      select: {
+        id: true,
+        codigo: true,
+        descripcion: true,
+        marca: {
+          select: {
+            descripcion: true,
+          },
+        },
+        ubicacion: {
+          select: {
+            responsable: {
+              select: {
+                nombre: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const patrones = dbResponse.map<PatronesResponse>((patron) => ({
+      codigo: patron.codigo,
+      descripcion: patron.descripcion,
+      id: patron.id,
+      marca: patron.marca.descripcion,
+      responsable: patron.ubicacion.responsable.nombre,
+    }));
+
+    const countNextPage = await prisma.programacion_equipos.count({
+      take: porPagina,
+      skip,
+    });
+
+    const existeSiguientePagina = countNextPage === 0 ? true : false;
+
+    return {
+      patrones: patrones,
+      existeSiguientePagina,
+    };
   },
 };
