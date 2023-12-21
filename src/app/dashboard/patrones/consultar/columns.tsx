@@ -45,12 +45,12 @@ export const columns: ColumnDef<EquiposResponse>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <Link
-              href={`/dashboard/equipos/programar/${row.getValue("codigo")}`}
+              href={`/dashboard/patrones/programar/${row.getValue("codigo")}`}
             >
               <DropdownMenuItem>Programar</DropdownMenuItem>
             </Link>
-            <Link href={`/dashboard/equipos/consultar/${row.getValue("codigo")}`}>
-              <DropdownMenuItem>Ver Equipo</DropdownMenuItem>
+            <Link href={`/dashboard/patrones/consultar/${row.getValue("codigo")}`}>
+              <DropdownMenuItem>Ver Patron</DropdownMenuItem>
             </Link>
           </DropdownMenuContent>
         </DropdownMenu>

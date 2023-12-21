@@ -1,3 +1,5 @@
+import { Ubicacion } from "../../ubicaciones/types";
+
 export interface Patron {
   id: string;
   codigo: string;
@@ -8,9 +10,10 @@ export interface Patron {
   fecha_creacion: Date;
   fecha_actualizacion: Date;
   fecha_inactivacion: Date | null;
-  ubicacionId?: string | null;
+  ubicacionId?: string;
   datos_metrologicos?: DatosMetrologicosPatrones | null;
   datos_complementarios?: DatosComplementariosPatrones | null;
+  ubicacion?: Ubicacion;
 }
 
 export interface DatosMetrologicosPatrones {

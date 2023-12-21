@@ -20,4 +20,5 @@ export interface PatronRepositorio {
     dto: CrearDatosComplementariosDto
   ) => Promise<DatosComplementariosPatrones>;
   obtenerPatrones: (dto?: ObtenerDatosDto) => Promise<ObtenerPatronesDtoOutput>;
+  editarDatosBasicos: (codigo: string, patron: Partial<Patron>) => Promise<void>;
 }

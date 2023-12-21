@@ -23,16 +23,16 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { Equipo } from "@/src/app/api/equipos/dominio";
 import {  useState } from "react";
 import { obtenerMarcas } from "../../../hooks/useMarca";
-import { editarEquipo } from "../../../hooks/useEquipo";
 
 import {
   obtenerUbicaciones,
 } from "../../../hooks/useUbicaciones";
 
 import { useRouter } from "next/navigation";
+import { Patron } from "@/app/api/patrones/dominio";
+import { editarDatosBasicos } from "@/app/dashboard/hooks/usePatron";
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),
   descripcion: z.string().min(2, { message: "descripcion requerido" }),
@@ -43,27 +43,27 @@ const formSchema = z.object({
 });
 
 interface Props {
-  equipo: Equipo;
+  patron: Patron;
 }
 
-function EditarEquiposBasicos({ equipo }: Props) {
+function EditarPatronesBasicos({ patron }: Props) {
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo: equipo.codigo,
-      descripcion: equipo.descripcion,
-      modelo: equipo.modelo,
-      serie: equipo.serie,
-      marcaId: equipo.marca_id,
-      ubicacionId: equipo.ubicacion_id,
+      codigo: patron.codigo,
+      descripcion: patron.descripcion,
+      modelo: patron.modelo,
+      serie: patron.serie,
+      marcaId: patron.marca_id,
+      ubicacionId: patron.ubicacionId,
     },
   });
 
   const [isDisabled, setIsDisabled] = useState(true);
   const { marcas } = obtenerMarcas();
   const { ubicaciones } = obtenerUbicaciones();
-  const { editar, errorMsg, error } = editarEquipo();
+  const { editar, errorMsg, error } = editarDatosBasicos();
 
   const { toast } = useToast();
 
@@ -78,10 +78,10 @@ function EditarEquiposBasicos({ equipo }: Props) {
     });
     form.reset();
     toast({
-      title: "Equipo se edito correctament",
+      title: "patron se edito correctamente",
       variant: "success",
     });
-    router.push("/dashboard/equipos/consultar");
+    router.push("/dashboard/patrones/consultar");
   }
   return (
     <>
@@ -95,7 +95,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Codigo</FormLabel>
                   <FormControl>
-                    <Input disabled {...field} value={equipo?.codigo} />
+                    <Input disabled {...field} value={patron?.codigo} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -151,7 +151,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
                     onValueChange={field.onChange}
                     disabled={isDisabled}
                     value={field.value}
-                    defaultValue={equipo.marca_id}
+                    defaultValue={patron.marca_id}
                   >
                     <FormControl>
                       <SelectTrigger>
@@ -183,11 +183,11 @@ function EditarEquiposBasicos({ equipo }: Props) {
                     onValueChange={field.onChange}
                     disabled={isDisabled}
                     value={field.value}
-                    defaultValue={equipo.ubicacion_id}
+                    defaultValue={patron.ubicacionId}
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder={equipo?.ubicacion?.nombre} />
+                        <SelectValue placeholder={patron?.ubicacion?.nombre} />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
@@ -212,7 +212,7 @@ function EditarEquiposBasicos({ equipo }: Props) {
             onClick={() => setIsDisabled(false)}
             className="mx-auto"
           >
-            Editar Equipo
+            Editar Patron
           </Button>
 
           <Button
@@ -242,4 +242,4 @@ function EditarEquiposBasicos({ equipo }: Props) {
   );
 }
 
-export default EditarEquiposBasicos;
+export default EditarPatronesBasicos;

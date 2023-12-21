@@ -39,6 +39,8 @@ export const patronRepositorio: PatronRepositorio = {
       include: {
         datos_metrologicos: true,
         datos_complementarios: true,
+        marca: true,
+        ubicacion: true,
       },
     });
     return patron;
@@ -66,8 +68,7 @@ export const patronRepositorio: PatronRepositorio = {
     return prisma.datos_complementarios_patrones.create({
       data: {
         fireware: dto.fireware,
-        cumple_especificacion_instalaciones:
-          dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         observaciones: dto.observaciones,
@@ -127,4 +128,16 @@ export const patronRepositorio: PatronRepositorio = {
       existeSiguientePagina,
     };
   },
+  editarDatosBasicos: async function (codigo: string, patron: Partial<Patron>): Promise<void> {
+    await prisma.patrones.update({
+      where:{codigo},
+      data:{
+        marca_id: patron.marca_id,
+        descripcion: patron.descripcion,
+        ubicacionId: patron.ubicacionId,
+        serie: patron.serie,
+        modelo: patron.modelo,
+      }
+    })
+  }
 };
