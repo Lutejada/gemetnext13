@@ -31,10 +31,10 @@ export default function Equipo() {
             <TabsContent value="basicos">
               <EditarPatronesBasicos patron={patron} />
             </TabsContent>
-            {/* <TabsContent value="metrologicos">
+            <TabsContent value="metrologicos">
               <EditarDatosmetrologicos patron={patron} />
             </TabsContent>
-            <TabsContent value="complementarios">
+            {/* <TabsContent value="complementarios">
               <EditarDatosComplementarios patron={patron} />
             </TabsContent> */}
           </>

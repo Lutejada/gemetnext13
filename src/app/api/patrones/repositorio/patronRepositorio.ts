@@ -14,6 +14,7 @@ import {
   PatronesResponse,
 } from "../dtos/obtenerPatrones.dto.output";
 import { calcularPagina } from "@/lib/queryUtils";
+import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -130,14 +131,27 @@ export const patronRepositorio: PatronRepositorio = {
   },
   editarDatosBasicos: async function (codigo: string, patron: Partial<Patron>): Promise<void> {
     await prisma.patrones.update({
-      where:{codigo},
-      data:{
+      where: { codigo },
+      data: {
         marca_id: patron.marca_id,
         descripcion: patron.descripcion,
         ubicacionId: patron.ubicacionId,
         serie: patron.serie,
         modelo: patron.modelo,
       }
-    })
+    });
+  },
+  editarDatosMetrologicos: async function (patronId: string, dto: EditarDatosMetrologicosDto): Promise<void> {
+    await prisma.datos_metrologicos_patrones.update({
+      where: {
+        patrones_id: patronId,
+      },
+      data: {
+        division_escala: dto.divisionEscala,
+        rango_maximo: dto.rangoMaximo,
+        rango_minimo: dto.rangoMinimo,
+        resolucion: dto.resolucion,
+      },
+    });
   }
 };

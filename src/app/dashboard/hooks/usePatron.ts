@@ -9,6 +9,7 @@ import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatos
 import { ObtenerPatronesDtoOutput } from "@/app/api/patrones/dtos/obtenerPatrones.dto.output";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 import { EditarBasicosDto } from '../../api/patrones/dtos/editarBasicos.dto';
+import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 
 export const crearPatron = () => {
 
@@ -116,6 +117,22 @@ export const editarDatosBasicos = () => {
   return {
     isLoading: isMutating,
     patrones: data,
+    editar: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+
+export const editarDatosMetrologicos = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarDatosMetrologicosDto }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { error, trigger, isMutating } = useSWRMutation(
+    "/patrones/metrologicos",
+    fetcher
+  );
+  return {
+    isLoading: isMutating,
     editar: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,

@@ -17,10 +17,11 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { Equipo } from "@/app/api/equipos/dominio";
 import { useEffect, useState } from "react";
-import { editarDatosMetrologicos } from "@/app/dashboard/hooks/useEquipo";
+
 import { useRouter } from "next/navigation";
+import { editarDatosMetrologicos } from "@/app/dashboard/hooks/usePatron";
+import { Patron } from "@/app/api/patrones/dominio";
 const formSchema = z.object({
   codigo: z.string({ description: "codigo requerido" }),
   emp: z.coerce
@@ -40,25 +41,25 @@ const formSchema = z.object({
     .transform((val) => Number(val)),
 });
 interface Props {
-  equipo: Equipo;
+  patron: Patron;
 }
-function EditarDatosmetrologicos({ equipo }: Props) {
+function EditarDatosmetrologicos({  patron }: Props) {
   const [isDisabled, setIsDisabled] = useState(true);
 
   const { editar, error, errorMsg } = editarDatosMetrologicos();
 
-  if (equipo.datos_metrologicos?.division_escala === undefined) {
+  if (patron.datos_metrologicos?.division_escala === undefined) {
     return <p>El equipo no tiene datos metrologicos</p>;
   }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo: equipo.codigo,
-      divisionEscala: equipo.datos_metrologicos?.division_escala,
-      emp: equipo.datos_metrologicos?.emp,
-      rangoMaximo: equipo.datos_metrologicos?.rango_maximo,
-      rangoMinimo: equipo.datos_metrologicos?.rango_minimo,
-      resolucion: equipo.datos_metrologicos?.resolucion,
+      codigo: patron.codigo,
+      divisionEscala: patron.datos_metrologicos?.division_escala,
+      emp: patron.datos_metrologicos?.emp,
+      rangoMaximo: patron.datos_metrologicos?.rango_maximo,
+      rangoMinimo: patron.datos_metrologicos?.rango_minimo,
+      resolucion: patron.datos_metrologicos?.resolucion,
     },
   });
   useEffect(() => {}, []);
@@ -77,10 +78,10 @@ function EditarDatosmetrologicos({ equipo }: Props) {
 
     form.reset();
     toast({
-      title: "Equipo se edito correctamente",
+      title: "Patron se edito correctamente",
       variant: "success",
     });
-    router.push("/dashboard/equipos/consultar");
+    router.push("/dashboard/patrones/consultar");
   }
   return (
     <>
@@ -94,7 +95,7 @@ function EditarDatosmetrologicos({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Codigo Equipo</FormLabel>
                   <FormControl>
-                    <Input {...field} value={equipo?.codigo} disabled />
+                    <Input {...field} value={patron?.codigo} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -172,7 +173,7 @@ function EditarDatosmetrologicos({ equipo }: Props) {
             onClick={() => setIsDisabled(false)}
             className="mx-auto"
           >
-            Editar Equipo
+            Editar Patron
           </Button>
 
           <Button
