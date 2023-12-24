@@ -18,6 +18,11 @@ import { calcularPagina } from "@/lib/queryUtils";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";
+import {
+  ListaProgramacionPatronesDTO,
+  PatronProgramacionDto,
+} from "../dtos/listaProgramacionPatrones.output";
+import { format } from "date-fns";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -72,7 +77,8 @@ export const patronRepositorio: PatronRepositorio = {
     return prisma.datos_complementarios_patrones.create({
       data: {
         fireware: dto.fireware,
-        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         observaciones: dto.observaciones,
@@ -172,7 +178,8 @@ export const patronRepositorio: PatronRepositorio = {
         patron_id: patronId,
       },
       data: {
-        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         fireware: dto.fireware,
@@ -182,7 +189,9 @@ export const patronRepositorio: PatronRepositorio = {
       },
     });
   },
-  crearProgramacionPatron: function (dto: CrearProgramacionPatronDto): Promise<ProgramacionPatrones> {
+  crearProgramacionPatron: function (
+    dto: CrearProgramacionPatronDto
+  ): Promise<ProgramacionPatrones> {
     return prisma.programacion_patrones.create({
       data: {
         patron_id: dto.patronId,
@@ -191,5 +200,57 @@ export const patronRepositorio: PatronRepositorio = {
         actividad_id: dto.actividadId,
       },
     });
-  }
+  },
+  listarPatronesProgramados: async function (
+    dto?: ObtenerDatosDto | undefined
+  ): Promise<ListaProgramacionPatronesDTO> {
+    const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
+
+    const equipoProgramacion = await prisma.programacion_patrones.findMany({
+      take: porPagina,
+      skip,
+      orderBy: {
+        fecha_creacion: "desc",
+      },
+      include: {
+        patron: {
+          select: {
+            codigo: true,
+            descripcion: true,
+          },
+        },
+        actividad: {
+          select: {
+            descripcion: true,
+          },
+        },
+        frecuencia: {
+          select: {
+            descripcion: true,
+          },
+        },
+      },
+    });
+
+    const countNextPage = await prisma.programacion_patrones.count({
+      take: porPagina,
+      skip,
+    });
+
+    const existeSiguientePagina = countNextPage === 0 ? true : false;
+
+    const listadoProgramacion = equipoProgramacion.map<PatronProgramacionDto>(
+      (element) => ({
+        codigo: element.patron.codigo,
+        actividad: element.actividad.descripcion,
+        descripcion: element.patron.descripcion,
+        fechaProgramacion: format(element.fecha_programacion, "dd-MM-yyyy"),
+        frecuencia: element.frecuencia.descripcion,
+      })
+    );
+    return {
+      patronesProgramados: listadoProgramacion,
+      existeSiguientePagina: existeSiguientePagina,
+    };
+  },
 };

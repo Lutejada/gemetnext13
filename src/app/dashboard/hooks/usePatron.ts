@@ -12,6 +12,7 @@ import { EditarBasicosDto } from '../../api/patrones/dtos/editarBasicos.dto';
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from '../../api/patrones/dtos/crearProgramation.dto';
+import { ListaProgramacionPatronesDTO } from '../../api/patrones/dtos/listaProgramacionPatrones.output';
 
 export const crearPatron = () => {
 
@@ -173,5 +174,19 @@ export const crearProgramacionPatron = () => {
     crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
+  };
+};
+
+export const obtenerProgramacionPatrones = () => {
+  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
+    httpBase.get(url, { params: arg }).then((res) => res.data);
+  const { data, error, isMutating, trigger } =
+    useSWRMutation<ListaProgramacionPatronesDTO>("/patrones/programar", fetcher);
+  return {
+    patrones: data?.patronesProgramados ?? [],
+    isLoading: isMutating,
+    isError: error,
+    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

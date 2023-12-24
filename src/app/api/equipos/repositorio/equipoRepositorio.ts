@@ -293,7 +293,6 @@ export const equipoRepositorio: EquipoRepositorio = {
         frecuencia: element.frecuencia.descripcion,
       })
     );
-    console.log(listadoProgramacion);
     return {
       equiposProgramados: listadoProgramacion,
       existeSiguientePagina: existeSiguientePagina,
