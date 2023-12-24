@@ -15,6 +15,7 @@ import {
 } from "../dtos/obtenerPatrones.dto.output";
 import { calcularPagina } from "@/lib/queryUtils";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -69,7 +70,8 @@ export const patronRepositorio: PatronRepositorio = {
     return prisma.datos_complementarios_patrones.create({
       data: {
         fireware: dto.fireware,
-        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         observaciones: dto.observaciones,
@@ -129,7 +131,10 @@ export const patronRepositorio: PatronRepositorio = {
       existeSiguientePagina,
     };
   },
-  editarDatosBasicos: async function (codigo: string, patron: Partial<Patron>): Promise<void> {
+  editarDatosBasicos: async function (
+    codigo: string,
+    patron: Partial<Patron>
+  ): Promise<void> {
     await prisma.patrones.update({
       where: { codigo },
       data: {
@@ -138,10 +143,13 @@ export const patronRepositorio: PatronRepositorio = {
         ubicacionId: patron.ubicacionId,
         serie: patron.serie,
         modelo: patron.modelo,
-      }
+      },
     });
   },
-  editarDatosMetrologicos: async function (patronId: string, dto: EditarDatosMetrologicosDto): Promise<void> {
+  editarDatosMetrologicos: async function (
+    patronId: string,
+    dto: EditarDatosMetrologicosDto
+  ): Promise<void> {
     await prisma.datos_metrologicos_patrones.update({
       where: {
         patrones_id: patronId,
@@ -153,5 +161,25 @@ export const patronRepositorio: PatronRepositorio = {
         resolucion: dto.resolucion,
       },
     });
-  }
+  },
+  editarDatosComplementarios: async function (
+    patronId: string,
+    dto: EditarDatosComplementariosDto
+  ): Promise<void> {
+    await prisma.datos_complementarios_patrones.update({
+      where: {
+        patron_id: patronId,
+      },
+      data: {
+        cumple_especificacion_instalaciones:
+          dto.cumpleEspecificacionInstalaciones,
+        descripcion_especificaciones: dto.descripcionEspecificaciones,
+        descripcion_software: dto.descripcionSoftware,
+        fireware: dto.fireware,
+        utiliza_software: dto.utilizaSoftware,
+        observaciones: dto.observaciones,
+        version_software: dto.versionSoftware,
+      },
+    });
+  },
 };

@@ -17,8 +17,7 @@ import { useForm } from "react-hook-form";
 import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
-import { editarDatosComplementarios } from "@/app/dashboard/hooks/useEquipo";
-import { Equipo, cumple } from "@/src/app/api/equipos/dominio";
+import { editarDatosComplementarios } from "@/app/dashboard/hooks/usePatron";
 import {
   Select,
   SelectContent,
@@ -28,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Patron, cumple } from "@/app/api/patrones/dominio";
 const formSchema = z.object({
   codigo: z.string({ description: "codigo requerido" }),
   descripcionEspecificaciones: z
@@ -48,32 +48,32 @@ const formSchema = z.object({
 });
 
 interface Props {
-  equipo: Equipo;
+  patron: Patron;
 }
-function EditarDatosComplementarios({ equipo }: Props) {
+function EditarDatosComplementarios({ patron }: Props) {
   if (
-    equipo.datos_complementarios === null ||
-    (equipo.datos_complementarios &&
-      Object.values(equipo.datos_complementarios).length === 0)
+    patron.datos_complementarios === null ||
+    (patron.datos_complementarios &&
+      Object.values(patron.datos_complementarios).length === 0)
   ) {
-    return <p>El equipo no tiene datos compllemetarios</p>;
+    return <p>El patron no tiene datos compllemetarios</p>;
   }
   const { editar, errorMsg, error, isLoading } = editarDatosComplementarios();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo: equipo.codigo,
+      codigo: patron.codigo,
       cumpleEspecificacionInstalaciones:
-        equipo.datos_complementarios?.cumple_especificacion_instalaciones,
+        patron.datos_complementarios?.cumple_especificacion_instalaciones,
       descripcionEspecificaciones:
-        equipo.datos_complementarios?.descripcion_especificaciones ?? "",
+        patron.datos_complementarios?.descripcion_especificaciones ?? "",
       descripcionSoftware:
-        equipo.datos_complementarios?.descripcion_software ?? "",
-      fireware: equipo.datos_complementarios?.fireware ?? "",
-      observaciones: equipo.datos_complementarios?.observaciones ?? "",
-      utilizaSoftware: equipo.datos_complementarios?.utiliza_software,
-      versionSoftware: equipo.datos_complementarios?.version_software ?? "",
+        patron.datos_complementarios?.descripcion_software ?? "",
+      fireware: patron.datos_complementarios?.fireware ?? "",
+      observaciones: patron.datos_complementarios?.observaciones ?? "",
+      utilizaSoftware: patron.datos_complementarios?.utiliza_software,
+      versionSoftware: patron.datos_complementarios?.version_software ?? "",
     },
   });
 
@@ -97,7 +97,7 @@ function EditarDatosComplementarios({ equipo }: Props) {
       title: "Dato complementarios se editaron correctamente",
       variant: "success",
     });
-    router.push("/dashboard/equipos/consultar");
+    router.push("/dashboard/patrones/consultar");
   }
   return (
     <>
@@ -111,7 +111,7 @@ function EditarDatosComplementarios({ equipo }: Props) {
                 <FormItem>
                   <FormLabel>Codigo Equipo</FormLabel>
                   <FormControl>
-                    <Input {...field} value={equipo?.codigo} disabled />
+                    <Input {...field} value={patron?.codigo} disabled />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
