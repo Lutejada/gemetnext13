@@ -3,6 +3,7 @@ import {
   DatosComplementariosPatrones,
   DatosMetrologicosPatrones,
   Patron,
+  ProgramacionPatrones,
 } from "../dominio";
 import { CrearPatronDto } from "../dtos/crearPatrones";
 import { PatronRepositorio } from "./index";
@@ -16,6 +17,7 @@ import {
 import { calcularPagina } from "@/lib/queryUtils";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
+import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";
 export const patronRepositorio: PatronRepositorio = {
   crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
     const patron = await prisma.patrones.create({
@@ -70,8 +72,7 @@ export const patronRepositorio: PatronRepositorio = {
     return prisma.datos_complementarios_patrones.create({
       data: {
         fireware: dto.fireware,
-        cumple_especificacion_instalaciones:
-          dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         observaciones: dto.observaciones,
@@ -171,8 +172,7 @@ export const patronRepositorio: PatronRepositorio = {
         patron_id: patronId,
       },
       data: {
-        cumple_especificacion_instalaciones:
-          dto.cumpleEspecificacionInstalaciones,
+        cumple_especificacion_instalaciones: dto.cumpleEspecificacionInstalaciones,
         descripcion_especificaciones: dto.descripcionEspecificaciones,
         descripcion_software: dto.descripcionSoftware,
         fireware: dto.fireware,
@@ -182,4 +182,14 @@ export const patronRepositorio: PatronRepositorio = {
       },
     });
   },
+  crearProgramacionPatron: function (dto: CrearProgramacionPatronDto): Promise<ProgramacionPatrones> {
+    return prisma.programacion_patrones.create({
+      data: {
+        patron_id: dto.patronId,
+        frecuencia_id: dto.frecuenciaId,
+        fecha_programacion: dto.fechaProgramacion,
+        actividad_id: dto.actividadId,
+      },
+    });
+  }
 };

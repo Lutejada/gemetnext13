@@ -38,6 +38,10 @@ export const routes: Route[] = [
         name:'Consultar',
         path:'/consultar',
       },
+      {
+        name:'Ver Programacion',
+        path:'/programacion',
+      }
     ]
   },
   {

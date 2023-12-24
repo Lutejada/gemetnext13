@@ -11,6 +11,7 @@ import { ObtenerDatosDto } from "@/app/api/common/types";
 import { EditarBasicosDto } from '../../api/patrones/dtos/editarBasicos.dto';
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
+import { CrearProgramacionPatronDto } from '../../api/patrones/dtos/crearProgramation.dto';
 
 export const crearPatron = () => {
 
@@ -153,6 +154,23 @@ export const editarDatosComplementarios = () => {
   return {
     isLoading: isMutating,
     editar: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+
+export const crearProgramacionPatron = () => {
+  const fetcher = (url: string, { arg }: { arg: CrearProgramacionPatronDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/patrones/programar",
+    fetcher
+  );
+
+  return {
+    isLoading: isMutating,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
