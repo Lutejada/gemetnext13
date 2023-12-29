@@ -9,6 +9,7 @@ export const usuarioResitorio: UsuarioRepositorio = {
 };
 
 function crearUsuario(dto: CrearUsuarioDto): Promise<Usuario> {
+  console.log({dto});
   return prisma.usuario.create({
     data: {
       nombre: dto.nombre,           

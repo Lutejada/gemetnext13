@@ -35,7 +35,6 @@ export const patronRepositorio: PatronRepositorio = {
         ubicacionId: dto.ubicacionId,
       },
     });
-    console.log(patron);
     return patron;
   },
   obtenerPatronPorCodigo: async function (

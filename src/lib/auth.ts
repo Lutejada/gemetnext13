@@ -2,6 +2,8 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
 import { errorHandler } from "../app/api/common/errors/error.handler";
+import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
+import { isValidPassword } from "./password-hash";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -20,14 +22,22 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
-
-          const {id,nombre,password} = await obtenerUsuarioCorreo(credentials.correo);
-          if(password !== credentials.contraseña){
-            return null
+          const usuario = await obtenerUsuarioCorreo(credentials.correo);
+          if (!usuario) {
+            throw new UsuarioNoExiste();
           }
-          return {id,nombre};
+          const valido = await isValidPassword(
+            credentials.contraseña,
+            usuario.password
+          );
+          if (!valido) {
+            throw new Error("no autorizado");
+          }
+          const { password, ...rest } = usuario;
+
+          return rest;
         } catch (error) {
-          throw new Error('no autorizado')
+          throw new Error("no autorizado");
         }
       },
     }),
@@ -42,7 +52,9 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    session({ session, token }) {
+    session(params) {
+      console.log({params});
+      const { session, token } = params;
       session.user = token.user as {};
       return session;
     },
