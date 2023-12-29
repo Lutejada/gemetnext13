@@ -16,26 +16,6 @@ import { ObtenerEquiposDtoOutput } from "../../api/equipos/dtos/obtenerEquipos.d
 import { ListaProgramacionEquiposDTO } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 
-export const useEquipos = () => {
-  const { obtenerEquipos } = obtenerEquiposPorTermino();
-  const store = useEquiposStore();
-  useEffect(() => {
-    obtenerEquipos({ page: 3 }).then((equipos) => store.addEquipos(equipos));
-  }, []);
-
-  return {
-    equipos: store.equipos,
-    obtenerEquipos: async (termino: string, valor: string) => {
-      const equipos = await obtenerEquipos({
-        termino: termino,
-        valor: valor,
-        page: 1,
-      });
-      store.addEquipos(equipos);
-    },
-  };
-};
-
 export const obtenerEquiposPorTermino = () => {
   const fetcher = (url: string, { arg }: { arg?: ObtenerDatosDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
@@ -59,7 +39,7 @@ export const obtenerProgramacionEquipos = () => {
     equipos: data?.equiposProgramados ?? [],
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: trigger,
+    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
     existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

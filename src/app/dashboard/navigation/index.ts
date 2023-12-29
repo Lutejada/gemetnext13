@@ -33,6 +33,14 @@ export const routes: Route[] = [
       {
         name:'Crear',
         path:'/crear',
+      },
+      {
+        name:'Consultar',
+        path:'/consultar',
+      },
+      {
+        name:'Ver Programacion',
+        path:'/programacion',
       }
     ]
   },

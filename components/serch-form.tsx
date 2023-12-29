@@ -1,5 +1,4 @@
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -33,7 +32,7 @@ const formSchema = z.object({
 interface Props {
   buscarPorTermino: (
     args?: ObtenerDatosDto | undefined
-  ) => Promise<ObtenerEquiposDtoOutput | undefined>;
+  ) => Promise< any | undefined>;
 }
 
 export default function SearchForm({ buscarPorTermino }: Props) {
