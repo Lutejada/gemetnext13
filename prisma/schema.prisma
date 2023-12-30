@@ -242,6 +242,11 @@ model programacion_patrones {
   fecha_inactivacion  DateTime?
 }
 
+model cliente {
+  id String @id @default(uuid())
+  nombre String @unique
+}
+
 // model fecha_inicial_patrones {
 //   id                  String         @id @default(cuid())
 //   actividad           tipo_actividad @relation(fields: [actividad_Id], references: [id])

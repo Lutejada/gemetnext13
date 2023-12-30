@@ -45,6 +45,7 @@ export default function ProfileForm () {
     const res = await signIn('credentials',{
       correo:values.correo,
       contraseña:values.contraseña,
+      cliente:'example',
       redirect:false
     })
 

@@ -22,6 +22,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
+          console.log({ credentials });
           const usuario = await obtenerUsuarioCorreo(credentials.correo);
           if (!usuario) {
             throw new UsuarioNoExiste();
@@ -53,7 +54,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session(params) {
-      console.log({params});
+      console.log({ params });
       const { session, token } = params;
       session.user = token.user as {};
       return session;

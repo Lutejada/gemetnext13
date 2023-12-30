@@ -195,6 +195,11 @@ Table programacion_patrones {
   fecha_inactivacion DateTime
 }
 
+Table cliente {
+  id String [pk]
+  nombre String [unique, not null]
+}
+
 Enum Role {
   Admin
   Metrologo
