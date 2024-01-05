@@ -101,6 +101,8 @@ model usuario {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente             cliente   @relation(fields: [clienteId], references: [id])
+  clienteId           String    @unique
 }
 
 model magnitud {
@@ -243,8 +245,9 @@ model programacion_patrones {
 }
 
 model cliente {
-  id String @id @default(uuid())
-  nombre String @unique
+  id      String   @id @default(uuid())
+  nombre  String   @unique
+  usuario usuario?
 }
 
 // model fecha_inicial_patrones {

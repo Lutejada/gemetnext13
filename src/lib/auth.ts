@@ -4,6 +4,7 @@ import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuar
 import { errorHandler } from "../app/api/common/errors/error.handler";
 import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
 import { isValidPassword } from "./password-hash";
+import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -23,7 +24,12 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any) {
         try {
           console.log({ credentials });
-          const usuario = await obtenerUsuarioCorreo(credentials.correo);
+          const cliente = await obtenerClientePorNombre(credentials.cliente);
+          console.log({ cliente });
+          const usuario = await obtenerUsuarioCorreo(
+            credentials.correo,
+            cliente.id
+          );
           if (!usuario) {
             throw new UsuarioNoExiste();
           }
@@ -36,8 +42,9 @@ export const authOptions: NextAuthOptions = {
           }
           const { password, ...rest } = usuario;
 
-          return rest;
-        } catch (error) {
+          return { ...rest, cliente };
+        } catch (error: any) {
+          console.error(error.message, error.stack);
           throw new Error("no autorizado");
         }
       },

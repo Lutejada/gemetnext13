@@ -72,6 +72,7 @@ Table usuario {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  clienteId String [unique, not null]
 }
 
 Table magnitud {
@@ -218,6 +219,8 @@ Ref: equipo.marca_id > marca.id
 Ref: equipo.ubicacion_id > ubicacion.id
 
 Ref: ubicacion.responsable_id > responsable.id
+
+Ref: usuario.clienteId - cliente.id
 
 Ref: variable.magnitud_id > magnitud.id
 

@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 
@@ -19,6 +18,16 @@ import { useForm } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 
+
+const getSubdomain = () => {
+  // Asegúrate de estar en el lado del cliente antes de acceder a window
+  if (typeof window !== 'undefined') {
+    const hostname = window.location.hostname;
+    return hostname.split('.')[0];
+  }
+  return null;
+};
+
 const formSchema = z.object({
   correo: z.string().min(2, {
     message: 'Username must be at least 2 characters.'
@@ -28,8 +37,9 @@ const formSchema = z.object({
 
 export default function ProfileForm () {
   // ...ç
-  const router = useRouter()
   // 1. Define your form.
+  const router = useRouter()
+  console.log();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +55,7 @@ export default function ProfileForm () {
     const res = await signIn('credentials',{
       correo:values.correo,
       contraseña:values.contraseña,
-      cliente:'example',
+      cliente:getSubdomain(),
       redirect:false
     })
 
