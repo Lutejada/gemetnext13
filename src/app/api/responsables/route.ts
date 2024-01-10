@@ -3,32 +3,28 @@ import { errorHandler } from "../common/errors/error.handler";
 import { validarCrearResponsable } from "./dtos/crearResponsable.dto";
 import { obtenerResponsables } from "./servicios/obtenerResponsables";
 import { crearResponsable } from "./servicios/crearResponsable";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/src/lib/auth";
+import { auth } from "@/lib/getSession";
+
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     validarCrearResponsable(body);
-    await crearResponsable(body);
-    return NextResponse.json({msg:'equipo creado'})
+    const session = await auth();
+
+    await crearResponsable(body, session.user.clienteId);
+    return NextResponse.json({ msg: "responsable creado" });
   } catch (error: any) {
     return errorHandler(error);
   }
 }
-
 
 export async function GET(_request: Request) {
   try {
-    const session = await getServerSession(authOptions);
-    if(!session){
-      throw new Error('no esta autenticado')
-    }
-    const responsables = await obtenerResponsables()
-    return NextResponse.json(responsables)
+    const session = await auth();
+    const responsables = await obtenerResponsables(session.user.clienteId);
+    return NextResponse.json(responsables);
   } catch (error: any) {
     return errorHandler(error);
   }
 }
-
-
-

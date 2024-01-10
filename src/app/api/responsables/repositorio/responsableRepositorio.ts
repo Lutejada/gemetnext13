@@ -1,42 +1,43 @@
-import { PrismaClient } from "@prisma/client";
 import { ResponsableRepositorio } from ".";
 import { CrearResponsableDto } from "../dtos/crearResponsable.dto";
 import { Responsable } from "../types";
+import { prisma } from "@/lib/prisma";
 
 const crearResponsable = async (
-  responsable: CrearResponsableDto
+  responsable: CrearResponsableDto,
+  clienteId: string
 ): Promise<void> => {
-  const prisma = new PrismaClient();
   await prisma.responsable.create({
     data: {
       identificacion: responsable.identificacion,
       nombre: responsable.nombre,
       apellido: responsable.apellido,
+      clienteId: clienteId,
     },
   });
 };
 
 const obtenerResponsables = (): Promise<Responsable[]> => {
-  const prisma = new PrismaClient();
-  return prisma.responsable.findMany();
+  return prisma.responsable.findMany({});
 };
 const obtenerResponsableIdent = async (
-  identificacion: string
+  identificacion: string,
+  clienteId: string
 ): Promise<Responsable | null> => {
-  const prisma = new PrismaClient();
   const res = await prisma.responsable.findUnique({
     where: {
       identificacion: identificacion,
+      clienteId: clienteId,
     },
   });
   return res;
 };
 
-const obtenerResponsableID = (id: string) => {
-  const prisma = new PrismaClient();
+const obtenerResponsableID = (id: string, clienteId: string) => {
   return prisma.responsable.findUnique({
     where: {
       id,
+      clienteId,
     },
   });
 };

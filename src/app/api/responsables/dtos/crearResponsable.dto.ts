@@ -3,7 +3,8 @@ import { object, string } from "zod";
 export interface CrearResponsableDto {
   identificacion: string;
   nombre: string;
-  apellido:string
+  apellido: string;
+  clienteId: string;
 }
 
 export const validarCrearResponsable = (responsable: CrearResponsableDto) => {

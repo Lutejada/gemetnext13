@@ -5,6 +5,7 @@ import { errorHandler } from "../app/api/common/errors/error.handler";
 import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
 import { isValidPassword } from "./password-hash";
 import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
+import { User } from "@/types/next-auth";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -63,7 +64,7 @@ export const authOptions: NextAuthOptions = {
     session(params) {
       console.log({ params });
       const { session, token } = params;
-      session.user = token.user as {};
+      session.user = token.user as User
       return session;
     },
   },
