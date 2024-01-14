@@ -34,6 +34,7 @@ Table ubicacion {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table marca {
@@ -52,6 +53,7 @@ Table tipo_actividad {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table frecuencia {
@@ -61,6 +63,7 @@ Table frecuencia {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table usuario {
@@ -85,6 +88,7 @@ Table magnitud {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table variable {
@@ -95,6 +99,7 @@ Table variable {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table patrones {
@@ -145,6 +150,7 @@ Table tipo_patron {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_complementarios_equipo {
@@ -227,11 +233,21 @@ Ref: responsable.cliente_id > cliente.id
 
 Ref: ubicacion.responsable_id > responsable.id
 
+Ref: ubicacion.cliente_id > cliente.id
+
 Ref: marca.cliente_id > cliente.id
+
+Ref: tipo_actividad.cliente_id > cliente.id
+
+Ref: frecuencia.cliente_id > cliente.id
 
 Ref: usuario.cliente_id - cliente.id
 
+Ref: magnitud.cliente_id > cliente.id
+
 Ref: variable.magnitud_id > magnitud.id
+
+Ref: variable.cliente_id > cliente.id
 
 Ref: patrones.marca_id > marca.id
 
@@ -240,6 +256,8 @@ Ref: patrones.ubicacionId > ubicacion.id
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
 
 Ref: datos_metrologicos_patrones.patrones_id - patrones.id
+
+Ref: tipo_patron.cliente_id > cliente.id
 
 Ref: datos_complementarios_equipo.equipo_id - equipo.id
 

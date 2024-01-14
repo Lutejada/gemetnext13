@@ -61,6 +61,10 @@ model ubicacion {
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
   patrones            patrones[]
+  cliente_id          String
+  cliente             cliente     @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model marca {
@@ -86,6 +90,10 @@ model tipo_actividad {
   fecha_actualizacion   DateTime                @updatedAt
   fecha_inactivacion    DateTime?
   programacion_patrones programacion_patrones[]
+  cliente_id            String
+  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model frecuencia {
@@ -97,6 +105,10 @@ model frecuencia {
   fecha_inactivacion    DateTime?
   programacion_equipos  programacion_equipos[]
   programacion_patrones programacion_patrones[]
+  cliente_id            String
+  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model usuario {
@@ -123,6 +135,10 @@ model magnitud {
   fecha_creacion      DateTime   @default(now())
   fecha_actualizacion DateTime   @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente    @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model variable {
@@ -134,6 +150,10 @@ model variable {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model patrones {
@@ -192,6 +212,10 @@ model tipo_patron {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_complementarios_equipo {
@@ -255,12 +279,18 @@ model programacion_patrones {
 }
 
 model cliente {
-  id          String        @id @default(uuid())
-  nombre      String        @unique
-  usuario     usuario?
-  responsable responsable[]
-  equipo      equipo[]
-  marca       marca[]
+  id             String           @id @default(uuid())
+  nombre         String           @unique
+  usuario        usuario?
+  responsable    responsable[]
+  equipo         equipo[]
+  marca          marca[]
+  ubicacion      ubicacion[]
+  tipo_actividad tipo_actividad[]
+  frecuencia     frecuencia[]
+  magnitud       magnitud[]
+  variable       variable[]
+  tipo_patron    tipo_patron[]
 }
 
 // model fecha_inicial_patrones {

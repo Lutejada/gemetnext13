@@ -1,5 +1,5 @@
-import { ubicacionRepositorio } from "../repostorio/ubicacionRepositorio"
+import { ubicacionRepositorio } from "../repostorio/ubicacionRepositorio";
 
-export const obtenerUbicaciones=()=>{
-    return ubicacionRepositorio.obtenerUbicaciones()
-}
+export const obtenerUbicaciones = (clienteId: string) => {
+  return ubicacionRepositorio.obtenerUbicaciones(clienteId);
+};
