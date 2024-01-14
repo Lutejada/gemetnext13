@@ -2,7 +2,13 @@ import { Magnitud } from "../dominio";
 import { CrearMagnitudDto } from "../dtos/crearMagnitud.dto";
 
 export interface MagnitudRepositorio {
-    crearMagnitud:(dto:CrearMagnitudDto)=>Promise<Magnitud>
-    obtenerMagnitudPorId:(id:string)=>Promise<Magnitud | null>
-    obtenerTodo:()=>Promise<Magnitud[]>
+  crearMagnitud: (
+    dto: CrearMagnitudDto,
+    clienteId: string
+  ) => Promise<Magnitud>;
+  obtenerMagnitudPorId: (
+    id: string,
+    clienteId: string
+  ) => Promise<Magnitud | null>;
+  obtenerMagnitudes: (clienteId: string) => Promise<Magnitud[]>;
 }
