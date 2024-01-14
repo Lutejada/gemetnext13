@@ -1,16 +1,28 @@
-import { prisma } from '@/src/lib/prisma';
-import { Actividad } from '../dominio';
-import { CrearActividadDto } from '../dtos/crear';
-import { ActividadRepositorio } from './index';
-export const actividadRepositorio :ActividadRepositorio={
-    crearActividad: function (dto: CrearActividadDto): Promise<Actividad> {
-        return prisma.tipo_actividad.create({
-            data: {
-                descripcion: dto.descripcion,                
-            }
-        });
-    },
-    obtenerActividades: function (): Promise<Actividad[]> {
-        return prisma.tipo_actividad.findMany()
-    }
-}
+import { prisma } from "@/src/lib/prisma";
+import { Actividad } from "../dominio";
+import { CrearActividadDto } from "../dtos/crear";
+import { ActividadRepositorio } from "./index";
+export const actividadRepositorio: ActividadRepositorio = {
+  crearActividad: async function (
+    dto: CrearActividadDto,
+    clienteId: string
+  ): Promise<Actividad> {
+    const resActividad = await prisma.tipo_actividad.create({
+      data: {
+        cliente_id: clienteId,
+        descripcion: dto.descripcion,
+      },
+    });
+    const actividad: Actividad = {
+      id: resActividad.id,
+      descripcion: resActividad.descripcion,
+      fecha_creacion: resActividad.fecha_creacion,
+      fecha_actualizacion: resActividad.fecha_actualizacion,
+      clienteId: resActividad.cliente_id,
+    };
+    return actividad;
+  },
+  obtenerActividades: function (clienteId: string): Promise<Actividad[]> {
+    return prisma.tipo_actividad.findMany({ where: { cliente_id: clienteId } });
+  },
+};
