@@ -36,7 +36,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const termino = searchParams.get("termino");
     const valor = searchParams.get("valor");
-    const page = Number(searchParams.get("page")) ?? 1;
+    const page = Number(searchParams.get("page")) || 1;
     console.log(page);
     const session = await auth();
     const equipos = await obtenerEquipos(

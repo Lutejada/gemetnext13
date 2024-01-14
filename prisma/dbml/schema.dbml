@@ -10,7 +10,7 @@ Table equipo {
   serie String [not null]
   marca_id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
+  fecha_actualizacion DateTime [default: `now()`, not null]
   fecha_inactivacion DateTime
   ubicacion_id String [not null]
   cliente_id String [not null]
@@ -43,6 +43,7 @@ Table marca {
   fechaCreacion DateTime [default: `now()`, not null]
   fechaactualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table tipo_actividad {
@@ -225,6 +226,8 @@ Ref: equipo.cliente_id > cliente.id
 Ref: responsable.cliente_id > cliente.id
 
 Ref: ubicacion.responsable_id > responsable.id
+
+Ref: marca.cliente_id > cliente.id
 
 Ref: usuario.cliente_id - cliente.id
 
