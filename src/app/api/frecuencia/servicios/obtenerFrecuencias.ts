@@ -1,5 +1,5 @@
-import { frecuenciaRepositorio } from "../repositorio/frecuenciaResposito"
+import { frecuenciaRepositorio } from "../repositorio/frecuenciaResposito";
 
-export const obtenerfrecuencias = ()=>{
-    return frecuenciaRepositorio.obtenerFrecuencias();
-}
+export const obtenerfrecuencias = (clienteId: string) => {
+  return frecuenciaRepositorio.obtenerFrecuencias(clienteId);
+};
