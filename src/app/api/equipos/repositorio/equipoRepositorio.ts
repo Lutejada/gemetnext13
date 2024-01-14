@@ -13,12 +13,10 @@ import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 import { format } from "date-fns";
-import {
-  EquipoProgramacionDto,
-  ListaProgramacionEquiposDTO,
-} from "../dtos/listaProgramacionEquipos.output";
+import { EquipoProgramacionDto } from "../dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "../../common/types";
 import { calcularPagina } from "@/lib/queryUtils";
+import { ObtenerEquiposDtoOutput } from "../dtos/obtenerEquipos.dto.output";
 
 const selectEquipoBasico = {
   id: true,
@@ -41,8 +39,11 @@ const selectEquipoBasico = {
 };
 
 export const equipoRepositorio: EquipoRepositorio = {
-  crearEquipo: function (dto: CrearEquipoDto): Promise<Equipo> {
-    return prisma.equipo.create({
+  crearEquipo: async function (
+    dto: CrearEquipoDto,
+    clienteId: string
+  ): Promise<void> {
+    await prisma.equipo.create({
       data: {
         codigo: dto.codigo,
         descripcion: dto.descripcion,
@@ -50,6 +51,7 @@ export const equipoRepositorio: EquipoRepositorio = {
         serie: dto.serie,
         marca_id: dto.marcaId,
         ubicacion_id: dto.ubicacionId,
+        cliente_id: clienteId,
       },
     });
   },
@@ -121,9 +123,13 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  obtenerEquipos: async function (page?: number) {
-    const { skip, porPagina } = calcularPagina(page ?? 1);
+  obtenerEquipos: async function (
+    clienteId: string,
+    page: number
+  ): Promise<ObtenerEquiposDtoOutput> {
+    const { skip, porPagina } = calcularPagina(page);
     const equipos = await prisma.equipo.findMany({
+      where: { cliente_id: clienteId },
       orderBy: {
         fecha_creacion: "desc",
       },
@@ -299,5 +305,3 @@ export const equipoRepositorio: EquipoRepositorio = {
     };
   },
 };
-
-

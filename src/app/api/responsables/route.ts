@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     validarCrearResponsable(body);
     const session = await auth();
 
-    await crearResponsable(body, session.user.clienteId);
+    await crearResponsable(body, session.user.cliente_id);
     return NextResponse.json({ msg: "responsable creado" });
   } catch (error: any) {
     return errorHandler(error);

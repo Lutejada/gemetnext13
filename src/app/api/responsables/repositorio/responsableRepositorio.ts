@@ -7,12 +7,13 @@ const crearResponsable = async (
   responsable: CrearResponsableDto,
   clienteId: string
 ): Promise<void> => {
+  console.log(clienteId);
   await prisma.responsable.create({
     data: {
       identificacion: responsable.identificacion,
       nombre: responsable.nombre,
       apellido: responsable.apellido,
-      clienteId: clienteId,
+      cliente_id: clienteId,
     },
   });
 };
@@ -27,7 +28,7 @@ const obtenerResponsableIdent = async (
   const res = await prisma.responsable.findUnique({
     where: {
       identificacion: identificacion,
-      clienteId: clienteId,
+      cliente_id: clienteId,
     },
   });
   return res;
@@ -37,7 +38,7 @@ const obtenerResponsableID = (id: string, clienteId: string) => {
   return prisma.responsable.findUnique({
     where: {
       id,
-      clienteId,
+      cliente_id: clienteId,
     },
   });
 };

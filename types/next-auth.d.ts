@@ -11,9 +11,9 @@ export interface User {
   fecha_creacion: string;
   fecha_actualizacion: string;
   fecha_inactivacion?: string | null;
-  clienteId: string;
+  cliente_id: string;
   cliente: {
-    clienteId: string;
+    id: string;
     nombre: string;
   };
 }

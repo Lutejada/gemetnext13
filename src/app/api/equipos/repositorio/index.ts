@@ -15,7 +15,7 @@ import { ListaProgramacionEquiposDTO } from "../dtos/listaProgramacionEquipos.ou
 import { ObtenerEquiposDtoOutput } from "../dtos/obtenerEquipos.dto.output";
 
 export interface EquipoRepositorio {
-  crearEquipo: (dto: CrearEquipoDto) => Promise<Equipo>;
+  crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
   crearDatosMetrologicos: (
     dto: CrearDatosMetrologicosDto,
     equipoId: string
@@ -29,7 +29,10 @@ export interface EquipoRepositorio {
   crearProgramacionEquipo: (
     dto: CrearProgramacionEquipoDto
   ) => Promise<ProgramacionEquipos>;
-  obtenerEquipos: (page?: number) => Promise<ObtenerEquiposDtoOutput>;
+  obtenerEquipos: (
+    clienteId: string,
+    page: number,
+  ) => Promise<ObtenerEquiposDtoOutput>;
   obtenerEquiposPorCodigo: (codigo: string) => Promise<ObtenerEquiposDtoOutput>;
   obtenerEquiposPorMarca: (marca: string) => Promise<Equipo[]>;
   editarEquipo: (codigo: string, equipo: Partial<Equipo>) => Promise<void>;

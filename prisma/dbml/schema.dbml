@@ -13,6 +13,7 @@ Table equipo {
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
   ubicacion_id String [not null]
+  cliente_id String [not null]
 }
 
 Table responsable {
@@ -23,7 +24,7 @@ Table responsable {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
-  clienteId String [not null]
+  cliente_id String [not null]
 }
 
 Table ubicacion {
@@ -73,7 +74,7 @@ Table usuario {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
-  clienteId String [unique, not null]
+  cliente_id String [unique, not null]
 }
 
 Table magnitud {
@@ -219,11 +220,13 @@ Ref: equipo.marca_id > marca.id
 
 Ref: equipo.ubicacion_id > ubicacion.id
 
-Ref: responsable.clienteId > cliente.id
+Ref: equipo.cliente_id > cliente.id
+
+Ref: responsable.cliente_id > cliente.id
 
 Ref: ubicacion.responsable_id > responsable.id
 
-Ref: usuario.clienteId - cliente.id
+Ref: usuario.cliente_id - cliente.id
 
 Ref: variable.magnitud_id > magnitud.id
 
