@@ -18,33 +18,46 @@ export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
   crearDatosMetrologicos: (
     dto: CrearDatosMetrologicosDto,
-    equipoId: string
+    equipoId: string,
+    clienteId: string
   ) => Promise<DatosMetrologicosEquipos>;
-  obtenerEquipoPorCodigo: (codigo: string) => Promise<Equipo | null>;
-  obtenerEquipoPorId: (id: string) => Promise<Equipo | null>;
+  obtenerEquipoPorCodigo: (
+    codigo: string,
+    clienteId: string
+  ) => Promise<Equipo | null>;
+  obtenerEquipoPorId: (id: string, clienteId: string) => Promise<Equipo | null>;
   crearDatosComplementarios: (
     equipoId: string,
-    dto: CrearDatosComplementariosDto
+    dto: CrearDatosComplementariosDto,
+    clienteId: string
   ) => Promise<DatosComplementariosEquipo>;
   crearProgramacionEquipo: (
-    dto: CrearProgramacionEquipoDto
+    dto: CrearProgramacionEquipoDto,
+    clienteId: string
   ) => Promise<ProgramacionEquipos>;
   obtenerEquipos: (
     clienteId: string,
-    page: number,
+    page: number
   ) => Promise<ObtenerEquiposDtoOutput>;
   obtenerEquiposPorCodigo: (codigo: string) => Promise<ObtenerEquiposDtoOutput>;
   obtenerEquiposPorMarca: (marca: string) => Promise<Equipo[]>;
-  editarEquipo: (codigo: string, equipo: Partial<Equipo>) => Promise<void>;
+  editarEquipo: (
+    codigo: string,
+    equipo: Partial<Equipo>,
+    clienteId: string
+  ) => Promise<void>;
   editarDatosMetrologicos: (
     equipoId: string,
-    dto: EditarDatosMetrologicosDto
+    dto: EditarDatosMetrologicosDto,
+    clienteId: string
   ) => Promise<void>;
   editarDatosComplementarios: (
     equipoId: string,
-    dto: EditarDatosComplementariosDto
+    dto: EditarDatosComplementariosDto,
+    clienteId: string
   ) => Promise<void>;
   listarEquiposProgramados: (
+    clienteId: string,
     dto?: ObtenerDatosDto
   ) => Promise<ListaProgramacionEquiposDTO>;
 }

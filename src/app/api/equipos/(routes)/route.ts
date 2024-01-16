@@ -24,7 +24,8 @@ export async function PUT(request: Request) {
   try {
     const body = await request.json();
     validarEditarEquipo(body);
-    await editarEquipo(body);
+    const session = await auth();
+    await editarEquipo(body, session.user.cliente_id);
     return NextResponse.json({ msg: "equipo editado" });
   } catch (error: any) {
     return errorHandler(error);

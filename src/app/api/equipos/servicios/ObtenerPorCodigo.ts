@@ -1,5 +1,5 @@
-import { equipoRepositorio } from "../repositorio/equipoRepositorio"
+import { equipoRepositorio } from "../repositorio/equipoRepositorio";
 
-export const obtenerPorCodigo=(codigo:string)=>{
-    return equipoRepositorio.obtenerEquipoPorCodigo(codigo)
-}
+export const obtenerPorCodigo = (codigo: string, clienteId: string) => {
+  return equipoRepositorio.obtenerEquipoPorCodigo(codigo, clienteId);
+};

@@ -78,7 +78,7 @@ Table usuario {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
-  cliente_id String [unique, not null]
+  cliente_id String [not null]
 }
 
 Table magnitud {
@@ -114,6 +114,7 @@ Table patrones {
   fecha_inactivacion DateTime
   ubicacionId String [not null]
   datos_metrologicos_patronesId String
+  cliente_id String [not null]
 }
 
 Table datos_metrologicos_equipos {
@@ -127,6 +128,7 @@ Table datos_metrologicos_equipos {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_metrologicos_patrones {
@@ -141,6 +143,7 @@ Table datos_metrologicos_patrones {
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
   patrones_id String [unique, not null]
+  cliente_id String [not null]
 }
 
 Table tipo_patron {
@@ -166,6 +169,7 @@ Table datos_complementarios_equipo {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_complementarios_patrones {
@@ -181,6 +185,7 @@ Table datos_complementarios_patrones {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table programacion_equipos {
@@ -192,6 +197,7 @@ Table programacion_equipos {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table programacion_patrones {
@@ -203,6 +209,7 @@ Table programacion_patrones {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table cliente {
@@ -241,7 +248,7 @@ Ref: tipo_actividad.cliente_id > cliente.id
 
 Ref: frecuencia.cliente_id > cliente.id
 
-Ref: usuario.cliente_id - cliente.id
+Ref: usuario.cliente_id > cliente.id
 
 Ref: magnitud.cliente_id > cliente.id
 
@@ -253,15 +260,25 @@ Ref: patrones.marca_id > marca.id
 
 Ref: patrones.ubicacionId > ubicacion.id
 
+Ref: patrones.cliente_id > cliente.id
+
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
 
+Ref: datos_metrologicos_equipos.cliente_id > cliente.id
+
 Ref: datos_metrologicos_patrones.patrones_id - patrones.id
+
+Ref: datos_metrologicos_patrones.cliente_id > cliente.id
 
 Ref: tipo_patron.cliente_id > cliente.id
 
 Ref: datos_complementarios_equipo.equipo_id - equipo.id
 
+Ref: datos_complementarios_equipo.cliente_id > cliente.id
+
 Ref: datos_complementarios_patrones.patron_id - patrones.id
+
+Ref: datos_complementarios_patrones.cliente_id > cliente.id
 
 Ref: programacion_equipos.actividad_id > tipo_actividad.id
 
@@ -269,8 +286,12 @@ Ref: programacion_equipos.frecuencia_id > frecuencia.id
 
 Ref: programacion_equipos.equipo_id > equipo.id
 
+Ref: programacion_equipos.cliente_id > cliente.id
+
 Ref: programacion_patrones.actividad_id > tipo_actividad.id
 
 Ref: programacion_patrones.frecuencia_id > frecuencia.id
 
 Ref: programacion_patrones.patron_id > patrones.id
+
+Ref: programacion_patrones.cliente_id > cliente.id

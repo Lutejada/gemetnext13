@@ -25,9 +25,7 @@ export const usuarioResitorio: UsuarioRepositorio = {
     return prisma.usuario.findUnique({
       where: {
         cliente_id: clienteId,
-        AND: {
-          correo,
-        },
+        correo: correo,
       },
     });
   },

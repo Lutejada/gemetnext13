@@ -4,7 +4,7 @@ import { equipoRepositorio } from "../repositorio/equipoRepositorio";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 
 export const crearEquipo = async (dto: CrearEquipoDto, clienteId: string) => {
-  const equipoExiste = await obtenerPorCodigo(dto.codigo);
+  const equipoExiste = await obtenerPorCodigo(dto.codigo, clienteId);
   if (equipoExiste) {
     throw new EquipoExiste();
   }

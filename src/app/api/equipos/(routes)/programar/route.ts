@@ -4,11 +4,13 @@ import { crearProgramacionEquipos } from "../../servicios/crearProgramacionEquip
 import { listarEquiposProgramados } from "../../servicios/listarEquiposProgramados";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 import { string } from "zod";
+import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    await crearProgramacionEquipos(body);
+    const session = await auth();
+    await crearProgramacionEquipos(body, session.user.cliente_id);
     return NextResponse.json({ msg: "equipo creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -22,7 +24,11 @@ export async function GET(request: Request) {
     const dto: ObtenerDatosDto = {
       page: Number(page) || 1,
     };
-    const programacion = await listarEquiposProgramados(dto);
+    const session = await auth();
+    const programacion = await listarEquiposProgramados(
+      session.user.cliente_id,
+      dto
+    );
     return NextResponse.json(programacion);
   } catch (error: any) {
     return errorHandler(error);

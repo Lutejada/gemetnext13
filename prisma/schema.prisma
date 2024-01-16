@@ -34,6 +34,8 @@ model equipo {
   ubicacion_id          String
   cliente_id            String
   cliente               cliente                       @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model responsable {
@@ -123,8 +125,10 @@ model usuario {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
   cliente             cliente   @relation(fields: [cliente_id], references: [id])
-  cliente_id          String    @unique
+
+  @@index([cliente_id])
 }
 
 model magnitud {
@@ -173,6 +177,10 @@ model patrones {
   ubicacionId                   String
   datos_metrologicos_patronesId String?
   programacion_patrones         programacion_patrones[]
+  cliente_id                    String
+  cliente                       cliente                         @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_metrologicos_equipos {
@@ -188,6 +196,10 @@ model datos_metrologicos_equipos {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_metrologicos_patrones {
@@ -203,6 +215,10 @@ model datos_metrologicos_patrones {
   fecha_inactivacion  DateTime?
   patrones            patrones  @relation(fields: [patrones_id], references: [id])
   patrones_id         String    @unique
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model tipo_patron {
@@ -232,6 +248,10 @@ model datos_complementarios_equipo {
   fecha_creacion                      DateTime  @default(now())
   fecha_actualizacion                 DateTime  @updatedAt
   fecha_inactivacion                  DateTime?
+  cliente_id                          String
+  cliente                             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_complementarios_patrones {
@@ -248,6 +268,10 @@ model datos_complementarios_patrones {
   fecha_creacion                      DateTime  @default(now())
   fecha_actualizacion                 DateTime  @updatedAt
   fecha_inactivacion                  DateTime?
+  cliente_id                          String
+  cliente                             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model programacion_equipos {
@@ -262,6 +286,10 @@ model programacion_equipos {
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente        @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model programacion_patrones {
@@ -276,21 +304,32 @@ model programacion_patrones {
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente        @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model cliente {
-  id             String           @id @default(uuid())
-  nombre         String           @unique
-  usuario        usuario?
-  responsable    responsable[]
-  equipo         equipo[]
-  marca          marca[]
-  ubicacion      ubicacion[]
-  tipo_actividad tipo_actividad[]
-  frecuencia     frecuencia[]
-  magnitud       magnitud[]
-  variable       variable[]
-  tipo_patron    tipo_patron[]
+  id                             String                           @id @default(uuid())
+  nombre                         String                           @unique
+  usuario                        usuario[]
+  responsable                    responsable[]
+  equipo                         equipo[]
+  marca                          marca[]
+  ubicacion                      ubicacion[]
+  tipo_actividad                 tipo_actividad[]
+  frecuencia                     frecuencia[]
+  magnitud                       magnitud[]
+  variable                       variable[]
+  tipo_patron                    tipo_patron[]
+  patrones                       patrones[]
+  datos_metrologicos_equipos     datos_metrologicos_equipos[]
+  datos_metrologicos_patrones    datos_metrologicos_patrones[]
+  datos_complementarios_equipo   datos_complementarios_equipo[]
+  datos_complementarios_patrones datos_complementarios_patrones[]
+  programacion_equipos           programacion_equipos[]
+  programacion_patrones          programacion_patrones[]
 }
 
 // model fecha_inicial_patrones {
