@@ -4,11 +4,13 @@ import { ObtenerDatosDto } from "@/app/api/common/types";
 import { string } from "zod";
 import { crearProgramacionPatrones } from "../../servicios/crearProgramacionPatron";
 import { listarPatronesProgramados } from "../../servicios/listarPatronesProgramados";
+import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    await crearProgramacionPatrones(body);
+    const session = await auth();
+    await crearProgramacionPatrones(body, session.user.cliente_id);
     return NextResponse.json({ msg: "patron creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -22,7 +24,11 @@ export async function GET(request: Request) {
     const dto: ObtenerDatosDto = {
       page: Number(page) || 1,
     };
-    const programacion = await listarPatronesProgramados(dto);
+    const session = await auth();
+    const programacion = await listarPatronesProgramados(
+      dto,
+      session.user.cliente_id
+    );
     return NextResponse.json(programacion);
   } catch (error: any) {
     return errorHandler(error);

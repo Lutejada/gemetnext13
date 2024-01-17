@@ -1,5 +1,5 @@
-import { patronRepositorio } from "../repositorio/patronRepositorio"
+import { patronRepositorio } from "../repositorio/patronRepositorio";
 
-export const obtenerPorCodigo=(codigo:string)=>{
-    return patronRepositorio.obtenerPatronPorCodigo(codigo);
-}
+export const obtenerPorCodigo = (codigo: string, clienteId: string) => {
+  return patronRepositorio.obtenerPatronPorCodigo(codigo, clienteId);
+};
