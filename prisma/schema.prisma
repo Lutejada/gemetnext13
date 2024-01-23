@@ -179,6 +179,8 @@ model patrones {
   programacion_patrones         programacion_patrones[]
   cliente_id                    String
   cliente                       cliente                         @relation(fields: [cliente_id], references: [id])
+  tipo_patron                   tipo_patron                     @relation(fields: [tipo_patron_id], references: [id])
+  tipo_patron_id                String
 
   @@index([cliente_id])
 }
@@ -222,14 +224,15 @@ model datos_metrologicos_patrones {
 }
 
 model tipo_patron {
-  id                  String    @id @default(cuid())
+  id                  String     @id @default(cuid())
   alias               String
   descripcion         String
-  fecha_creacion      DateTime  @default(now())
-  fecha_actualizacion DateTime  @updatedAt
+  fecha_creacion      DateTime   @default(now())
+  fecha_actualizacion DateTime   @updatedAt
   fecha_inactivacion  DateTime?
   cliente_id          String
-  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+  cliente             cliente    @relation(fields: [cliente_id], references: [id])
+  patrones            patrones[]
 
   @@index([cliente_id])
 }
