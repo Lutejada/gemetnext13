@@ -1,6 +1,6 @@
-import { CrearActividadDto } from "../dtos/crear"
-import { actividadRepositorio } from "../repositorio/actividadRepositorio"
+import { CrearActividadDto } from "../dtos/crear";
+import { actividadRepositorio } from "../repositorio/actividadRepositorio";
 
-export const crearActividad =(dto:CrearActividadDto)=>{
-    return actividadRepositorio.crearActividad(dto)
-}
+export const crearActividad = (dto: CrearActividadDto, clienteId: string) => {
+  return actividadRepositorio.crearActividad(dto, clienteId);
+};

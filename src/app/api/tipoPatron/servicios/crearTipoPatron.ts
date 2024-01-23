@@ -1,6 +1,6 @@
-import { CrearTipoPatronDto } from "../dtos/crear"
-import { tipoPatronRespositorio } from "../repositorio/tipoPatronRepositorio"
+import { CrearTipoPatronDto } from "../dtos/crear";
+import { tipoPatronRespositorio } from "../repositorio/tipoPatronRepositorio";
 
-export const crearTipoPatron =(dto:CrearTipoPatronDto)=>{
-    return tipoPatronRespositorio.creatTipoPatron(dto)
-}
+export const crearTipoPatron = (dto: CrearTipoPatronDto, clienteId: string) => {
+  return tipoPatronRespositorio.creatTipoPatron(dto, clienteId);
+};

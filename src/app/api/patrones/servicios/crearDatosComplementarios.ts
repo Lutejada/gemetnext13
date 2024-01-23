@@ -4,16 +4,21 @@ import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 
 export const crearDatosComplementarios = async (
-  dto: CrearDatosComplementariosDto
+  dto: CrearDatosComplementariosDto,
+  clienteId: string
 ) => {
-  const patronExiste = await obtenerPorCodigo(dto.codigo);
+  const patronExiste = await obtenerPorCodigo(dto.codigo, clienteId);
   if (!patronExiste) {
     throw new PatronYaExiste();
   }
 
-  if(patronExiste.datos_complementarios){
-    throw new DatosComplementariosYaExisten()
+  if (patronExiste.datos_complementarios) {
+    throw new DatosComplementariosYaExisten();
   }
 
-  return patronRepositorio.crearDatosComplementarios(patronExiste.id, dto);
+  return patronRepositorio.crearDatosComplementarios(
+    patronExiste.id,
+    dto,
+    clienteId
+  );
 };

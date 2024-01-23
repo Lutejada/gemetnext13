@@ -1,5 +1,5 @@
-import { magnitudRespositorio } from "../repositorio/magnitudRespositorio"
+import { magnitudRespositorio } from "../repositorio/magnitudRespositorio";
 
-export const obtenerMagnitudes=()=>{
-    return magnitudRespositorio.obtenerTodo()
-}
+export const obtenerMagnitudes = (clienteId: string) => {
+  return magnitudRespositorio.obtenerMagnitudes(clienteId);
+};

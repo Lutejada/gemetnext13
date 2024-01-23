@@ -4,28 +4,29 @@ import { Usuario } from "../dominio";
 import { CrearUsuarioDto } from "../dtos/crearUsuario.dto";
 
 export const usuarioResitorio: UsuarioRepositorio = {
-  crearUsuario,
-  obtenerUsuarioCorreo,
+  crearUsuario: function (dto: CrearUsuarioDto): Promise<Usuario> {
+    return prisma.usuario.create({
+      data: {
+        apellido: dto.apellido,
+        cargo: dto.cargo,
+        nombre: dto.nombre,
+        correo: dto.correo,
+        password: dto.password,
+        usuario: dto.usuario,
+        cliente_id: dto.clienteId,
+        rol: dto.rol,
+      },
+    });
+  },
+  obtenerUsuarioCorreo: async function (
+    correo: string,
+    clienteId: string
+  ): Promise<Usuario | null> {
+    return prisma.usuario.findUnique({
+      where: {
+        cliente_id: clienteId,
+        correo: correo,
+      },
+    });
+  },
 };
-
-function crearUsuario(dto: CrearUsuarioDto): Promise<Usuario> {
-  return prisma.usuario.create({
-    data: {
-      nombre: dto.nombre,           
-      correo: dto.correo,
-      password: dto.password,
-      apellido:dto.apellido,
-      cargo:dto.cargo,
-      usuario:dto.cargo,
-      rol:dto.rol,             
-    },
-  });
-}
-
-function obtenerUsuarioCorreo(correo: string): Promise<Usuario | null> {
-  return prisma.usuario.findUnique({
-    where: {
-      correo,
-    },
-  });
-}

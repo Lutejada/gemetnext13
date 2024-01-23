@@ -14,33 +14,46 @@ import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementario
 import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";
 import { ListaProgramacionPatronesDTO } from "../dtos/listaProgramacionPatrones.output";
 export interface PatronRepositorio {
-  crearPatron: (dto: CrearPatronDto) => Promise<Patron>;
-  obtenerPatronPorCodigo: (codigo: string) => Promise<Patron | null>;
+  crearPatron: (dto: CrearPatronDto, clienteId: string) => Promise<Patron>;
+  obtenerPatronPorCodigo: (
+    codigo: string,
+    clienteId: string
+  ) => Promise<Patron | null>;
   crearDatosMetrologicos: (
     dto: CrearDatosMetrologicosDto,
-    patronId: string
+    patronId: string,
+    clienteId: string
   ) => Promise<DatosMetrologicosPatrones>;
   crearDatosComplementarios: (
     patronId: string,
-    dto: CrearDatosComplementariosDto
+    dto: CrearDatosComplementariosDto,
+    clienteId: string
   ) => Promise<DatosComplementariosPatrones>;
-  obtenerPatrones: (dto?: ObtenerDatosDto) => Promise<ObtenerPatronesDtoOutput>;
+  obtenerPatrones: (
+    clienteId: string,
+    dto?: ObtenerDatosDto
+  ) => Promise<ObtenerPatronesDtoOutput>;
   editarDatosBasicos: (
     codigo: string,
-    patron: Partial<Patron>
+    patron: Partial<Patron>,
+    clienteId: string
   ) => Promise<void>;
   editarDatosMetrologicos: (
     equipoId: string,
-    dto: EditarDatosMetrologicosDto
+    dto: EditarDatosMetrologicosDto,
+    clienteId: string
   ) => Promise<void>;
   editarDatosComplementarios: (
     patronId: string,
-    dto: EditarDatosComplementariosDto
+    dto: EditarDatosComplementariosDto,
+    clienteId: string
   ) => Promise<void>;
   crearProgramacionPatron: (
-    dto: CrearProgramacionPatronDto
+    dto: CrearProgramacionPatronDto,
+    clienteId: string
   ) => Promise<ProgramacionPatrones>;
   listarPatronesProgramados: (
+    clienteId: string,
     dto?: ObtenerDatosDto
   ) => Promise<ListaProgramacionPatronesDTO>;
 }

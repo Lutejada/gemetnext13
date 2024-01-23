@@ -28,10 +28,14 @@ model equipo {
   marca_id              String
   programacion_equipos  programacion_equipos[]
   fecha_creacion        DateTime                      @default(now())
-  fecha_actualizacion   DateTime                      @updatedAt
+  fecha_actualizacion   DateTime                      @default(now()) @updatedAt
   fecha_inactivacion    DateTime?
   ubicacion             ubicacion                     @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id          String
+  cliente_id            String
+  cliente               cliente                       @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model responsable {
@@ -43,6 +47,10 @@ model responsable {
   fecha_creacion      DateTime    @default(now())
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente     @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model ubicacion {
@@ -55,6 +63,10 @@ model ubicacion {
   fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
   patrones            patrones[]
+  cliente_id          String
+  cliente             cliente     @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model marca {
@@ -66,6 +78,10 @@ model marca {
   fechaactualizacion DateTime   @updatedAt
   fecha_inactivacion DateTime?
   patrones           patrones[]
+  cliente_id         String
+  cliente            cliente    @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model tipo_actividad {
@@ -76,6 +92,10 @@ model tipo_actividad {
   fecha_actualizacion   DateTime                @updatedAt
   fecha_inactivacion    DateTime?
   programacion_patrones programacion_patrones[]
+  cliente_id            String
+  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model frecuencia {
@@ -87,6 +107,10 @@ model frecuencia {
   fecha_inactivacion    DateTime?
   programacion_equipos  programacion_equipos[]
   programacion_patrones programacion_patrones[]
+  cliente_id            String
+  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model usuario {
@@ -97,10 +121,14 @@ model usuario {
   cargo               String    @db.VarChar(40)
   rol                 Role      @default(Consulta)
   correo              String    @unique @db.VarChar(50)
-  password            String    @db.VarChar(50)
+  password            String    @db.VarChar(250)
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model magnitud {
@@ -111,6 +139,10 @@ model magnitud {
   fecha_creacion      DateTime   @default(now())
   fecha_actualizacion DateTime   @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente    @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model variable {
@@ -122,6 +154,10 @@ model variable {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model patrones {
@@ -141,6 +177,12 @@ model patrones {
   ubicacionId                   String
   datos_metrologicos_patronesId String?
   programacion_patrones         programacion_patrones[]
+  cliente_id                    String
+  cliente                       cliente                         @relation(fields: [cliente_id], references: [id])
+  tipo_patron                   tipo_patron                     @relation(fields: [tipo_patron_id], references: [id])
+  tipo_patron_id                String
+
+  @@index([cliente_id])
 }
 
 model datos_metrologicos_equipos {
@@ -156,6 +198,10 @@ model datos_metrologicos_equipos {
   fecha_creacion      DateTime  @default(now())
   fecha_actualizacion DateTime  @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_metrologicos_patrones {
@@ -171,15 +217,24 @@ model datos_metrologicos_patrones {
   fecha_inactivacion  DateTime?
   patrones            patrones  @relation(fields: [patrones_id], references: [id])
   patrones_id         String    @unique
+  cliente_id          String
+  cliente             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model tipo_patron {
-  id                  String    @id @default(cuid())
+  id                  String     @id @default(cuid())
   alias               String
   descripcion         String
-  fecha_creacion      DateTime  @default(now())
-  fecha_actualizacion DateTime  @updatedAt
+  fecha_creacion      DateTime   @default(now())
+  fecha_actualizacion DateTime   @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente    @relation(fields: [cliente_id], references: [id])
+  patrones            patrones[]
+
+  @@index([cliente_id])
 }
 
 model datos_complementarios_equipo {
@@ -196,6 +251,10 @@ model datos_complementarios_equipo {
   fecha_creacion                      DateTime  @default(now())
   fecha_actualizacion                 DateTime  @updatedAt
   fecha_inactivacion                  DateTime?
+  cliente_id                          String
+  cliente                             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model datos_complementarios_patrones {
@@ -212,6 +271,10 @@ model datos_complementarios_patrones {
   fecha_creacion                      DateTime  @default(now())
   fecha_actualizacion                 DateTime  @updatedAt
   fecha_inactivacion                  DateTime?
+  cliente_id                          String
+  cliente                             cliente   @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model programacion_equipos {
@@ -226,6 +289,10 @@ model programacion_equipos {
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente        @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
 }
 
 model programacion_patrones {
@@ -240,6 +307,32 @@ model programacion_patrones {
   fecha_creacion      DateTime       @default(now())
   fecha_actualizacion DateTime       @updatedAt
   fecha_inactivacion  DateTime?
+  cliente_id          String
+  cliente             cliente        @relation(fields: [cliente_id], references: [id])
+
+  @@index([cliente_id])
+}
+
+model cliente {
+  id                             String                           @id @default(uuid())
+  nombre                         String                           @unique
+  usuario                        usuario[]
+  responsable                    responsable[]
+  equipo                         equipo[]
+  marca                          marca[]
+  ubicacion                      ubicacion[]
+  tipo_actividad                 tipo_actividad[]
+  frecuencia                     frecuencia[]
+  magnitud                       magnitud[]
+  variable                       variable[]
+  tipo_patron                    tipo_patron[]
+  patrones                       patrones[]
+  datos_metrologicos_equipos     datos_metrologicos_equipos[]
+  datos_metrologicos_patrones    datos_metrologicos_patrones[]
+  datos_complementarios_equipo   datos_complementarios_equipo[]
+  datos_complementarios_patrones datos_complementarios_patrones[]
+  programacion_equipos           programacion_equipos[]
+  programacion_patrones          programacion_patrones[]
 }
 
 // model fecha_inicial_patrones {

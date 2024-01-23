@@ -3,10 +3,12 @@ import { DatosMetrologicosYaExisten, PatronNoExiste } from "../errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 
 export const crearDatosMetrologicos = async (
-  dto: CrearDatosMetrologicosDto
+  dto: CrearDatosMetrologicosDto,
+  clienteId: string
 ) => {
   const patronExiste = await patronRepositorio.obtenerPatronPorCodigo(
-    dto.codigo
+    dto.codigo,
+    clienteId
   );
   if (!patronExiste) {
     throw new PatronNoExiste();
@@ -16,5 +18,9 @@ export const crearDatosMetrologicos = async (
     throw new DatosMetrologicosYaExisten();
   }
 
-  return patronRepositorio.crearDatosMetrologicos(dto, patronExiste.id);
+  return patronRepositorio.crearDatosMetrologicos(
+    dto,
+    patronExiste.id,
+    clienteId
+  );
 };

@@ -4,13 +4,17 @@ import { validarCrearDatosMetrologicos } from "../../dtos/crearDatosMetrologicos
 import { crearDatosMetrologicos } from "../../servicios/crearDatosMetrologicos";
 import { validarEditarMetrologicos } from "../../dtos/editarDatosMetrologicos.dto";
 import { editarDatosMetrologicos } from "../../servicios/editarDatosMetrologicos";
-
+import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     validarCrearDatosMetrologicos(body);
-    const metrologicos = await crearDatosMetrologicos(body);
+    const session = await auth();
+    const metrologicos = await crearDatosMetrologicos(
+      body,
+      session.user.cliente_id
+    );
     return NextResponse.json({ msg: "patron creado creado", metrologicos });
   } catch (error: any) {
     return errorHandler(error);
@@ -20,15 +24,14 @@ export async function POST(request: Request) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    validarEditarMetrologicos(body)
-    await editarDatosMetrologicos(body)
-    return NextResponse.json({msg:'Datos editados'})
+    validarEditarMetrologicos(body);
+    const session = await auth();
+    await editarDatosMetrologicos(body, session.user.cliente_id);
+    return NextResponse.json({ msg: "Datos editados" });
   } catch (error: any) {
     return errorHandler(error);
   }
 }
-
-
 
 export async function GET(_request: Request) {
   try {

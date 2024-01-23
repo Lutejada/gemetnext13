@@ -1,3 +1,4 @@
+import { Cliente } from "../../cliente/dominio";
 import { Ubicacion } from "../../ubicaciones/types";
 
 export interface Patron {
@@ -14,6 +15,8 @@ export interface Patron {
   datos_metrologicos?: DatosMetrologicosPatrones | null;
   datos_complementarios?: DatosComplementariosPatrones | null;
   ubicacion?: Ubicacion;
+  clienteId: string;
+  cliente?: Cliente;
 }
 
 export interface DatosMetrologicosPatrones {
@@ -61,4 +64,3 @@ export interface ProgramacionPatrones {
   fecha_actualizacion: Date;
   fecha_inactivacion?: Date | null;
 }
-

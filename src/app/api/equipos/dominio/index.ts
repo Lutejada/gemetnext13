@@ -1,3 +1,4 @@
+import { Cliente } from "../../cliente/dominio";
 import { Marca } from "../../marca/dominio";
 import { Ubicacion } from "../../ubicaciones/types";
 
@@ -13,11 +14,13 @@ export interface Equipo {
   marca?: Marca;
   ubicacion?: Ubicacion;
   ubicacion_id: string;
+  cliente_id: string;
   fecha_creacion: Date | string;
   fecha_actualizacion: Date | string;
   fecha_inactivacion?: Date | string | null;
   datos_metrologicos?: DatosMetrologicosEquipos | null;
   datos_complementarios?: DatosComplementariosEquipo | null;
+  cliente?: Cliente | null;
 }
 
 export interface DatosMetrologicosEquipos {

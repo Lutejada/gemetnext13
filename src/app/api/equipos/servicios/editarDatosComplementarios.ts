@@ -4,9 +4,14 @@ import { equipoRepositorio } from "../repositorio/equipoRepositorio";
 import { validarEquipoExiste } from "./validarEquipoExiste";
 
 export const editarDatosComplementarios = async (
-  dto: CrearDatosComplementariosDto
+  dto: CrearDatosComplementariosDto,
+  clienteId: string
 ) => {
-  const equipoExiste = await validarEquipoExiste(dto.codigo);
-  
-  return equipoRepositorio.editarDatosComplementarios(equipoExiste.id, dto);
+  const equipoExiste = await validarEquipoExiste(dto.codigo, clienteId);
+
+  return equipoRepositorio.editarDatosComplementarios(
+    equipoExiste.id,
+    dto,
+    clienteId
+  );
 };

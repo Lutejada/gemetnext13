@@ -24,9 +24,13 @@ import {
 } from "../dtos/listaProgramacionPatrones.output";
 import { format } from "date-fns";
 export const patronRepositorio: PatronRepositorio = {
-  crearPatron: async function (dto: CrearPatronDto): Promise<Patron> {
+  crearPatron: async function (
+    dto: CrearPatronDto,
+    clienteId: string
+  ): Promise<Patron> {
     const patron = await prisma.patrones.create({
       data: {
+        cliente_id: clienteId,
         codigo: dto.codigo,
         descripcion: dto.descripcion,
         modelo: dto.modelo,
@@ -35,15 +39,16 @@ export const patronRepositorio: PatronRepositorio = {
         ubicacionId: dto.ubicacionId,
       },
     });
-    console.log(patron);
     return patron;
   },
   obtenerPatronPorCodigo: async function (
-    codigo: string
+    codigo: string,
+    clienteId: string
   ): Promise<Patron | null> {
     const patron = await prisma.patrones.findUnique({
       where: {
         codigo,
+        cliente_id: clienteId,
       },
       include: {
         datos_metrologicos: true,
@@ -56,7 +61,8 @@ export const patronRepositorio: PatronRepositorio = {
   },
   crearDatosMetrologicos: function (
     dto: CrearDatosMetrologicosDto,
-    patronId: string
+    patronId: string,
+    clienteId: string
   ): Promise<DatosMetrologicosPatrones> {
     return prisma.datos_metrologicos_patrones.create({
       data: {
@@ -67,12 +73,14 @@ export const patronRepositorio: PatronRepositorio = {
         resolucion: dto.resolucion,
         patrones_id: patronId,
         valor_nominal: dto.valorNominal,
+        cliente_id: clienteId,
       },
     });
   },
   crearDatosComplementarios: function (
     patronId: string,
-    dto: CrearDatosComplementariosDto
+    dto: CrearDatosComplementariosDto,
+    clienteId: string
   ): Promise<DatosComplementariosPatrones> {
     return prisma.datos_complementarios_patrones.create({
       data: {
@@ -85,14 +93,19 @@ export const patronRepositorio: PatronRepositorio = {
         utiliza_software: dto.utilizaSoftware,
         version_software: dto.versionSoftware,
         patron_id: patronId,
+        cliente_id: clienteId,
       },
     });
   },
   obtenerPatrones: async function (
+    clienteId: string,
     dto?: ObtenerDatosDto | undefined
   ): Promise<ObtenerPatronesDtoOutput> {
     const { porPagina, skip } = calcularPagina(dto?.page ?? 1);
     const dbResponse = await prisma.patrones.findMany({
+      where: {
+        cliente_id: clienteId,
+      },
       orderBy: {
         fecha_creacion: "desc",
       },
@@ -127,6 +140,7 @@ export const patronRepositorio: PatronRepositorio = {
     }));
 
     const countNextPage = await prisma.programacion_equipos.count({
+      where: { cliente_id: clienteId },
       take: porPagina,
       skip,
     });
@@ -140,10 +154,11 @@ export const patronRepositorio: PatronRepositorio = {
   },
   editarDatosBasicos: async function (
     codigo: string,
-    patron: Partial<Patron>
+    patron: Partial<Patron>,
+    clienteId: string
   ): Promise<void> {
     await prisma.patrones.update({
-      where: { codigo },
+      where: { codigo, cliente_id: clienteId },
       data: {
         marca_id: patron.marca_id,
         descripcion: patron.descripcion,
@@ -155,11 +170,13 @@ export const patronRepositorio: PatronRepositorio = {
   },
   editarDatosMetrologicos: async function (
     patronId: string,
-    dto: EditarDatosMetrologicosDto
+    dto: EditarDatosMetrologicosDto,
+    clienteId: string
   ): Promise<void> {
     await prisma.datos_metrologicos_patrones.update({
       where: {
         patrones_id: patronId,
+        cliente_id: clienteId,
       },
       data: {
         division_escala: dto.divisionEscala,
@@ -171,11 +188,13 @@ export const patronRepositorio: PatronRepositorio = {
   },
   editarDatosComplementarios: async function (
     patronId: string,
-    dto: EditarDatosComplementariosDto
+    dto: EditarDatosComplementariosDto,
+    clienteId: string
   ): Promise<void> {
     await prisma.datos_complementarios_patrones.update({
       where: {
         patron_id: patronId,
+        cliente_id: clienteId,
       },
       data: {
         cumple_especificacion_instalaciones:
@@ -190,7 +209,8 @@ export const patronRepositorio: PatronRepositorio = {
     });
   },
   crearProgramacionPatron: function (
-    dto: CrearProgramacionPatronDto
+    dto: CrearProgramacionPatronDto,
+    clienteId: string
   ): Promise<ProgramacionPatrones> {
     return prisma.programacion_patrones.create({
       data: {
@@ -198,15 +218,18 @@ export const patronRepositorio: PatronRepositorio = {
         frecuencia_id: dto.frecuenciaId,
         fecha_programacion: dto.fechaProgramacion,
         actividad_id: dto.actividadId,
+        cliente_id: clienteId,
       },
     });
   },
   listarPatronesProgramados: async function (
+    clienteId: string,
     dto?: ObtenerDatosDto | undefined
   ): Promise<ListaProgramacionPatronesDTO> {
     const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
 
     const equipoProgramacion = await prisma.programacion_patrones.findMany({
+      where: { cliente_id: clienteId },
       take: porPagina,
       skip,
       orderBy: {
@@ -233,6 +256,7 @@ export const patronRepositorio: PatronRepositorio = {
     });
 
     const countNextPage = await prisma.programacion_patrones.count({
+      where: { cliente_id: clienteId },
       take: porPagina,
       skip,
     });

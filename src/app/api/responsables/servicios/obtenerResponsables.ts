@@ -1,5 +1,5 @@
-import { responsableRepositorio } from "../repositorio/responsableRepositorio"
+import { responsableRepositorio } from "../repositorio/responsableRepositorio";
 
-export const obtenerResponsables=async()=>{
-    return responsableRepositorio.obtenerResponsables()
-}
+export const obtenerResponsables = async (clienteId: string) => {
+  return responsableRepositorio.obtenerResponsables(clienteId);
+};

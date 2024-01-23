@@ -1,6 +1,6 @@
-import { CrearMagnitudDto } from "../dtos/crearMagnitud.dto"
-import { magnitudRespositorio } from "../repositorio/magnitudRespositorio"
+import { CrearMagnitudDto } from "../dtos/crearMagnitud.dto";
+import { magnitudRespositorio } from "../repositorio/magnitudRespositorio";
 
-export const crearMagnitud =(dto:CrearMagnitudDto)=>{
-    return magnitudRespositorio.crearMagnitud(dto)
-}
+export const crearMagnitud = (dto: CrearMagnitudDto, clienteId: string) => {
+  return magnitudRespositorio.crearMagnitud(dto, clienteId);
+};

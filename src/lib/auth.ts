@@ -2,6 +2,10 @@ import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
 import { errorHandler } from "../app/api/common/errors/error.handler";
+import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
+import { isValidPassword } from "./password-hash";
+import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
+import { User } from "@/types/next-auth";
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -20,14 +24,29 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
-
-          const {id,nombre,password} = await obtenerUsuarioCorreo(credentials.correo);
-          if(password !== credentials.contraseña){
-            return null
+          console.log({ credentials });
+          const cliente = await obtenerClientePorNombre(credentials.cliente);
+          console.log({ cliente });
+          const usuario = await obtenerUsuarioCorreo(
+            credentials.correo,
+            cliente.id
+          );
+          if (!usuario) {
+            throw new UsuarioNoExiste();
           }
-          return {id,nombre};
-        } catch (error) {
-          throw new Error('no autorizado')
+          const valido = await isValidPassword(
+            credentials.contraseña,
+            usuario.password
+          );
+          if (!valido) {
+            throw new Error("no autorizado");
+          }
+          const { password, ...rest } = usuario;
+
+          return { ...rest, cliente };
+        } catch (error: any) {
+          console.error(error.message, error.stack);
+          throw new Error("no autorizado");
         }
       },
     }),
@@ -42,8 +61,10 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    session({ session, token }) {
-      session.user = token.user as {};
+    session(params) {
+      console.log({ params });
+      const { session, token } = params;
+      session.user = token.user as User
       return session;
     },
   },

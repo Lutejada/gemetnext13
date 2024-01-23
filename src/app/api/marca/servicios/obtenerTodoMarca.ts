@@ -1,5 +1,5 @@
 import { marcaRepositorio } from "../repositorio/marcaRepositorio"
 
-export const obtenerTodosMarca=()=>{
-    return marcaRepositorio.obtenerTodoMarca()
+export const obtenerTodosMarca=(clienteId:string)=>{
+    return marcaRepositorio.obtenerMarcas(clienteId)
 }

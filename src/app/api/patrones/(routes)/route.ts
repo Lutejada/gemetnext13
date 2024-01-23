@@ -7,24 +7,26 @@ import { obtenerPatrones } from "../servicios/obtenerPatrones";
 import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
 import { validarEditarBasicos } from "../dtos/editarBasicos.dto";
 import { editarDatosBasicos } from "../servicios/editarDatosBasicos";
+import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     validarCrearPatron(body);
-    const patron = await crearPatron(body);
+    const session = await auth();
+    const patron = await crearPatron(body, session.user.cliente_id);
     return NextResponse.json({ msg: "patron creado creado", patron });
   } catch (error: any) {
     return errorHandler(error);
   }
 }
 
-
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
     validarEditarBasicos(body);
-    await editarDatosBasicos(body)
+    const session = await auth();
+    await editarDatosBasicos(body, session.user.cliente_id);
     return NextResponse.json({ msg: "patron editado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -38,7 +40,8 @@ export async function GET(request: Request) {
     const dto: ObtenerDatosDto = {
       page: Number(page) || 1,
     };
-    const response = await obtenerPatrones(dto);
+    const session = await auth();
+    const response = await obtenerPatrones(session.user.cliente_id, dto);
     return NextResponse.json<ObtenerPatronesDtoOutput>(response);
   } catch (error: any) {
     return errorHandler(error);

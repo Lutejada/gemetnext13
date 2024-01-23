@@ -10,9 +10,10 @@ Table equipo {
   serie String [not null]
   marca_id String [not null]
   fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
+  fecha_actualizacion DateTime [default: `now()`, not null]
   fecha_inactivacion DateTime
   ubicacion_id String [not null]
+  cliente_id String [not null]
 }
 
 Table responsable {
@@ -23,6 +24,7 @@ Table responsable {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table ubicacion {
@@ -32,6 +34,7 @@ Table ubicacion {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table marca {
@@ -41,6 +44,7 @@ Table marca {
   fechaCreacion DateTime [default: `now()`, not null]
   fechaactualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table tipo_actividad {
@@ -49,6 +53,7 @@ Table tipo_actividad {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table frecuencia {
@@ -58,6 +63,7 @@ Table frecuencia {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table usuario {
@@ -72,6 +78,7 @@ Table usuario {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table magnitud {
@@ -81,6 +88,7 @@ Table magnitud {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table variable {
@@ -91,6 +99,7 @@ Table variable {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table patrones {
@@ -105,6 +114,7 @@ Table patrones {
   fecha_inactivacion DateTime
   ubicacionId String [not null]
   datos_metrologicos_patronesId String
+  cliente_id String [not null]
 }
 
 Table datos_metrologicos_equipos {
@@ -118,6 +128,7 @@ Table datos_metrologicos_equipos {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_metrologicos_patrones {
@@ -132,6 +143,7 @@ Table datos_metrologicos_patrones {
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
   patrones_id String [unique, not null]
+  cliente_id String [not null]
 }
 
 Table tipo_patron {
@@ -141,6 +153,7 @@ Table tipo_patron {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_complementarios_equipo {
@@ -156,6 +169,7 @@ Table datos_complementarios_equipo {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table datos_complementarios_patrones {
@@ -171,6 +185,7 @@ Table datos_complementarios_patrones {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table programacion_equipos {
@@ -182,6 +197,7 @@ Table programacion_equipos {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
 }
 
 Table programacion_patrones {
@@ -193,6 +209,12 @@ Table programacion_patrones {
   fecha_creacion DateTime [default: `now()`, not null]
   fecha_actualizacion DateTime [not null]
   fecha_inactivacion DateTime
+  cliente_id String [not null]
+}
+
+Table cliente {
+  id String [pk]
+  nombre String [unique, not null]
 }
 
 Enum Role {
@@ -212,21 +234,51 @@ Ref: equipo.marca_id > marca.id
 
 Ref: equipo.ubicacion_id > ubicacion.id
 
+Ref: equipo.cliente_id > cliente.id
+
+Ref: responsable.cliente_id > cliente.id
+
 Ref: ubicacion.responsable_id > responsable.id
 
+Ref: ubicacion.cliente_id > cliente.id
+
+Ref: marca.cliente_id > cliente.id
+
+Ref: tipo_actividad.cliente_id > cliente.id
+
+Ref: frecuencia.cliente_id > cliente.id
+
+Ref: usuario.cliente_id > cliente.id
+
+Ref: magnitud.cliente_id > cliente.id
+
 Ref: variable.magnitud_id > magnitud.id
+
+Ref: variable.cliente_id > cliente.id
 
 Ref: patrones.marca_id > marca.id
 
 Ref: patrones.ubicacionId > ubicacion.id
 
+Ref: patrones.cliente_id > cliente.id
+
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
+
+Ref: datos_metrologicos_equipos.cliente_id > cliente.id
 
 Ref: datos_metrologicos_patrones.patrones_id - patrones.id
 
+Ref: datos_metrologicos_patrones.cliente_id > cliente.id
+
+Ref: tipo_patron.cliente_id > cliente.id
+
 Ref: datos_complementarios_equipo.equipo_id - equipo.id
 
+Ref: datos_complementarios_equipo.cliente_id > cliente.id
+
 Ref: datos_complementarios_patrones.patron_id - patrones.id
+
+Ref: datos_complementarios_patrones.cliente_id > cliente.id
 
 Ref: programacion_equipos.actividad_id > tipo_actividad.id
 
@@ -234,8 +286,12 @@ Ref: programacion_equipos.frecuencia_id > frecuencia.id
 
 Ref: programacion_equipos.equipo_id > equipo.id
 
+Ref: programacion_equipos.cliente_id > cliente.id
+
 Ref: programacion_patrones.actividad_id > tipo_actividad.id
 
 Ref: programacion_patrones.frecuencia_id > frecuencia.id
 
 Ref: programacion_patrones.patron_id > patrones.id
+
+Ref: programacion_patrones.cliente_id > cliente.id

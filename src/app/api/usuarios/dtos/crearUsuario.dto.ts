@@ -9,11 +9,13 @@ export interface CrearUsuarioDto {
   rol:Role;
   correo: string;
   password: string;
+  clienteId: string;
 }
 
 export const validarCrearUsuarioDto = (dto: CrearUsuarioDto) => {
   object({
     correo: string().email(),
+    clienteId: string().uuid(),
     password: string(),
     nombre: string(),
     apellido:string(),

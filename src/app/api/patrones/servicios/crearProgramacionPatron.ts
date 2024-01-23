@@ -4,11 +4,12 @@ import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { validarPatronExiste } from "./validarPatronExiste";
 
 export const crearProgramacionPatrones = async (
-  dto: CrearProgramacionPatronDto
+  dto: CrearProgramacionPatronDto,
+  clienteId: string
 ) => {
-  const patronExiste = await validarPatronExiste(dto.codigo);
+  const patronExiste = await validarPatronExiste(dto.codigo, clienteId);
   if (!patronExiste) {
     throw new PatronNoExiste();
   }
-  return patronRepositorio.crearProgramacionPatron(dto);
+  return patronRepositorio.crearProgramacionPatron(dto, clienteId);
 };
