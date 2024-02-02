@@ -19,8 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { ObtenerEquiposDtoOutput } from "@/app/api/equipos/dtos/obtenerEquipos.dto.output";
-import { ObtenerDatosDto } from "@/app/dashboard/types";
+import { ObtenerDatosDto } from "@/app/api/common/types";
 
 const formSchema = z.object({
   termino: z.string().min(3, { message: "requerido" }),
