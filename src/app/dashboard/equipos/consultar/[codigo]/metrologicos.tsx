@@ -47,9 +47,7 @@ function EditarDatosmetrologicos({ equipo }: Props) {
 
   const { editar, error, errorMsg } = editarDatosMetrologicos();
 
-  if (equipo.datos_metrologicos?.division_escala === undefined) {
-    return <p>El equipo no tiene datos metrologicos</p>;
-  }
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,6 +79,9 @@ function EditarDatosmetrologicos({ equipo }: Props) {
       variant: "success",
     });
     router.push("/dashboard/equipos/consultar");
+  }
+  if (equipo.datos_metrologicos?.division_escala === undefined) {
+    return <p>El equipo no tiene datos metrologicos</p>;
   }
   return (
     <>

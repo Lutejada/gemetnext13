@@ -51,13 +51,7 @@ interface Props {
   patron: Patron;
 }
 function EditarDatosComplementarios({ patron }: Props) {
-  if (
-    patron.datos_complementarios === null ||
-    (patron.datos_complementarios &&
-      Object.values(patron.datos_complementarios).length === 0)
-  ) {
-    return <p>El patron no tiene datos compllemetarios</p>;
-  }
+  const [isDisabled, setIsDisabled] = useState(true);
   const { editar, errorMsg, error, isLoading } = editarDatosComplementarios();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -78,7 +72,13 @@ function EditarDatosComplementarios({ patron }: Props) {
   });
 
   const { toast } = useToast();
-  const [isDisabled, setIsDisabled] = useState(true);
+  if (
+    patron.datos_complementarios === null ||
+    (patron.datos_complementarios &&
+      Object.values(patron.datos_complementarios).length === 0)
+  ) {
+    return <p>El patron no tiene datos compllemetarios</p>;
+  }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     console.log({ values });
