@@ -51,13 +51,7 @@ interface Props {
   equipo: Equipo;
 }
 function EditarDatosComplementarios({ equipo }: Props) {
-  if (
-    equipo.datos_complementarios === null ||
-    (equipo.datos_complementarios &&
-      Object.values(equipo.datos_complementarios).length === 0)
-  ) {
-    return <p>El equipo no tiene datos compllemetarios</p>;
-  }
+  
   const { editar, errorMsg, error, isLoading } = editarDatosComplementarios();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -98,6 +92,13 @@ function EditarDatosComplementarios({ equipo }: Props) {
       variant: "success",
     });
     router.push("/dashboard/equipos/consultar");
+    if (
+      equipo.datos_complementarios === null ||
+      (equipo.datos_complementarios &&
+        Object.values(equipo.datos_complementarios).length === 0)
+    ) {
+      return <p>El equipo no tiene datos compllemetarios</p>;
+    }
   }
   return (
     <>

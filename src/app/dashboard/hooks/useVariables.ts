@@ -1,13 +1,12 @@
 import  { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
-import { Responsable } from "../types";
 import { httpBase } from "../../config/api-base";
-import useSWR, { mutate } from "swr";
+import useSWR from "swr";
 
 import { CrearVariableDto } from "../../api/variables/dtos/crear";
 import { Variable } from "../../api/variables/dominio";
 
-export const obtenerVariables = () => {
+export const useObtenerVariables = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
   const { data, error, isLoading } = useSWR<Variable[]>(
     "/variables",
@@ -21,7 +20,7 @@ export const obtenerVariables = () => {
 };
 
 
-export const crearVariable = () => {
+export const useCrearVariable = () => {
 
   const fetcher = (
     url: string,

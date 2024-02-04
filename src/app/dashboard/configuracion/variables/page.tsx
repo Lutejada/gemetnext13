@@ -26,7 +26,7 @@ import { useToast } from '@/components/ui/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Loader2 } from 'lucide-react'
 import { CrearVariableDto } from '@/src/app/api/variables/dtos/crear'
-import { crearVariable } from '../../hooks/useVariables'
+import { useCrearVariable } from '../../hooks/useVariables'
 import { obtenerMagnitudes } from '../../hooks/useMagnitud'
 
 const formSchema = z.object({
@@ -42,7 +42,7 @@ const formSchema = z.object({
 
 export default function Ubicacion () {
   const { isError, responsables } = obtenerMagnitudes()
-  const { crear, error, errorMsg, isLoading, } = crearVariable()
+  const { crear, error, errorMsg, isLoading, } = useCrearVariable()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

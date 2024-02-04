@@ -43,14 +43,11 @@ const formSchema = z.object({
 interface Props {
   patron: Patron;
 }
-function EditarDatosmetrologicos({  patron }: Props) {
+function EditarDatosmetrologicos({ patron }: Props) {
   const [isDisabled, setIsDisabled] = useState(true);
-
+  const { toast } = useToast();
+  const router = useRouter();
   const { editar, error, errorMsg } = editarDatosMetrologicos();
-
-  if (patron.datos_metrologicos?.division_escala === undefined) {
-    return <p>El equipo no tiene datos metrologicos</p>;
-  }
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,8 +61,10 @@ function EditarDatosmetrologicos({  patron }: Props) {
   });
   useEffect(() => {}, []);
 
-  const { toast } = useToast();
-  const router = useRouter();
+  if (patron.datos_metrologicos?.division_escala === undefined) {
+    return <p>El equipo no tiene datos metrologicos</p>;
+  }
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await editar({
       codigo: values.codigo,
