@@ -43,8 +43,8 @@ export default function ProfileForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      correo: "andres@test.com",
-      contraseña: "Andres05*",
+      correo: "",
+      contraseña: "",
     },
   });
 
