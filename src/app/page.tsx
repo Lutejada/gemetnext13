@@ -1,4 +1,4 @@
-import { LoginButton } from './BtnAuht'
+import { LoginButton } from './BtnAuth'
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../lib/auth';
 
