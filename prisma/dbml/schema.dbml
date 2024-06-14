@@ -115,6 +115,7 @@ Table patrones {
   ubicacionId String [not null]
   datos_metrologicos_patronesId String
   cliente_id String [not null]
+  tipo_patron_id String [not null]
 }
 
 Table datos_metrologicos_equipos {
@@ -261,6 +262,8 @@ Ref: patrones.marca_id > marca.id
 Ref: patrones.ubicacionId > ubicacion.id
 
 Ref: patrones.cliente_id > cliente.id
+
+Ref: patrones.tipo_patron_id > tipo_patron.id
 
 Ref: datos_metrologicos_equipos.equipo_id - equipo.id
 
