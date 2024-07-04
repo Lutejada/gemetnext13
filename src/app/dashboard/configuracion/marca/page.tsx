@@ -1,108 +1,40 @@
-'use client'
+"use client";
+import { Button } from "@/components/ui/button";
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
-import { Button } from '@/components/ui/button'
+import { obtenerMarcas } from "../../hooks/useMarca";
+import { DataTable } from "@/components/data-table";
+import { columns } from "./columns";
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { useForm } from 'react-hook-form'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { AlertCircle, Loader2 } from 'lucide-react'
-import { useToast } from '@/components/ui/use-toast'
-import { crearMarca } from '../../hooks/useMarca'
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { MarcaForm } from "./form";
+import { DialogDescription } from "@radix-ui/react-dialog";
 
-const formSchema = z.object({
-  descripcion: z
-    .string()
-    .min(2, { message: 'requerido' })
-    .max(20, 'los caracteres maximos son 20'),
-  identificacion: z.string().min(2, { message: 'requerido' })
-})
-
-export default function Marca () {
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      identificacion: '',
-      descripcion: ''
-    }
-  })
-
-  const { toast } = useToast()
-
-  const { crear, isLoading, error, errorMsg } = crearMarca()
-
-  async function onSubmit (values: z.infer<typeof formSchema>) {
-    await crear({
-      identificacion: values.identificacion,
-      descripcion: values.descripcion
-    })
-
-    form.reset()
-    toast({
-      title: 'Marca se guardo correctamente',
-      variant: 'success'
-    })
-  }
+export default function Marca() {
+  const { marcas } = obtenerMarcas();
 
   return (
     <>
-      <h2 className='text-center mb-4 font-semibold'>Crear Marca</h2>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-          <div className='grid grid-cols-2 grid-rows-1 gap-2'>
-            <FormField
-              control={form.control}
-              name='descripcion'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descripcion</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Ingrese una descripcion' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name='identificacion'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Identificacion</FormLabel>
-                  <FormControl>
-                    <Input placeholder='Ingrese un alias' {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <Button type='submit' disabled={isLoading} className='mx-auto'>
-            <Loader2
-              className={
-                'mr-2 h-4 w-4 animate-spin ' + (!isLoading ? 'hidden' : '')
-              }
-            />
-            Crear Marca
-          </Button>
-
-          {error && (
-            <Alert variant='destructive'>
-              <AlertCircle className='h-4 w-4' />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{errorMsg}</AlertDescription>
-            </Alert>
-          )}
-        </form>
-      </Form>
+      <Dialog>
+        <h2 className="text-center my-4 font-semibold">Consultar Marcas</h2>
+        <DialogTrigger asChild>
+          <Button>Crear Marca</Button>
+        </DialogTrigger>
+        <DataTable columns={columns} data={marcas} />
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Crear Marca</DialogTitle>
+            <DialogDescription>
+              Ingresa la informacion solicitada
+            </DialogDescription>
+          </DialogHeader>
+          <MarcaForm />
+        </DialogContent>
+      </Dialog>
     </>
-  )
+  );
 }

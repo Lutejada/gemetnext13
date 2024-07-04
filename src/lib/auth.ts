@@ -24,9 +24,7 @@ export const authOptions: NextAuthOptions = {
       },
       async authorize(credentials: any) {
         try {
-          console.log({ credentials });
           const cliente = await obtenerClientePorNombre(credentials.cliente);
-          console.log({ cliente });
           const usuario = await obtenerUsuarioCorreo(
             credentials.correo,
             cliente.id
