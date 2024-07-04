@@ -5,7 +5,6 @@ import useSWR from "swr";
 
 import { Marca } from "../../api/marca/dominio";
 import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
-import { Ubicacion } from "../../api/ubicaciones/types";
 
 export const obtenerMarcas = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
