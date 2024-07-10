@@ -20,7 +20,7 @@ import { useState } from "react";
 
 import { MarcaForm } from "./form";
 import { Marca } from "@/app/api/marca/dominio";
-import { DialogDescription } from "@radix-ui/react-dialog";
+import { DialogDescription, DialogTrigger } from "@radix-ui/react-dialog";
 
 export const columns: ColumnDef<Marca>[] = [
   {
@@ -34,38 +34,35 @@ export const columns: ColumnDef<Marca>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const [open, setOpen] = useState(false);
-
-      const openChangeDrop = (isOpen: boolean) => {
-        if (!isOpen) {
-          setOpen(true);
-        }
-      };
+      
       return (
         <>
-          <DropdownMenu onOpenChange={openChangeDrop}>
+          <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <MoreHorizontal className="h-4 w-4" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem>Eliminar</DropdownMenuItem>
-
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <Dialog>
+                <DropdownMenuItem>Eliminar</DropdownMenuItem>
+                <DialogTrigger asChild>
+                  <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
+                    Editar
+                  </DropdownMenuItem>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Editar Marca</DialogTitle>
+                    <DialogDescription>
+                      Ingresa la informacion solicitada
+                    </DialogDescription>
+                  </DialogHeader>
+                  <MarcaForm isEditing marca={row.original} />
+                </DialogContent>
+              </Dialog>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Editar Marca</DialogTitle>
-                <DialogDescription>
-                  Ingresa la informacion solicitada
-                </DialogDescription>
-              </DialogHeader>
-              <MarcaForm isEditing marca={row.original} />
-            </DialogContent>
-          </Dialog>
         </>
       );
     },

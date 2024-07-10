@@ -18,8 +18,12 @@ const crearResponsable = async (
   });
 };
 
-const obtenerResponsables = (): Promise<Responsable[]> => {
-  return prisma.responsable.findMany({});
+const obtenerResponsables = (clienteId: string): Promise<Responsable[]> => {
+  return prisma.responsable.findMany({
+    where: {
+      cliente_id: clienteId,
+    },
+  });
 };
 const obtenerResponsableIdent = async (
   identificacion: string,
