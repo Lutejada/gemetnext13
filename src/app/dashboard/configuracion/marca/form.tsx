@@ -16,8 +16,9 @@ import { useForm } from "react-hook-form";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { crearMarca } from "../../hooks/useMarca";
+import { crearMarca, editarMarca } from "../../hooks/useMarca";
 import { Marca } from "@/app/api/marca/dominio";
+import { useState } from "react";
 
 const formSchema = z.object({
   descripcion: z
@@ -30,26 +31,30 @@ const formSchema = z.object({
 interface Props {
   isEditing?: boolean;
   marca?: Marca;
+  closeModal?: () => void;
 }
 
-export function MarcaForm({ isEditing = false ,marca }: Props) {
+export function MarcaForm({ isEditing = false, marca, closeModal }: Props) {
   const labelform = isEditing ? "Editar Marca" : "Crear Marca";
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      identificacion: "",
-      descripcion: "",
+      identificacion: marca?.identificacion ?? "",
+      descripcion: marca?.descripcion ?? "",
     },
   });
 
   const { toast } = useToast();
-
-  const { crear, isLoading, error, errorMsg } = crearMarca();
+  const { crear, error, errorMsg, isLoading: isLoadingCreated } = crearMarca();
+  const { editar, isLoading: isLoadingEdit } = editarMarca();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (isEditing) {
-      console.log(marca);
-      return;
+      await editar({
+        identificacion: values.identificacion,
+        descripcion: values.descripcion,
+        id: marca?.id!,
+      });
     } else {
       await crear({
         identificacion: values.identificacion,
@@ -57,6 +62,9 @@ export function MarcaForm({ isEditing = false ,marca }: Props) {
       });
     }
 
+    if (closeModal) {
+      closeModal();
+    }
     form.reset();
     toast({
       title: "Marca se guardo correctamente",
@@ -95,10 +103,10 @@ export function MarcaForm({ isEditing = false ,marca }: Props) {
             )}
           />
         </div>
-        <Button type="submit" disabled={isLoading} className="mx-auto">
+        <Button type="submit" disabled={isLoadingEdit || isLoadingCreated} className="mx-auto">
           <Loader2
             className={
-              "mr-2 h-4 w-4 animate-spin " + (!isLoading ? "hidden" : "")
+              "mr-2 h-4 w-4 animate-spin " + ((isLoadingCreated || isLoadingEdit) ? "" : "hidden")
             }
           />
           {labelform}

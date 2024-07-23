@@ -38,12 +38,20 @@ export const columns: ColumnDef<Marca>[] = [
       const handleOpenModal = async (value: boolean) => {
         setTimeout(() => {
           setIsOpenModal(value);
-        }, 1000);
+        }, 500);
+      };
+
+      const closeModal = () => {
+        setIsOpenModal(false);
+      };
+
+      const onOpenChange = (value: boolean) => {
+        console.log({ value });
       };
 
       return (
         <>
-          <DropdownMenu>
+          <DropdownMenu onOpenChange={onOpenChange}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <MoreHorizontal className="h-4 w-4" />
@@ -58,7 +66,7 @@ export const columns: ColumnDef<Marca>[] = [
           </DropdownMenu>
           <Dialog
             open={isOpenModal}
-            onOpenChange={(value) => handleOpenModal(value)}
+            onOpenChange={(value) => setIsOpenModal(value)}
           >
             <DialogContent>
               <DialogHeader>
@@ -67,7 +75,11 @@ export const columns: ColumnDef<Marca>[] = [
                   Ingresa la informacion solicitada
                 </DialogDescription>
               </DialogHeader>
-              <MarcaForm isEditing={true} marca={row.original} />
+              <MarcaForm
+                isEditing={true}
+                marca={row.original}
+                closeModal={closeModal}
+              />
             </DialogContent>
           </Dialog>
         </>
