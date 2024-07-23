@@ -9,21 +9,27 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { MarcaForm } from "./form";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { useState } from "react";
 
 export default function Marca() {
   const { marcas } = obtenerMarcas();
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const closeModal = () => {
+    setIsOpenModal(false);
+  };
   return (
     <>
-      <Dialog>
+      <Dialog
+        open={isOpenModal}
+        onOpenChange={(value) => setIsOpenModal(value)}
+      >
         <h2 className="text-center my-4 font-semibold">Consultar Marcas</h2>
-        <DialogTrigger asChild>
-          <Button>Crear Marca</Button>
-        </DialogTrigger>
+        <div className="flex justify-end mb-3">
+          <Button onClick={() => setIsOpenModal(true)}>Crear Marca</Button>
+        </div>
         <DataTable columns={columns} data={marcas} />
         <DialogContent>
           <DialogHeader>
@@ -32,7 +38,7 @@ export default function Marca() {
               Ingresa la informacion solicitada
             </DialogDescription>
           </DialogHeader>
-          <MarcaForm />
+          <MarcaForm closeModal={closeModal} />
         </DialogContent>
       </Dialog>
     </>

@@ -34,16 +34,25 @@ export const columns: ColumnDef<Marca>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const [open, setOpen] = useState(false);
+      const [isOpenModal, setIsOpenModal] = useState(false);
+      const [isClickOpenModal, setIsClickOpenModal] = useState(false);
+      const clickOpenModal = () => {
+        setIsClickOpenModal(true);
+      };
 
-      const openChangeDrop = (isOpen: boolean) => {
-        if (!isOpen) {
-          setOpen(true);
+      const closeModal = () => {
+        setIsOpenModal(false);
+      };
+
+      const onOpenChange = (value: boolean) => {
+        if (isClickOpenModal && value === false) {
+          setIsOpenModal(true);
         }
       };
+
       return (
         <>
-          <DropdownMenu onOpenChange={openChangeDrop}>
+          <DropdownMenu onOpenChange={onOpenChange}>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" className="h-8 w-8 p-0">
                 <MoreHorizontal className="h-4 w-4" />
@@ -51,11 +60,15 @@ export const columns: ColumnDef<Marca>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Eliminar</DropdownMenuItem>
-
-              <DropdownMenuItem>Editar</DropdownMenuItem>
+              <DropdownMenuItem onClick={clickOpenModal}>
+                Editar
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Dialog open={open} onOpenChange={setOpen}>
+          <Dialog
+            open={isOpenModal}
+            onOpenChange={(value) => setIsOpenModal(value)}
+          >
             <DialogContent>
               <DialogHeader>
                 <DialogTitle>Editar Marca</DialogTitle>
@@ -63,7 +76,11 @@ export const columns: ColumnDef<Marca>[] = [
                   Ingresa la informacion solicitada
                 </DialogDescription>
               </DialogHeader>
-              <MarcaForm isEditing marca={row.original} />
+              <MarcaForm
+                isEditing={true}
+                marca={row.original}
+                closeModal={closeModal}
+              />
             </DialogContent>
           </Dialog>
         </>

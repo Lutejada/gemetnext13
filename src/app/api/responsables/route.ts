@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const responsables = await obtenerResponsables(session.user.clienteId);
+    const responsables = await obtenerResponsables(session.user.cliente_id);
     return NextResponse.json(responsables);
   } catch (error: any) {
     return errorHandler(error);
