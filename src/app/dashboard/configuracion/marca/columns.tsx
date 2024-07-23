@@ -35,10 +35,9 @@ export const columns: ColumnDef<Marca>[] = [
     id: "actions",
     cell: ({ row }) => {
       const [isOpenModal, setIsOpenModal] = useState(false);
-      const handleOpenModal = async (value: boolean) => {
-        setTimeout(() => {
-          setIsOpenModal(value);
-        }, 500);
+      const [isClickOpenModal, setIsClickOpenModal] = useState(false);
+      const clickOpenModal = () => {
+        setIsClickOpenModal(true);
       };
 
       const closeModal = () => {
@@ -46,7 +45,9 @@ export const columns: ColumnDef<Marca>[] = [
       };
 
       const onOpenChange = (value: boolean) => {
-        console.log({ value });
+        if (isClickOpenModal && value === false) {
+          setIsOpenModal(true);
+        }
       };
 
       return (
@@ -59,7 +60,7 @@ export const columns: ColumnDef<Marca>[] = [
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
               <DropdownMenuItem>Eliminar</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => handleOpenModal(true)}>
+              <DropdownMenuItem onClick={clickOpenModal}>
                 Editar
               </DropdownMenuItem>
             </DropdownMenuContent>
