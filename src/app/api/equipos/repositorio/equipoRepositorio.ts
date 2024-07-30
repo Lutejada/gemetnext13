@@ -17,6 +17,7 @@ import { EquipoProgramacionDto } from "../dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "../../common/types";
 import { calcularPagina } from "@/lib/queryUtils";
 import { ObtenerEquiposDtoOutput } from "../dtos/obtenerEquipos.dto.output";
+import { Prisma } from "@prisma/client";
 
 const selectEquipoBasico = {
   id: true,
@@ -116,17 +117,18 @@ export const equipoRepositorio: EquipoRepositorio = {
     });
   },
   crearProgramacionEquipo: function (
-    dto: CrearProgramacionEquipoDto,
+    dto: CrearProgramacionEquipoDto[],
     clienteId: string
   ): Promise<ProgramacionEquipos> {
-    return prisma.programacion_equipos.create({
-      data: {
-        equipo_id: dto.equipoId,
-        frecuencia_id: dto.frecuenciaId,
-        fecha_programacion: dto.fechaProgramacion,
-        actividad_id: dto.actividadId,
-        cliente_id: clienteId,
-      },
+    const programaciones = dto.map<Prisma.programacion_equiposUncheckedCreateInput>((e)=>({
+      actividad_id:e.actividadId,
+      cliente_id: clienteId,
+      equipo_id:e.equipoId,
+      fecha_programacion:e.fechaProgramacion,
+      frecuencia_id: e.frecuenciaId,
+    }))
+    return prisma.programacion_equipos.createMany({
+      data: programaciones
     });
   },
   obtenerEquipos: async function (

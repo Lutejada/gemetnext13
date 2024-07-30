@@ -32,7 +32,7 @@ export interface EquipoRepositorio {
     clienteId: string
   ) => Promise<DatosComplementariosEquipo>;
   crearProgramacionEquipo: (
-    dto: CrearProgramacionEquipoDto,
+    dtoList: CrearProgramacionEquipoDto[],
     clienteId: string
   ) => Promise<ProgramacionEquipos>;
   obtenerEquipos: (

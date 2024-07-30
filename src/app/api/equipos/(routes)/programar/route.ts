@@ -5,13 +5,15 @@ import { listarEquiposProgramados } from "../../servicios/listarEquiposProgramad
 import { ObtenerDatosDto } from "@/app/api/common/types";
 import { string } from "zod";
 import { auth } from "@/lib/getSession";
+import { validarCrearProgramacion } from "../../dtos/crearProgramation.dto";
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
+    validarCrearProgramacion(body)
     const session = await auth();
     await crearProgramacionEquipos(body, session.user.cliente_id);
-    return NextResponse.json({ msg: "equipo creado" });
+    return NextResponse.json({ msg: "equipo programado" });
   } catch (error: any) {
     return errorHandler(error);
   }
