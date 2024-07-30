@@ -284,7 +284,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       take: porPagina,
       skip,
       orderBy: {
-        fecha_creacion: "desc",
+        fecha_programacion:'asc'
       },
       include: {
         equipo: {
