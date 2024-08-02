@@ -18,7 +18,7 @@ export const actividadRepositorio: ActividadRepositorio = {
       descripcion: resActividad.descripcion,
       fecha_creacion: resActividad.fecha_creacion,
       fecha_actualizacion: resActividad.fecha_actualizacion,
-      clienteId: resActividad.cliente_id,
+      cliente_id: resActividad.cliente_id,
     };
     return actividad;
   },

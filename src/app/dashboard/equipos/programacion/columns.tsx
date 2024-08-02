@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
-import { EquipoProgramacionDto } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
+import { EquipoProgramacionDto } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 

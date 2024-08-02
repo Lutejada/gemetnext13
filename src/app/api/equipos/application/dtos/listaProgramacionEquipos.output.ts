@@ -1,5 +1,5 @@
 export interface ListaProgramacionEquiposDTO {
-  equiposProgramados:EquipoProgramacionDto[]
+  equiposProgramados: EquipoProgramacionDto[];
   existeSiguientePagina: boolean;
 }
 
@@ -9,4 +9,8 @@ export interface EquipoProgramacionDto {
   actividad: string;
   frecuencia: string;
   fechaProgramacion: string | Date;
+}
+
+export interface EquipoProgramacionVencerDto extends EquipoProgramacionDto {
+  vencer: 'success' | "warning" | "danger" 
 }

@@ -191,14 +191,15 @@ Table datos_complementarios_patrones {
 
 Table programacion_equipos {
   id String [pk]
-  actividad_id String [not null]
-  frecuencia_id String [not null]
-  equipo_id String [not null]
-  fecha_programacion DateTime [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
-  fecha_inactivacion DateTime
-  cliente_id String [not null]
+  actividadId String [not null]
+  frecuenciaId String [not null]
+  equipoId String [not null]
+  fechaProgramacion DateTime [not null]
+  fechaCreacion DateTime [default: `now()`, not null]
+  fechaActualizacion DateTime [not null]
+  fechaInactivacion DateTime
+  clienteId String [not null]
+  estado EstadoProgramacion [not null, default: 'PENDIENTE']
 }
 
 Table programacion_patrones {
@@ -229,6 +230,11 @@ Enum Role {
 Enum cumple {
   SI
   NO
+}
+
+Enum EstadoProgramacion {
+  PENDIENTE
+  COMPLETADO
 }
 
 Ref: equipo.marca_id > marca.id
@@ -283,13 +289,13 @@ Ref: datos_complementarios_patrones.patron_id - patrones.id
 
 Ref: datos_complementarios_patrones.cliente_id > cliente.id
 
-Ref: programacion_equipos.actividad_id > tipo_actividad.id
+Ref: programacion_equipos.actividadId > tipo_actividad.id
 
-Ref: programacion_equipos.frecuencia_id > frecuencia.id
+Ref: programacion_equipos.frecuenciaId > frecuencia.id
 
-Ref: programacion_equipos.equipo_id > equipo.id
+Ref: programacion_equipos.equipoId > equipo.id
 
-Ref: programacion_equipos.cliente_id > cliente.id
+Ref: programacion_equipos.clienteId > cliente.id
 
 Ref: programacion_patrones.actividad_id > tipo_actividad.id
 

@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { crearDatosMetrologicos } from "../../servicios/crearDatosMetrologicos";
-import { validarCrearMetrologicos } from "../../dtos/crearDatosMetrologicos.dto";
-import { validarEditarMetrologicos } from "../../dtos/editarDatosMetrologicos.dto";
-import { editarDatosMetrologicos } from "../../servicios/editarDatosMetrologicos";
+import { crearDatosMetrologicos } from "../../application/servicios/crearDatosMetrologicos";
+import { validarCrearMetrologicos } from "../../application/dtos/crearDatosMetrologicos.dto";
+import { validarEditarMetrologicos } from "../../application/dtos/editarDatosMetrologicos.dto";
+import { editarDatosMetrologicos } from "../../application/servicios/editarDatosMetrologicos";
 import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {

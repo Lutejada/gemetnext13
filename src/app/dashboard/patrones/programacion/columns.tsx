@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import { EquipoProgramacionDto } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
+import { EquipoProgramacionDto } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 
 
 export const columns: ColumnDef<EquipoProgramacionDto>[] = [

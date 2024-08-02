@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { crearProgramacionEquipos } from "../../servicios/crearProgramacionEquipo";
-import { listarEquiposProgramados } from "../../servicios/listarEquiposProgramados";
+import { crearProgramacionEquipos } from "../../application/servicios/crearProgramacionEquipo";
+import { listarEquiposProgramados } from "../../application/servicios/listarEquiposProgramados";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 import { string } from "zod";
 import { auth } from "@/lib/getSession";
-import { validarCrearProgramacion } from "../../dtos/crearProgramation.dto";
+import { validarCrearProgramacion } from "../../application/dtos/crearProgramation.dto";
 
 export async function POST(request: Request) {
   try {

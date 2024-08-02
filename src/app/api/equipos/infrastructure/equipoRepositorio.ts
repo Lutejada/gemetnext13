@@ -1,22 +1,23 @@
 import { prisma } from "@/src/lib/prisma";
+import { startOfToday, toDate } from "date-fns";
 import {
   DatosComplementariosEquipo,
   DatosMetrologicosEquipos,
   Equipo,
   ProgramacionEquipos,
 } from "../dominio";
-import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
-import { EquipoRepositorio } from "./index";
-import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
-import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
-import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
-import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
-import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
+import { CrearEquipoDto } from "../application/dtos/crearEquipo.dto";
+import { EquipoRepositorio } from "../dominio/repository/index";
+import { CrearDatosMetrologicosDto } from "../application/dtos/crearDatosMetrologicos.dto";
+import { CrearDatosComplementariosDto } from "../application/dtos/crearDatosComplementarios.dto";
+import { CrearProgramacionEquipoDto } from "../application/dtos/crearProgramation.dto";
+import { EditarDatosMetrologicosDto } from "../application/dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "../application/dtos/editarDatosComplementarios.dto";
 import { format } from "date-fns";
-import { EquipoProgramacionDto } from "../dtos/listaProgramacionEquipos.output";
+import { EquipoProgramacionDto } from "../application/dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "../../common/types";
 import { calcularPagina } from "@/lib/queryUtils";
-import { ObtenerEquiposDtoOutput } from "../dtos/obtenerEquipos.dto.output";
+import { ObtenerEquiposDtoOutput } from "../application/dtos/obtenerEquipos.dto.output";
 import { Prisma } from "@prisma/client";
 
 const selectEquipoBasico = {
@@ -40,6 +41,30 @@ const selectEquipoBasico = {
 };
 
 export const equipoRepositorio: EquipoRepositorio = {
+  listarEquiposProgramadosPorVencer: async function (clienteId: string) {
+    const programacion = await prisma.programacionEquipos.findMany({
+      where: {
+        cliente_id: clienteId,
+        estado: "PENDIENTE",
+      },
+      orderBy: {
+        fecha_programacion: "asc",
+      },
+      include: {
+        actividad: true,
+        frecuencia: true,
+        equipo: true,
+      },
+    });
+    return programacion.map((e) => ({
+      actividad: e.actividad.descripcion,
+      codigo: e.equipo.codigo,
+      descripcion: e.equipo.descripcion,
+      frecuencia: e.frecuencia.descripcion,
+      fechaProgramacion:format(e.fecha_programacion, "dd-MM-yyyy"),
+      
+    }));
+  },
   crearEquipo: async function (
     dto: CrearEquipoDto,
     clienteId: string
@@ -120,15 +145,16 @@ export const equipoRepositorio: EquipoRepositorio = {
     dto: CrearProgramacionEquipoDto[],
     clienteId: string
   ): Promise<ProgramacionEquipos> {
-    const programaciones = dto.map<Prisma.programacion_equiposUncheckedCreateInput>((e)=>({
-      actividad_id:e.actividadId,
-      cliente_id: clienteId,
-      equipo_id:e.equipoId,
-      fecha_programacion:e.fechaProgramacion,
-      frecuencia_id: e.frecuenciaId,
-    }))
-    return prisma.programacion_equipos.createMany({
-      data: programaciones
+    const programaciones =
+      dto.map<Prisma.programacionEquiposUncheckedCreateInput>((e) => ({
+        actividad_id: e.actividadId,
+        cliente_id: clienteId,
+        equipo_id: e.equipoId,
+        fecha_programacion: e.fechaProgramacion,
+        frecuencia_id: e.frecuenciaId,
+      }));
+    return prisma.programacionEquipos.createMany({
+      data: programaciones,
     });
   },
   obtenerEquipos: async function (
@@ -279,12 +305,12 @@ export const equipoRepositorio: EquipoRepositorio = {
   ) => {
     const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
 
-    const equipoProgramacion = await prisma.programacion_equipos.findMany({
-      where: { cliente_id: clienteId },
+    const equipoProgramacion = await prisma.programacionEquipos.findMany({
+      where: { clienteId: clienteId },
       take: porPagina,
       skip,
       orderBy: {
-        fecha_programacion:'asc'
+        fechaProgramacion: "asc",
       },
       include: {
         equipo: {
@@ -306,7 +332,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
 
-    const countNextPage = await prisma.programacion_equipos.count({
+    const countNextPage = await prisma.programacionEquipos.count({
       take: porPagina,
       skip,
     });
@@ -318,7 +344,7 @@ export const equipoRepositorio: EquipoRepositorio = {
         codigo: element.equipo.codigo,
         actividad: element.actividad.descripcion,
         descripcion: element.equipo.descripcion,
-        fechaProgramacion: format(element.fecha_programacion, "dd-MM-yyyy"),
+        fechaProgramacion: format(element.fechaProgramacion, "dd-MM-yyyy"),
         frecuencia: element.frecuencia.descripcion,
       })
     );

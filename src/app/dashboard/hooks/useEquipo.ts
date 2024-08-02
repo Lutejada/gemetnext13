@@ -2,18 +2,18 @@ import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import { Equipo } from "../../api/equipos/dominio";
-import { CrearEquipoDto } from "../../api/equipos/dtos/crearEquipo.dto";
-import { CrearDatosMetrologicosDto } from "../../api/equipos/dtos/crearDatosMetrologicos.dto";
-import { CrearDatosComplementariosDto } from "../../api/equipos/dtos/crearDatosComplementarios.dto";
+import { CrearEquipoDto } from "../../api/equipos/application/dtos/crearEquipo.dto";
+import { CrearDatosMetrologicosDto } from "../../api/equipos/application/dtos/crearDatosMetrologicos.dto";
+import { CrearDatosComplementariosDto } from "../../api/equipos/application/dtos/crearDatosComplementarios.dto";
 import { useEquiposStore } from "@/src/app/stores/equiposStore";
 import { useEffect } from "react";
-import { CrearProgramacionEquipoDto } from "../../api/equipos/dtos/crearProgramation.dto";
-import { EditarEquipoDto } from "../../api/equipos/dtos/editarEquipo.dto";
-import { EditarDatosMetrologicosDto } from "@/app/api/equipos/dtos/editarDatosMetrologicos.dto";
-import { EditarDatosComplementariosDto } from "@/app/api/equipos/dtos/editarDatosComplementarios.dto";
+import { CrearProgramacionEquipoDto } from "../../api/equipos/application/dtos/crearProgramation.dto";
+import { EditarEquipoDto } from "../../api/equipos/application/dtos/editarEquipo.dto";
+import { EditarDatosMetrologicosDto } from "@/app/api/equipos/application/dtos/editarDatosMetrologicos.dto";
+import { EditarDatosComplementariosDto } from "@/app/api/equipos/application/dtos/editarDatosComplementarios.dto";
 
-import { ObtenerEquiposDtoOutput } from "../../api/equipos/dtos/obtenerEquipos.dto.output";
-import { ListaProgramacionEquiposDTO } from "@/app/api/equipos/dtos/listaProgramacionEquipos.output";
+import { ObtenerEquiposDtoOutput } from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
+import { EquipoProgramacionDto, EquipoProgramacionVencerDto, ListaProgramacionEquiposDTO } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 
 export const obtenerEquiposPorTermino = () => {
@@ -41,6 +41,19 @@ export const obtenerProgramacionEquipos = () => {
     isError: error,
     obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
     existeSiguientePagina: data?.existeSiguientePagina ?? false,
+  };
+};
+export const obtenerProgramacionEquiposVencer = () => {
+  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
+    httpBase.get(url, { params: arg }).then((res) => res.data);
+  const { data, error, isMutating, trigger } =
+    useSWRMutation<EquipoProgramacionVencerDto[]>("/equipos/vencer", fetcher);
+  return {
+    equipos: data ?? [],
+    isLoading: isMutating,
+    isError: error,
+    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    //existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };
 
