@@ -1,9 +1,9 @@
-export interface ListaProgramacionEquiposDTO {
+export class ListaProgramacionEquiposDTO {
   equiposProgramados: EquipoProgramacionDto[];
   existeSiguientePagina: boolean;
 }
 
-export interface EquipoProgramacionDto {
+export class EquipoProgramacionDto {
   codigo: string;
   descripcion: string;
   actividad: string;
@@ -11,6 +11,11 @@ export interface EquipoProgramacionDto {
   fechaProgramacion: string | Date;
 }
 
-export interface EquipoProgramacionVencerDto extends EquipoProgramacionDto {
-  vencer: 'success' | "warning" | "danger" 
+export interface Estatus {
+  descripcion: string;
+  color: "success" | "warning" | "danger" | "expired";
+}
+
+export class EquipoProgramacionVencerDto extends EquipoProgramacionDto {
+  estado: Estatus;
 }

@@ -4,13 +4,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
 
 
-import { EquipoProgramacionDto } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
+import {  EquipoProgramacionVencerDto, Estatus } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 import { Badge } from "@/components/badge";
 import clsx from "clsx";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<EquipoProgramacionDto>[] = [
+export const columns: ColumnDef<EquipoProgramacionVencerDto>[] = [
   {
     accessorKey: "codigo",
     header: "codigo",
@@ -32,15 +32,17 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
     header: "Frecuencia",
   },
   {
-    accessorKey: "vencer",
+    accessorKey: "estado",
     header: "Estatus",
     cell: ({ row }) => {
-      const vencer = row.getValue("vencer")
+      //TODO: pasar esta logica a variantes
+      const estatus = row.getValue<Estatus>('estado')
       return <Badge className={clsx({
-        "bg-green-500": vencer === "success",
-        "bg-orange-500": vencer === "warning",
-        "bg-red-500": vencer === "danger",
-      })} >{row.getValue("vencer")}</Badge>;
+        "bg-green-500": estatus.color === 'success',
+        "bg-orange-500": estatus.color === 'warning',
+        "bg-red-500": estatus.color === 'danger',
+        "bg-red-700": estatus.color === 'expired',
+      })} >{estatus.descripcion}</Badge>;
     },
   },
  
