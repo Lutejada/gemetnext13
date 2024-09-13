@@ -2,14 +2,14 @@ import { differenceInDays, format, startOfDay } from "date-fns";
 import { ProgramacionEquipos } from "../../../dominio";
 import { EquipoReadRepository } from "../../../dominio/repository/index";
 import {
-  EquipoProgramacionVencerDto,
+  EquipoProgramacionDto,
   Estatus,
 } from "../../dtos/listaProgramacionEquipos.output";
 
-export class ListarEquiposProgramadosVencer {
+export class ListarEquiposProgramados {
   constructor(private repository: EquipoReadRepository) {}
 
-  async execute(clienteId: string) {
+  async execute(clienteId: string): Promise<EquipoProgramacionDto[]> {
     const equipos = await this.repository.listarEquiposProgramadosPorVencer(
       clienteId
     );
@@ -18,7 +18,7 @@ export class ListarEquiposProgramadosVencer {
 
   private converToDTO(
     programacion: ProgramacionEquipos[]
-  ): EquipoProgramacionVencerDto[] {
+  ): EquipoProgramacionDto[] {
     return programacion.map((p) => {
       const estado = this.calculateLabel(p.fechaProgramacion);
       return {

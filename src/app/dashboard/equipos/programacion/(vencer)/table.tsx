@@ -4,9 +4,9 @@ import { columns } from "./columns";
 import { useEffect, useState } from "react";
 //import Paginador from "@/components/paginador";
 import { DataTable } from "@/components/data-table";
-import { obtenerProgramacionEquiposVencer } from "../hooks/useEquipo";
-export default function ProgramacionEquiposVencer() {
-  const { obtenerEquipos, equipos } = obtenerProgramacionEquiposVencer();
+import { obtenerProgramacionEquipos } from "../../../hooks/useEquipo";
+export default function ProgramacionEquipos() {
+  const { obtenerEquipos, equipos } = obtenerProgramacionEquipos();
   useEffect(() => {
     obtenerEquipos();
   }, []);

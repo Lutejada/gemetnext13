@@ -9,13 +9,10 @@ export class EquipoProgramacionDto {
   actividad: string;
   frecuencia: string;
   fechaProgramacion: string | Date;
+  estado: Estatus;
 }
 
 export interface Estatus {
   descripcion: string;
   color: "success" | "warning" | "danger" | "expired";
-}
-
-export class EquipoProgramacionVencerDto extends EquipoProgramacionDto {
-  estado: Estatus;
 }

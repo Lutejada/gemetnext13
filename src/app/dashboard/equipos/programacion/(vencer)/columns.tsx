@@ -1,16 +1,15 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal } from "lucide-react";
 
 
-import {  EquipoProgramacionVencerDto, Estatus } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
+import {  EquipoProgramacionDto, Estatus } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 import { Badge } from "@/components/badge";
 import clsx from "clsx";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<EquipoProgramacionVencerDto>[] = [
+export const columns: ColumnDef<EquipoProgramacionDto>[] = [
   {
     accessorKey: "codigo",
     header: "codigo",
