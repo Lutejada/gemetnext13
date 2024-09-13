@@ -1,5 +1,5 @@
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
-import { ObtenerDatosDto } from "../../common/types/index";
+import { ObtenerDatosDto } from "../../../common/types/index";
+import { equipoRepositorio } from "../../infrastructure/equipoRepositorio";
 
 export const listarEquiposProgramados = (
   clienteId: string,

@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../common/errors/error.handler";
-import { validarCrearEquipo } from "../dtos/crearEquipo.dto";
-import { crearEquipo } from "../servicios/crearEquipo";
-import { obtenerEquipos } from "../servicios/obtenerEquipos";
-import { obtenerPorCodigo } from "../servicios/ObtenerPorCodigo";
-import { validarEditarEquipo } from "../dtos/editarEquipo.dto";
-import { editarEquipo } from "../servicios/editarEquipo";
+import { validarCrearEquipo } from "../application/dtos/crearEquipo.dto";
+import { crearEquipo } from "../application/servicios/crearEquipo";
+import { obtenerEquipos } from "../application/servicios/obtenerEquipos";
+import { obtenerPorCodigo } from "../application/servicios/ObtenerPorCodigo";
+import { validarEditarEquipo } from "../application/dtos/editarEquipo.dto";
+import { editarEquipo } from "../application/servicios/editarEquipo";
 import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {

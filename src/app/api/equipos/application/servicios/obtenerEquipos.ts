@@ -1,4 +1,5 @@
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
+import { equipoRepositorio } from "../../infrastructure/equipoRepositorio";
+
 interface obtenerEquiposDto {
   termino?: string | null;
   valor?: string | null;

@@ -1,7 +1,8 @@
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
-import { EquipoNoExiste } from "../errors";
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
+import { EquipoNoExiste } from "../../dominio/errors";
+import { crearProgramacionAno } from "./crearProgramacionAno";
 import { validarEquipoExiste } from "./validarEquipoExiste";
+import { equipoRepositorio } from "../../infrastructure/equipoRepositorio";
 
 export const crearProgramacionEquipos = async (
   dto: CrearProgramacionEquipoDto,
@@ -11,5 +12,10 @@ export const crearProgramacionEquipos = async (
   if (!equipoExiste) {
     throw new EquipoNoExiste();
   }
-  return equipoRepositorio.crearProgramacionEquipo(dto, clienteId);
+  const programacionListado = crearProgramacionAno(dto);
+
+  return equipoRepositorio.crearProgramacionEquipo(
+    programacionListado,
+    clienteId
+  );
 };

@@ -1,4 +1,4 @@
-import { EquipoNoExiste } from "../errors/index";
+import { EquipoNoExiste } from "../../dominio/errors/index";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 export const validarEquipoExiste = async (
   codigo: string,

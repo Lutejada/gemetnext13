@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { validarCrearComplementarios } from "../../dtos/crearDatosComplementarios.dto";
-import { crearDatosComplementarios } from "../../servicios/crearDatosComplementarios";
-import { validarEditarComplementarios } from "../../dtos/editarDatosComplementarios.dto";
-import { editarDatosComplementarios } from "../../servicios/editarDatosComplementarios";
+import { validarCrearComplementarios } from "../../application/dtos/crearDatosComplementarios.dto";
+import { crearDatosComplementarios } from "../../application/servicios/crearDatosComplementarios";
+import { validarEditarComplementarios } from "../../application/dtos/editarDatosComplementarios.dto";
+import { editarDatosComplementarios } from "../../application/servicios/editarDatosComplementarios";
 import { auth } from "@/lib/getSession";
 
 export async function POST(request: Request) {

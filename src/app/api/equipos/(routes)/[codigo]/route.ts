@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { obtenerPorCodigo } from "../../servicios/ObtenerPorCodigo";
+import { obtenerPorCodigo } from "../../application/servicios/ObtenerPorCodigo";
 import { auth } from "@/lib/getSession";
 
 export async function GET(

@@ -1,7 +1,7 @@
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
-import { DatosComplementariosYaExisten } from "../errors";
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
+import { DatosComplementariosYaExisten } from "../../dominio/errors";
 import { validarEquipoExiste } from "./validarEquipoExiste";
+import { equipoRepositorio } from "../../infrastructure/equipoRepositorio";
 
 export const editarDatosComplementarios = async (
   dto: CrearDatosComplementariosDto,

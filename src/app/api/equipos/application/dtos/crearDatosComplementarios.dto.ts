@@ -1,7 +1,7 @@
 import { number, object, string , nativeEnum } from "zod";
-import { cumple } from "../dominio";
+import { cumple } from "../../dominio";
 
-export interface EditarDatosComplementariosDto {
+export interface CrearDatosComplementariosDto {
   descripcionEspecificaciones?: string | null;
   codigo:string;
   cumpleEspecificacionInstalaciones?: cumple;
@@ -25,8 +25,8 @@ export const equipoSchema = object({
   observaciones: string({ description: "observaciones requerido" }).optional(),
 });
 
-export const validarEditarComplementarios = (
-  complementarios: EditarDatosComplementariosDto
+export const validarCrearComplementarios = (
+  complementarios: CrearDatosComplementariosDto
 ) => {
   equipoSchema.parse(complementarios);
 };

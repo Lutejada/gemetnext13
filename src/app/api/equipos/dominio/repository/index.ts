@@ -1,18 +1,23 @@
-import { ObtenerDatosDto } from "../../common/types";
+import { ObtenerDatosDto } from "../../../common/types";
 import {
   DatosMetrologicosEquipos,
   Equipo,
   DatosComplementariosEquipo,
   ProgramacionEquipos,
-} from "../dominio";
-import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
-import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos.dto";
-import { CrearEquipoDto } from "../dtos/crearEquipo.dto";
-import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
-import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
-import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
-import { ListaProgramacionEquiposDTO } from "../dtos/listaProgramacionEquipos.output";
-import { ObtenerEquiposDtoOutput } from "../dtos/obtenerEquipos.dto.output";
+} from "..";
+import { CrearDatosComplementariosDto } from "../../application/dtos/crearDatosComplementarios.dto";
+import { CrearDatosMetrologicosDto } from "../../application/dtos/crearDatosMetrologicos.dto";
+import { CrearEquipoDto } from "../../application/dtos/crearEquipo.dto";
+import { CrearProgramacionEquipoDto } from "../../application/dtos/crearProgramation.dto";
+import { EditarDatosComplementariosDto } from "../../application/dtos/editarDatosComplementarios.dto";
+import { EditarDatosMetrologicosDto } from "../../application/dtos/editarDatosMetrologicos.dto";
+import {
+  EquipoProgramacionDto,
+  EquipoProgramacionVencerDto,
+  ListaProgramacionEquiposDTO,
+} from "../../application/dtos/listaProgramacionEquipos.output";
+import { ObtenerEquiposDtoOutput } from "../../application/dtos/obtenerEquipos.dto.output";
+import { listarEquiposProgramados } from "../../application/servicios/listarEquiposProgramados";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
@@ -32,7 +37,7 @@ export interface EquipoRepositorio {
     clienteId: string
   ) => Promise<DatosComplementariosEquipo>;
   crearProgramacionEquipo: (
-    dto: CrearProgramacionEquipoDto,
+    dtoList: CrearProgramacionEquipoDto[],
     clienteId: string
   ) => Promise<ProgramacionEquipos>;
   obtenerEquipos: (
@@ -60,4 +65,13 @@ export interface EquipoRepositorio {
     clienteId: string,
     dto?: ObtenerDatosDto
   ) => Promise<ListaProgramacionEquiposDTO>;
+  listarEquiposProgramadosPorVencer: (
+    clienteId: string
+  ) => Promise<ProgramacionEquipos[]>;
+}
+
+export interface EquipoReadRepository {
+  listarEquiposProgramadosPorVencer(
+    clienteId: string
+  ): Promise<ProgramacionEquipos[]>;
 }

@@ -1,6 +1,6 @@
-import { Equipo } from "../dominio/index";
+import { Equipo } from "../../dominio/index";
+import { equipoRepositorio } from "../../infrastructure/equipoRepositorio";
 import { EditarEquipoDto } from "../dtos/editarEquipo.dto";
-import { equipoRepositorio } from "../repositorio/equipoRepositorio";
 import { validarEquipoExiste } from "./validarEquipoExiste";
 export const editarEquipo = async (
   equipoDto: EditarEquipoDto,
