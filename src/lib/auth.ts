@@ -1,7 +1,6 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
-import { errorHandler } from "../app/api/common/errors/error.handler";
 import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
 import { isValidPassword } from "./password-hash";
 import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
@@ -60,7 +59,6 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session(params) {
-      console.log({ params });
       const { session, token } = params;
       session.user = token.user as User
       return session;

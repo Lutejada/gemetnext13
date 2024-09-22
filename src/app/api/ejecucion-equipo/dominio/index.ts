@@ -1,0 +1,2 @@
+export { EjecucionEquipo } from "./entity";
+
