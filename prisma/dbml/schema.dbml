@@ -226,6 +226,7 @@ Table ejecucion_equipos {
   clienteId String [not null]
   observaciones String [not null]
   ejecutorId String [not null]
+  programacionEquipoId String [unique, not null]
 }
 
 Enum Role {
@@ -317,3 +318,5 @@ Ref: programacion_patrones.cliente_id > cliente.id
 Ref: ejecucion_equipos.clienteId > cliente.id
 
 Ref: ejecucion_equipos.ejecutorId > responsable.id
+
+Ref: ejecucion_equipos.programacionEquipoId > programacion_equipos.id

@@ -293,6 +293,7 @@ model ProgramacionEquipos {
   clienteId          String             @map("cliente_id")
   cliente            cliente            @relation(fields: [clienteId], references: [id])
   estado             EstadoProgramacion @default(PENDIENTE)
+  EjecucionEquipos   EjecucionEquipos[]
 
   @@index([clienteId])
   @@map("programacion_equipos")
@@ -340,16 +341,18 @@ model cliente {
 }
 
 model EjecucionEquipos {
-  id             String      @id @default(uuid())
-  fechaEjecucion DateTime    @map("fecha_ejecucion")
-  fechaCreacion  DateTime    @default(now()) @map("fecha_creacion")
-  clienteId      String      @map("cliente_id")
-  observaciones  String
-  ejecutorId     String      @map("ejecutor_id")
-  cliente        cliente     @relation(fields: [clienteId], references: [id])
-  responsable    responsable @relation(fields: [ejecutorId], references: [id])
+  id                   String              @id @default(uuid())
+  fechaEjecucion       DateTime            @map("fecha_ejecucion")
+  fechaCreacion        DateTime            @default(now()) @map("fecha_creacion")
+  clienteId            String              @map("cliente_id")
+  observaciones        String
+  ejecutorId           String              @map("ejecutor_id")
+  cliente              cliente             @relation(fields: [clienteId], references: [id])
+  responsable          responsable         @relation(fields: [ejecutorId], references: [id])
+  programacionEquipo   ProgramacionEquipos @relation(fields: [programacionEquipoId], references: [id])
+  programacionEquipoId String              @unique @map("programacion_equipo_id")
 
-  @@index([clienteId])
+  @@index([clienteId, programacionEquipoId])
   @@map("ejecucion_equipos")
 }
 

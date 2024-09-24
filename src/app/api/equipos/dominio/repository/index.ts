@@ -11,13 +11,8 @@ import { CrearEquipoDto } from "../../application/dtos/crearEquipo.dto";
 import { CrearProgramacionEquipoDto } from "../../application/dtos/crearProgramation.dto";
 import { EditarDatosComplementariosDto } from "../../application/dtos/editarDatosComplementarios.dto";
 import { EditarDatosMetrologicosDto } from "../../application/dtos/editarDatosMetrologicos.dto";
-import {
-  EquipoProgramacionDto,
-  EquipoProgramacionVencerDto,
-  ListaProgramacionEquiposDTO,
-} from "../../application/dtos/listaProgramacionEquipos.output";
+import { ListaProgramacionEquiposDTO } from "../../application/dtos/listaProgramacionEquipos.output";
 import { ObtenerEquiposDtoOutput } from "../../application/dtos/obtenerEquipos.dto.output";
-import { listarEquiposProgramados } from "../../application/servicios/listarEquiposProgramados";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
@@ -74,4 +69,8 @@ export interface EquipoReadRepository {
   listarEquiposProgramadosPorVencer(
     clienteId: string
   ): Promise<ProgramacionEquipos[]>;
+  obtenerProgramacionPorId(
+    id: string,
+    clienteId: string
+  ): Promise<ProgramacionEquipos | null>;
 }

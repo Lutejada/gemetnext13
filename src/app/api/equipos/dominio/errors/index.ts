@@ -34,3 +34,21 @@ export class DatosComplementariosYaExisten extends Error{
         this.status = 400;
     }
 }
+export class ProgramacionNoExiste extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="Ese Programacion de equipo no existe"
+        this.cause="negocio"
+        this.status = 400;
+    }
+}
+export class ProgramacionYaCompletada extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="La programacion de ese equipo ya fue completada"
+        this.cause="negocio"
+        this.status = 400;
+    }
+}
