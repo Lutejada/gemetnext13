@@ -219,6 +219,16 @@ Table cliente {
   nombre String [unique, not null]
 }
 
+Table ejecucion_equipos {
+  id String [pk]
+  fechaEjecucion DateTime [not null]
+  fechaCreacion DateTime [default: `now()`, not null]
+  clienteId String [not null]
+  observaciones String [not null]
+  ejecutorId String [not null]
+  programacionEquipoId String [unique, not null]
+}
+
 Enum Role {
   Admin
   Metrologo
@@ -304,3 +314,9 @@ Ref: programacion_patrones.frecuencia_id > frecuencia.id
 Ref: programacion_patrones.patron_id > patrones.id
 
 Ref: programacion_patrones.cliente_id > cliente.id
+
+Ref: ejecucion_equipos.clienteId > cliente.id
+
+Ref: ejecucion_equipos.ejecutorId > responsable.id
+
+Ref: ejecucion_equipos.programacionEquipoId > programacion_equipos.id

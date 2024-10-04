@@ -1,4 +1,3 @@
-import { getSession } from "next-auth/react";
 import { authOptions } from "./auth";
 import { NoAutorizado } from "./errors";
 import { getServerSession } from "next-auth";

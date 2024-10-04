@@ -1,4 +1,3 @@
-import { tipo_actividad } from "@prisma/client";
 import { Cliente } from "../../cliente/dominio";
 import { Marca } from "../../marca/dominio";
 import { Ubicacion } from "../../ubicaciones/types";
@@ -59,6 +58,10 @@ export enum cumple {
   NO = "NO",
 }
 
+export enum EstadoProgramacion {
+  PENDIENTE = "PENDIENTE",
+  COMPLETADO = "COMPLETADO",
+}
 export class ProgramacionEquipos {
   id: string;
   equipo?: Equipo;
@@ -68,7 +71,7 @@ export class ProgramacionEquipos {
   fechaCreacion: Date;
   fechaActualizacion: Date;
   fechaInactivacion?: Date | null;
-
+  estado: EstadoProgramacion;
   constructor(attributes: ProgramacionEquipos) {
     this.id = attributes.id;
     this.equipo = attributes.equipo;
@@ -78,5 +81,6 @@ export class ProgramacionEquipos {
     this.fechaCreacion = attributes.fechaCreacion;
     this.fechaActualizacion = attributes.fechaActualizacion;
     this.fechaInactivacion = attributes.fechaInactivacion;
+    this.estado = attributes.estado;
   }
 }

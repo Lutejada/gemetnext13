@@ -39,16 +39,17 @@ model equipo {
 }
 
 model responsable {
-  id                  String      @id @default(cuid())
+  id                  String             @id @default(cuid())
   ubicacion           ubicacion[]
-  identificacion      String      @unique @db.VarChar(10)
-  nombre              String      @db.VarChar(40)
-  apellido            String      @db.VarChar(40)
-  fecha_creacion      DateTime    @default(now())
-  fecha_actualizacion DateTime    @updatedAt
+  identificacion      String             @unique @db.VarChar(10)
+  nombre              String             @db.VarChar(40)
+  apellido            String             @db.VarChar(40)
+  fecha_creacion      DateTime           @default(now())
+  fecha_actualizacion DateTime           @updatedAt
   fecha_inactivacion  DateTime?
   cliente_id          String
-  cliente             cliente     @relation(fields: [cliente_id], references: [id])
+  cliente             cliente            @relation(fields: [cliente_id], references: [id])
+  ejecucion_equipos   EjecucionEquipos[]
 
   @@index([cliente_id])
 }
@@ -292,6 +293,7 @@ model ProgramacionEquipos {
   clienteId          String             @map("cliente_id")
   cliente            cliente            @relation(fields: [clienteId], references: [id])
   estado             EstadoProgramacion @default(PENDIENTE)
+  EjecucionEquipos   EjecucionEquipos[]
 
   @@index([clienteId])
   @@map("programacion_equipos")
@@ -335,18 +337,24 @@ model cliente {
   datos_complementarios_patrones datos_complementarios_patrones[]
   programacion_equipos           ProgramacionEquipos[]
   programacion_patrones          programacion_patrones[]
+  EjecucionEquipos               EjecucionEquipos[]
 }
 
-// model fecha_inicial_patrones {
-//   id                  String         @id @default(cuid())
-//   actividad           tipo_actividad @relation(fields: [actividad_Id], references: [id])
-//   actividad_Id        String
-//   fecha_creacion      DateTime       @default(now())
-//   fecha_actualizacion DateTime       @updatedAt
-//   fecha_inactivacion  DateTime?
-// }
+model EjecucionEquipos {
+  id                   String              @id @default(uuid())
+  fechaEjecucion       DateTime            @map("fecha_ejecucion")
+  fechaCreacion        DateTime            @default(now()) @map("fecha_creacion")
+  clienteId            String              @map("cliente_id")
+  observaciones        String
+  ejecutorId           String              @map("ejecutor_id")
+  cliente              cliente             @relation(fields: [clienteId], references: [id])
+  responsable          responsable         @relation(fields: [ejecutorId], references: [id])
+  programacionEquipo   ProgramacionEquipos @relation(fields: [programacionEquipoId], references: [id])
+  programacionEquipoId String              @unique @map("programacion_equipo_id")
 
-// Lugar para los Enum
+  @@index([clienteId, programacionEquipoId])
+  @@map("ejecucion_equipos")
+}
 
 enum Role {
   Admin
