@@ -61,8 +61,7 @@ export const equipoRepositorio: EquipoRepositorio = {
       codigo: e.equipo.codigo,
       descripcion: e.equipo.descripcion,
       frecuencia: e.frecuencia.descripcion,
-      fechaProgramacion:format(e.fecha_programacion, "dd-MM-yyyy"),
-      
+      fechaProgramacion: format(e.fecha_programacion, "dd-MM-yyyy"),
     }));
   },
   crearEquipo: async function (
@@ -346,6 +345,8 @@ export const equipoRepositorio: EquipoRepositorio = {
         descripcion: element.equipo.descripcion,
         fechaProgramacion: format(element.fechaProgramacion, "dd-MM-yyyy"),
         frecuencia: element.frecuencia.descripcion,
+        estado: element.estado,
+        id: element.id,
       })
     );
     return {

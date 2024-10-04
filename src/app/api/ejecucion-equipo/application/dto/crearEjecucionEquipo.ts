@@ -2,7 +2,7 @@ import { crearUbicacionDto } from "@/app/api/ubicaciones/dtos/crearUbicacion.dto
 import { object, string } from "zod";
 
 export interface CrearEjecucionDTO {
-  fechaEjecucion: string;
+  fechaEjecucion: string | Date;
   observaciones: string;
   ejecutorId: string;
   programacionEquipoId: string;

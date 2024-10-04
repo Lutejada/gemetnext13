@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { FormEjecucionEquipo } from "./form";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -77,14 +78,14 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
         setIsClickOpenModal(true);
       };
 
-      const closeModal = () => {
-        setIsOpenModal(false);
-      };
-
       const onOpenChange = (value: boolean) => {
         if (isClickOpenModal && value === false) {
           setIsOpenModal(true);
         }
+      };
+
+      const closeModal = () => {
+        setIsOpenModal(false);
       };
 
       return (
@@ -112,7 +113,10 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
                   Ingresa la informacion solicitada
                 </DialogDescription>
               </DialogHeader>
-              {/* {aqui el formulario} */}
+              <FormEjecucionEquipo
+                programacionEquipoId={row.original.id}
+                closeModal={closeModal}
+              />
             </DialogContent>
           </Dialog>
         </>

@@ -70,7 +70,6 @@ export default function Programar() {
     form.setValue("descripcion", equipo?.descripcion!);
   }, [equipo]);
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
     await crear({
       actividadId: values.actividad,
       codigo: values.codigo,

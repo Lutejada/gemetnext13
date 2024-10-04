@@ -5,10 +5,20 @@ import { CrearEjecucionEquipos } from "../application/use-cases/writer/crearEjec
 import { EjecucionEquipoWriteRepositoryImp } from "../infrastructure/writer/ejecucionEquipoWriteRepositoryImp";
 import { ResponsableReaderRepoImp } from "../../responsables/infrastructure/reader/responsableReaderRepoImp";
 import { validarCrearEjecucionEquipo } from "../application/dto/crearEjecucionEquipo";
+import { EquipoReadRepositoryImp } from "../../equipos/infrastructure/reader/equipoReadRepository";
+import { EquipoWriteRepositoryImp } from '../../equipos/infrastructure/writer/equipoWriteRepository';
 
-const repo = new EjecucionEquipoWriteRepositoryImp();
+
+const ejecucionRepo = new EjecucionEquipoWriteRepositoryImp();
 const repoResponsable = new ResponsableReaderRepoImp();
-const crearEjecucionEquipos = new CrearEjecucionEquipos(repo, repoResponsable);
+const equipoRepo = new EquipoReadRepositoryImp();
+const equipoRepoWrite = new EquipoWriteRepositoryImp();
+const crearEjecucionEquipos = new CrearEjecucionEquipos(
+  ejecucionRepo,
+  equipoRepo,
+  equipoRepoWrite,
+  repoResponsable
+);
 export async function POST(request: Request) {
   try {
     const body = await request.json();

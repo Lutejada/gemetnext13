@@ -13,6 +13,7 @@ import { EditarDatosComplementariosDto } from "../../application/dtos/editarDato
 import { EditarDatosMetrologicosDto } from "../../application/dtos/editarDatosMetrologicos.dto";
 import { ListaProgramacionEquiposDTO } from "../../application/dtos/listaProgramacionEquipos.output";
 import { ObtenerEquiposDtoOutput } from "../../application/dtos/obtenerEquipos.dto.output";
+import { EstadoProgramacion } from "@prisma/client";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
@@ -73,4 +74,11 @@ export interface EquipoReadRepository {
     id: string,
     clienteId: string
   ): Promise<ProgramacionEquipos | null>;
+}
+export interface EquipoWriteRepository {
+  cambiarProgramacionEstado(
+    id: string,
+    clienteId: string,
+    estado: EstadoProgramacion
+  ): Promise<void>;
 }

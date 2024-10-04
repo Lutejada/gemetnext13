@@ -12,7 +12,7 @@ export class EjecucionEquipoWriteRepositoryImp
         clienteId: ejecucionEquipo.cliente.id,
         ejecutorId: ejecucionEquipo.responsable.id,
         fechaEjecucion: ejecucionEquipo.fechaEjecucion,
-        
+        programacionEquipoId: ejecucionEquipo.programacionEquipo.id,
       },
     });
   }

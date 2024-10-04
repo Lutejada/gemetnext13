@@ -4,6 +4,7 @@ export class ListaProgramacionEquiposDTO {
 }
 
 export class EquipoProgramacionDto {
+  id:string;
   codigo: string;
   descripcion: string;
   actividad: string;

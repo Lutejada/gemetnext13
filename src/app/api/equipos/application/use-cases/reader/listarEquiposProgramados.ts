@@ -28,6 +28,7 @@ export class ListarEquiposProgramados {
         fechaProgramacion: format(p.fechaProgramacion, "dd-MM-yyyy"),
         frecuencia: p.frecuencia?.descripcion!,
         estado: estado,
+        id: p.id,
       };
     });
   }
