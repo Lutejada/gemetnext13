@@ -1,3 +1,5 @@
+import { EstadoProgramacion } from "@prisma/client";
+
 export class ListaProgramacionEquiposDTO {
   equiposProgramados: EquipoProgramacionDto[];
   existeSiguientePagina: boolean;
@@ -10,7 +12,8 @@ export class EquipoProgramacionDto {
   actividad: string;
   frecuencia: string;
   fechaProgramacion: string | Date;
-  estado: Estatus;
+  alertaEstado: Estatus;
+  estado: EstadoProgramacion
 }
 
 export interface Estatus {

@@ -12,8 +12,8 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
         clienteId,
       },
     });
-    if(!res) {
-      return null
+    if (!res) {
+      return null;
     }
     return new ProgramacionEquipos({
       fechaActualizacion: res?.fechaActualizacion,
@@ -21,7 +21,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
       fechaProgramacion: res?.fechaProgramacion,
       id: res?.id,
       fechaInactivacion: res?.fechaInactivacion,
-      estado: res.estado as EstadoProgramacion
+      estado: res.estado as EstadoProgramacion,
     });
   }
   async listarEquiposProgramadosPorVencer(
@@ -30,7 +30,6 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
     const programacion = await prisma.programacionEquipos.findMany({
       where: {
         clienteId: clienteId,
-        estado: "PENDIENTE",
       },
       orderBy: {
         fechaProgramacion: "asc",
@@ -52,6 +51,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
           equipo: e.equipo,
           actividad: e.actividad,
           fechaInactivacion: e.fechaInactivacion,
+          estado: e.estado as EstadoProgramacion,
         })
     );
   }

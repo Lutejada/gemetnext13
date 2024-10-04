@@ -71,7 +71,7 @@ export class ProgramacionEquipos {
   fechaCreacion: Date;
   fechaActualizacion: Date;
   fechaInactivacion?: Date | null;
-  estado?: EstadoProgramacion;
+  estado: EstadoProgramacion;
   constructor(attributes: ProgramacionEquipos) {
     this.id = attributes.id;
     this.equipo = attributes.equipo;

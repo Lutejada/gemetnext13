@@ -20,15 +20,16 @@ export class ListarEquiposProgramados {
     programacion: ProgramacionEquipos[]
   ): EquipoProgramacionDto[] {
     return programacion.map((p) => {
-      const estado = this.calculateLabel(p.fechaProgramacion);
+      const reminderStatus = this.calculateLabel(p.fechaProgramacion);
       return {
         actividad: p.actividad?.descripcion!,
         codigo: p.equipo?.codigo!,
         descripcion: p.equipo?.descripcion!,
         fechaProgramacion: format(p.fechaProgramacion, "dd-MM-yyyy"),
         frecuencia: p.frecuencia?.descripcion!,
-        estado: estado,
+        alertaEstado: reminderStatus,
         id: p.id,
+        estado: p.estado
       };
     });
   }

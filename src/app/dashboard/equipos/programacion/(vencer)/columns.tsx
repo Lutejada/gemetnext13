@@ -25,6 +25,7 @@ import {
 import { DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FormEjecucionEquipo } from "./form";
+import { EstadoProgramacion } from "@prisma/client";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -51,10 +52,14 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
   },
   {
     accessorKey: "estado",
-    header: "Estatus",
+    header: "Estado",
+  },
+  {
+    accessorKey: "alertaEstado",
+    header: "Tiempo disponible",
     cell: ({ row }) => {
       //TODO: pasar esta logica a variantes
-      const estatus = row.getValue<Estatus>("estado");
+      const estatus = row.getValue<Estatus>("alertaEstado");
       return (
         <Badge
           className={clsx({
@@ -72,6 +77,7 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const isCompleted = row.original.estado === EstadoProgramacion.COMPLETADO ? true : false
       const [isOpenModal, setIsOpenModal] = useState(false);
       const [isClickOpenModal, setIsClickOpenModal] = useState(false);
       const clickOpenModal = () => {
@@ -97,7 +103,7 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={clickOpenModal}>
+              <DropdownMenuItem onClick={clickOpenModal} disabled={isCompleted}>
                 Ejecutar
               </DropdownMenuItem>
             </DropdownMenuContent>

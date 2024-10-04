@@ -345,7 +345,7 @@ export const equipoRepositorio: EquipoRepositorio = {
         descripcion: element.equipo.descripcion,
         fechaProgramacion: format(element.fechaProgramacion, "dd-MM-yyyy"),
         frecuencia: element.frecuencia.descripcion,
-        estado: element.estado,
+        alertaEstado: element.estado,
         id: element.id,
       })
     );
