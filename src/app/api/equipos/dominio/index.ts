@@ -6,7 +6,7 @@ import { Actividad } from "../../actividad/dominio";
 
 export { type equipo } from "@prisma/client";
 
-export interface Equipo {
+export class Equipo {
   id: string;
   codigo: string;
   descripcion: string;
@@ -23,7 +23,27 @@ export interface Equipo {
   datos_metrologicos?: DatosMetrologicosEquipos | null;
   datos_complementarios?: DatosComplementariosEquipo | null;
   cliente?: Cliente | null;
+
+  constructor(attributes: Equipo) {
+    this.id = attributes.id;
+    this.codigo = attributes.codigo;
+    this.descripcion = attributes.descripcion;
+    this.modelo = attributes.modelo;
+    this.serie = attributes.serie;
+    this.marca_id = attributes.marca_id;
+    this.marca = attributes.marca;
+    this.ubicacion = attributes.ubicacion;
+    this.ubicacion_id = attributes.ubicacion_id;
+    this.cliente_id = attributes.cliente_id;
+    this.fecha_creacion = attributes.fecha_creacion;
+    this.fecha_actualizacion = attributes.fecha_actualizacion;
+    this.fecha_inactivacion = attributes.fecha_inactivacion;
+    this.datos_metrologicos = attributes.datos_metrologicos;
+    this.datos_complementarios = attributes.datos_complementarios;
+    this.cliente = attributes.cliente;
+  }
 }
+
 
 export interface DatosMetrologicosEquipos {
   id: string;
