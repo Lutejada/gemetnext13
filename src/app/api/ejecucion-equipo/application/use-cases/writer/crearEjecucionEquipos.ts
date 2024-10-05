@@ -1,6 +1,4 @@
 import { EjecucionEquipoWriteRepository } from "../../../dominio/repository";
-import { CrearEjecucionDTO } from "../../dto/crearEjecucionEquipo";
-import { ResponsableRepositoryReader } from "../../../../responsables/domain/repository/index";
 import { ResponsableNoExiste } from "@/app/api/responsables/errors";
 import {
   EquipoReadRepository,
@@ -11,6 +9,8 @@ import {
   ProgramacionYaCompletada,
 } from "@/app/api/equipos/dominio/errors";
 import { EstadoProgramacion } from "@/app/api/equipos/dominio";
+import { ResponsableRepositoryReader } from "@/app/api/responsables/domain/repository";
+import { CrearEjecucionDTO } from "../../dto/crearEjecucionEquipo";
 
 export class CrearEjecucionEquipos {
   constructor(
@@ -35,8 +35,6 @@ export class CrearEjecucionEquipos {
     if (!programacionEquipo) {
       throw new ProgramacionNoExiste();
     }
-    console.log({dto})
-    console.log({programacionEquipo})
     if (programacionEquipo.estado === EstadoProgramacion.COMPLETADO) {
       throw new ProgramacionYaCompletada();
     }

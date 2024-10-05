@@ -1,4 +1,4 @@
-export interface Cliente {
+export class Cliente {
   id: string;
   nombre: string;
 }

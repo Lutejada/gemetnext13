@@ -22,6 +22,10 @@ export const routes: Route[] = [
       {
         name:'Ver Programacion',
         path:'/programacion',
+      },
+      {
+        name:'Ver Ejecicion',
+        path:'/ejecucion',
       }
     ]
   },

@@ -58,7 +58,6 @@ export const obtenerProgramacionEquipos = () => {
 // };
 
 export const obtenerEquipoPorCodigo = (codigo: string) => {
-  console.log(codigo);
   const fetcher = (url: string) =>
     httpBase.get<Equipo>(url).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<Equipo>(
