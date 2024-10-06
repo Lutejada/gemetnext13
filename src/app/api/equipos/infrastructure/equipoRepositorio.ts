@@ -140,20 +140,18 @@ export const equipoRepositorio: EquipoRepositorio = {
       },
     });
   },
-  crearProgramacionEquipo: function (
+  crearProgramacionEquipo: async function (
     dto: CrearProgramacionEquipoDto[],
     clienteId: string
-  ): Promise<ProgramacionEquipos> {
-    const programaciones =
-      dto.map<Prisma.programacionEquiposUncheckedCreateInput>((e) => ({
-        actividad_id: e.actividadId,
-        cliente_id: clienteId,
-        equipo_id: e.equipoId,
-        fecha_programacion: e.fechaProgramacion,
-        frecuencia_id: e.frecuenciaId,
-      }));
-    return prisma.programacionEquipos.createMany({
-      data: programaciones,
+  ): Promise<void> {
+    await prisma.programacionEquipos.createMany({
+      data: dto.map((e) => ({
+        actividadId: e.actividadId,
+        clienteId: clienteId,
+        equipoId: e.equipoId,
+        fechaProgramacion: e.fechaProgramacion,
+        frecuenciaId: e.frecuenciaId,
+      })),
     });
   },
   obtenerEquipos: async function (
