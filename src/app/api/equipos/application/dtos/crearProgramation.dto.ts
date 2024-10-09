@@ -1,4 +1,4 @@
-import { object, string  } from "zod";
+import { object, string } from "zod";
 
 export interface CrearProgramacionEquipoDto {
   actividadId: string;
@@ -13,7 +13,7 @@ export const programacionEquipo = object({
   actividadId: string({ description: "descripcion requerido" }),
   frecuenciaId: string({ description: "modelo requerido" }),
   equipoId: string({ description: "serie requerido" }),
-  fechaProgramacion: string({ description: "marca_id requerido" })
+  fechaProgramacion: string({ description: "marca_id requerido" }),
 });
 export const validarCrearProgramacion = (
   equipo: CrearProgramacionEquipoDto

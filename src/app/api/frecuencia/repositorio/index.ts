@@ -8,3 +8,4 @@ export interface FrecuenciaRepositorio {
   ) => Promise<Frecuencia>;
   obtenerFrecuencias: (clienteId: string) => Promise<Frecuencia[]>;
 }
+

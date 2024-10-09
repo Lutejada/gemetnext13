@@ -1,8 +1,9 @@
 import { CrearProgramacionEquipoDto } from "../dtos/crearProgramation.dto";
 import { getYear, addDays } from "date-fns";
 
-export const crearProgramacionAno = (
-  dto: CrearProgramacionEquipoDto
+export const crearProgramacionPorFrecuencia = (
+  dto: CrearProgramacionEquipoDto,
+  frecuencia: number
 ): CrearProgramacionEquipoDto[] => {
   const dtoList: CrearProgramacionEquipoDto[] = [
     {
@@ -18,7 +19,7 @@ export const crearProgramacionAno = (
   let yearOfTheNextDate = currentYear;
   let auxDate = initialDate;
   while (currentYear >= yearOfTheNextDate) {
-    const nextDate = addDays(auxDate, 30);
+    const nextDate = addDays(auxDate, frecuencia);
     auxDate = nextDate;
     dtoList.push({
       actividadId: dto.actividadId,
@@ -27,7 +28,7 @@ export const crearProgramacionAno = (
       fechaProgramacion: nextDate.toISOString(),
       frecuenciaId: dto.frecuenciaId,
     });
-    yearOfTheNextDate = getYear(addDays(nextDate, 30));
+    yearOfTheNextDate = getYear(addDays(nextDate, frecuencia));
   }
   return dtoList;
 };

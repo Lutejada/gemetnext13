@@ -1,4 +1,4 @@
-export interface Frecuencia {
+export class Frecuencia {
   id: string;
   descripcion: string;
   cantidad_dias: number;
