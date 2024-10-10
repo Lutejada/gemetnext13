@@ -30,10 +30,10 @@ import { useCrearVariable } from '../../hooks/useVariables'
 import { obtenerMagnitudes } from '../../hooks/useMagnitud'
 
 const formSchema = z.object({
-  alias: z.string().min(2, { message: 'requerido' }),
+  alias: z.string().min(1, { message: 'requerido' }),
   descripcion: z
     .string({ required_error: 'Seleccione un responsable' })
-    .min(2, { message: 'requerido' }),
+    .min(1, { message: 'requerido' }),
   magnitud_id: z
     .string({
       required_error: 'Please select an email to display.'
@@ -55,7 +55,6 @@ export default function Ubicacion () {
   const { toast } = useToast()
 
   async function onSubmit (values: z.infer<typeof formSchema>) {
-    console.log(values);
     await crear({
       alias: values.alias,
       descripcion: values.descripcion,

@@ -30,6 +30,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
     const programacion = await prisma.programacionEquipos.findMany({
       where: {
         clienteId: clienteId,
+        estado: "PENDIENTE",
       },
       orderBy: {
         fechaProgramacion: "asc",
