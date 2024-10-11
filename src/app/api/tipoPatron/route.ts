@@ -3,6 +3,7 @@ import { errorHandler } from "../common/errors/error.handler";
 import { validarCrearTipoPatron } from "./dtos/crear";
 import { crearTipoPatron } from "./servicios/crearTipoPatron";
 import { auth } from "@/lib/getSession";
+import { prisma } from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
@@ -18,6 +19,11 @@ export async function POST(request: Request) {
 
 export async function GET(_request: Request) {
   try {
+    const session = await auth();
+    const patrones = await prisma.tipo_patron.findMany({
+      where: { cliente_id: session.user.cliente_id },
+    });
+    return NextResponse.json(patrones);
   } catch (error: any) {
     return errorHandler(error);
   }

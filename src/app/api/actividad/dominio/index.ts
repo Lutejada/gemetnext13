@@ -1,4 +1,4 @@
-export interface Actividad {
+export class Actividad {
   id: string;
   descripcion: string;
   fecha_creacion: string | Date;

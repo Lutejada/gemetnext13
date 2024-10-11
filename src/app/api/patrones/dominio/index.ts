@@ -1,7 +1,7 @@
 import { Cliente } from "../../cliente/dominio";
 import { Ubicacion } from "../../ubicaciones/types";
 
-export interface Patron {
+export class Patron {
   id: string;
   codigo: string;
   descripcion: string;

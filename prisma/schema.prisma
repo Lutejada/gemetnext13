@@ -86,30 +86,30 @@ model marca {
 }
 
 model tipo_actividad {
-  id                    String                  @id @default(cuid())
-  descripcion           String
-  programacion_equipos  ProgramacionEquipos[]
-  fecha_creacion        DateTime                @default(now())
-  fecha_actualizacion   DateTime                @updatedAt
-  fecha_inactivacion    DateTime?
-  programacion_patrones programacion_patrones[]
-  cliente_id            String
-  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+  id                   String                 @id @default(cuid())
+  descripcion          String
+  programacion_equipos ProgramacionEquipos[]
+  fecha_creacion       DateTime               @default(now())
+  fecha_actualizacion  DateTime               @updatedAt
+  fecha_inactivacion   DateTime?
+  cliente_id           String
+  cliente              cliente                @relation(fields: [cliente_id], references: [id])
+  ProgramacionPatrones ProgramacionPatrones[]
 
   @@index([cliente_id])
 }
 
 model frecuencia {
-  id                    String                  @id @default(cuid())
+  id                    String                 @id @default(cuid())
   descripcion           String
-  cantidad_dias         Int                     @db.Integer
-  fecha_creacion        DateTime                @default(now())
-  fecha_actualizacion   DateTime                @updatedAt
+  cantidad_dias         Int                    @db.Integer
+  fecha_creacion        DateTime               @default(now())
+  fecha_actualizacion   DateTime               @updatedAt
   fecha_inactivacion    DateTime?
   programacion_equipos  ProgramacionEquipos[]
-  programacion_patrones programacion_patrones[]
+  programacion_patrones ProgramacionPatrones[]
   cliente_id            String
-  cliente               cliente                 @relation(fields: [cliente_id], references: [id])
+  cliente               cliente                @relation(fields: [cliente_id], references: [id])
 
   @@index([cliente_id])
 }
@@ -177,7 +177,7 @@ model patrones {
   ubicacion                     ubicacion                       @relation(fields: [ubicacionId], references: [id])
   ubicacionId                   String
   datos_metrologicos_patronesId String?
-  programacion_patrones         programacion_patrones[]
+  programacion_patrones         ProgramacionPatrones[]
   cliente_id                    String
   cliente                       cliente                         @relation(fields: [cliente_id], references: [id])
   tipo_patron                   tipo_patron                     @relation(fields: [tipo_patron_id], references: [id])
@@ -299,22 +299,23 @@ model ProgramacionEquipos {
   @@map("programacion_equipos")
 }
 
-model programacion_patrones {
-  id                  String         @id @default(cuid())
-  actividad           tipo_actividad @relation(fields: [actividad_id], references: [id])
-  actividad_id        String
-  frecuencia          frecuencia     @relation(fields: [frecuencia_id], references: [id])
-  frecuencia_id       String
-  patron              patrones       @relation(fields: [patron_id], references: [id])
-  patron_id           String
-  fecha_programacion  DateTime
-  fecha_creacion      DateTime       @default(now())
-  fecha_actualizacion DateTime       @updatedAt
-  fecha_inactivacion  DateTime?
-  cliente_id          String
-  cliente             cliente        @relation(fields: [cliente_id], references: [id])
+model ProgramacionPatrones {
+  id                 String         @id @default(cuid())
+  actividad          tipo_actividad @relation(fields: [actividadId], references: [id])
+  actividadId        String         @map("actividad_id")
+  frecuencia         frecuencia     @relation(fields: [frecuenciaId], references: [id])
+  frecuenciaId       String         @map("frecuencia_id")
+  patron             patrones       @relation(fields: [patronId], references: [id])
+  patronId           String         @map("patron_id")
+  fechaProgramacion  DateTime       @map("fecha_programacion")
+  fechaCreacion      DateTime       @default(now()) @map("fecha_creacion")
+  fechaActualizacion DateTime       @updatedAt @map("fecha_actualizacion")
+  fechaInactivacion  DateTime?      @map("fecha_inactivacion")
+  clienteId          String         @map("cliente_id")
+  cliente            cliente        @relation(fields: [clienteId], references: [id])
 
-  @@index([cliente_id])
+  @@index([clienteId])
+  @@map("programacion_patrones")
 }
 
 model cliente {
@@ -336,7 +337,7 @@ model cliente {
   datos_complementarios_equipo   datos_complementarios_equipo[]
   datos_complementarios_patrones datos_complementarios_patrones[]
   programacion_equipos           ProgramacionEquipos[]
-  programacion_patrones          programacion_patrones[]
+  programacion_patrones          ProgramacionPatrones[]
   EjecucionEquipos               EjecucionEquipos[]
 }
 
