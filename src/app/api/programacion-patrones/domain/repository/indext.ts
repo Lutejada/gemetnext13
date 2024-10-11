@@ -1,9 +1,7 @@
 import { ProgramacionPatrones } from "../entity";
 
 export interface ProgramacionPatronesRepositoryRead {
-  listarProgramaciones(
-    clienteId: string
-  ): Promise<ProgramacionPatrones[] | null>;
+  listarProgramaciones(clienteId: string): Promise<ProgramacionPatrones[]>;
   listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,

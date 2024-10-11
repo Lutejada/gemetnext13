@@ -1,4 +1,4 @@
-import  { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
@@ -8,19 +8,16 @@ import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMet
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";
 import { ObtenerPatronesDtoOutput } from "@/app/api/patrones/dtos/obtenerPatrones.dto.output";
 import { ObtenerDatosDto } from "@/app/api/common/types";
-import { EditarBasicosDto } from '../../api/patrones/dtos/editarBasicos.dto';
+import { EditarBasicosDto } from "../../api/patrones/dtos/editarBasicos.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
-import { CrearProgramacionPatronDto } from '../../api/patrones/dtos/crearProgramation.dto';
-import { ListaProgramacionPatronesDTO } from '../../api/patrones/dtos/listaProgramacionPatrones.output';
+import { CrearProgramacionPatronDto } from "../../api/patrones/dtos/crearProgramation.dto";
+import { ListaProgramacionPatronesDTO } from "../../api/patrones/dtos/listaProgramacionPatrones.output";
+import { PatronProgramacionDto } from "@/app/api/programacion-patrones/application/dto/listadoPatronesProgramados.dto";
 
 export const crearPatron = () => {
-
-  const fetcher = (
-    url: string,
-    { arg }: { arg: CrearPatronDto }
-  ) => httpBase.post(url, arg).then((res) => res.data);
-
+  const fetcher = (url: string, { arg }: { arg: CrearPatronDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/patrones",
@@ -30,19 +27,15 @@ export const crearPatron = () => {
   return {
     isLoading: isMutating,
     equipo: data,
-    crear:trigger,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
 };
 
 export const crearDatosMetrologicos = () => {
-
-  const fetcher = (
-    url: string,
-    { arg }: { arg: CrearDatosMetrologicosDto }
-  ) => httpBase.post(url, arg).then((res) => res.data);
-
+  const fetcher = (url: string, { arg }: { arg: CrearDatosMetrologicosDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/patrones/metrologicos",
@@ -52,18 +45,16 @@ export const crearDatosMetrologicos = () => {
   return {
     isLoading: isMutating,
     metrologicos: data,
-    crear:trigger,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
 };
 export const crearDatosComplementarios = () => {
-
   const fetcher = (
     url: string,
     { arg }: { arg: CrearDatosComplementariosDto }
   ) => httpBase.post(url, arg).then((res) => res.data);
-
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/patrones/complementarios",
@@ -73,12 +64,11 @@ export const crearDatosComplementarios = () => {
   return {
     isLoading: isMutating,
     metrologicos: data,
-    crear:trigger,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
 };
-
 
 export const useObtenerPatrones = () => {
   const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
@@ -180,13 +170,14 @@ export const crearProgramacionPatron = () => {
 export const obtenerProgramacionPatrones = () => {
   const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } =
-    useSWRMutation<ListaProgramacionPatronesDTO>("/patrones/programar", fetcher);
+  const { data, error, isMutating, trigger } = useSWRMutation<
+    PatronProgramacionDto[]
+  >("/patrones/programar", fetcher);
   return {
-    patrones: data?.patronesProgramados ?? [],
+    patrones: data ?? [],
     isLoading: isMutating,
     isError: error,
     obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
-    existeSiguientePagina: data?.existeSiguientePagina ?? false,
+    //existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

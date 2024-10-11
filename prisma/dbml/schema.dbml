@@ -212,6 +212,7 @@ Table programacion_patrones {
   fechaActualizacion DateTime [not null]
   fechaInactivacion DateTime
   clienteId String [not null]
+  estado EstadoProgramacion [not null, default: 'PENDIENTE']
 }
 
 Table cliente {

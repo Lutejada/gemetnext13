@@ -2,6 +2,7 @@ import { Actividad } from "@/app/api/actividad/dominio";
 import { Cliente } from "@/app/api/cliente/dominio";
 import { Frecuencia } from "@/app/api/frecuencia/dominio";
 import { Patron } from "@/app/api/patrones/dominio";
+import { EstadoProgramacion } from "@prisma/client";
 
 export class ProgramacionPatrones {
   id: string;
@@ -13,6 +14,7 @@ export class ProgramacionPatrones {
   fechaActualizacion: Date | string;
   fechaInactivacion?: Date | string | null;
   cliente: Cliente;
+  estado?: EstadoProgramacion;
 
   constructor(attributes: ProgramacionPatrones) {
     this.id = attributes.id;
@@ -24,5 +26,6 @@ export class ProgramacionPatrones {
     this.fechaActualizacion = attributes.fechaActualizacion;
     this.fechaInactivacion = attributes.fechaInactivacion;
     this.cliente = attributes.cliente;
+    this.estado = attributes.estado;
   }
 }

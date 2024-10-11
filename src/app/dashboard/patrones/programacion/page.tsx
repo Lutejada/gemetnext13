@@ -1,28 +1,20 @@
-"use client";
-import { columns } from "./columns";
-import { DataTable } from "../../../../../components/data-table";
-import SearchForm from "@/components/serch-form";
-import { useEffect, useState } from "react";
-import Paginador from "@/components/paginador";
-import { obtenerProgramacionPatrones } from "../../hooks/usePatron";
-export default function Programacion() {
-  const { obtenerPatrones, patrones, existeSiguientePagina } =
-    obtenerProgramacionPatrones();
-  useEffect(() => {
-    obtenerPatrones();
-  }, []);
+//import SearchForm from "@/components/serch-form";
 
+import ProgramacionPatrones from "./(vencer)/table";
+
+//import Paginador from "@/components/paginador";
+export default function Programacion() {
   return (
     <div className="container mx-auto py-10">
       <h2 className="text-center mb-4 font-semibold">
-        Programacion de patrones
+        Programacion de Patrones
       </h2>
-
-      <DataTable columns={columns} data={patrones} />
+      <ProgramacionPatrones />
+      {/* <DataTable columns={columns} data={equipos} />
       <Paginador
-        obtenervalores={obtenerPatrones}
+        obtenervalores={obtenerEquipos}
         existeSiguientePagina={existeSiguientePagina}
-      />
+      /> */}
     </div>
   );
 }

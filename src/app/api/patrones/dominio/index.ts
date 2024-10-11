@@ -7,15 +7,14 @@ export class Patron {
   descripcion: string;
   modelo: string;
   serie: string;
-  marca_id: string;
+  marca_id?: string;
   fecha_creacion: Date;
   fecha_actualizacion: Date;
-  fecha_inactivacion: Date | null;
+  fecha_inactivacion?: Date | null;
   ubicacionId?: string;
   datos_metrologicos?: DatosMetrologicosPatrones | null;
   datos_complementarios?: DatosComplementariosPatrones | null;
   ubicacion?: Ubicacion;
-  clienteId: string;
   cliente?: Cliente;
 }
 

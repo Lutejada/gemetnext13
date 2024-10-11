@@ -10,6 +10,7 @@ import { FrecuenciaRepositoryReadImp } from "@/app/api/frecuencia/infraestructur
 import { CrearProgramacionPatrones } from "@/app/api/programacion-patrones/application/use-cases/crearProgramacionPatrones";
 import { validarCrearProgramacion } from "@/app/api/programacion-patrones/application/dto/crearProgramation.dto";
 import { ProgramacionPatronesRepositoryReadImp } from "@/app/api/programacion-patrones/infraestructure/read/programacionPatronesRepoImp";
+import { ListarProgramacionPatrones } from "@/app/api/programacion-patrones/application/use-cases/listarProgramacionPatrones";
 
 const programacionPatronesRepo = new ProgramacionPatronesWriteRepoImp();
 const actividadRepo = new ActividadRepoReadImp();
@@ -21,6 +22,9 @@ const crearProgramacionUseCase = new CrearProgramacionPatrones(
   actividadRepo,
   patronRepo,
   frecuenciaRepo,
+  programacionRepoRead
+);
+const listarProgramacionPatronesUseCase = new ListarProgramacionPatrones(
   programacionRepoRead
 );
 export async function POST(request: Request) {
@@ -43,8 +47,7 @@ export async function GET(request: Request) {
       page: Number(page) || 1,
     };
     const session = await auth();
-    const programacion = await listarPatronesProgramados(
-      dto,
+    const programacion = await listarProgramacionPatronesUseCase.execute(
       session.user.cliente_id
     );
     return NextResponse.json(programacion);
