@@ -1,7 +1,32 @@
 import { prisma } from "@/lib/prisma";
-import { EstadoProgramacion, ProgramacionEquipos } from "../../dominio";
+import { Equipo, EstadoProgramacion, ProgramacionEquipos } from "../../dominio";
 import { EquipoReadRepository } from "../../dominio/repository/index";
 export class EquipoReadRepositoryImp implements EquipoReadRepository {
+  async obtenerPorID(ID: string, clienteID: string): Promise<Equipo | null> {
+    const res = await prisma.equipo.findFirst({
+      where: {
+        cliente_id: clienteID,
+        id: ID,
+      },
+    });
+
+    if (!res) {
+      return null;
+    }
+
+    return new Equipo({
+      cliente_id: clienteID,
+      codigo: res.codigo,
+      descripcion: res.descripcion,
+      fecha_actualizacion: res.fecha_actualizacion,
+      fecha_creacion: res.fecha_creacion,
+      id: res.id,
+      marca_id: res.marca_id,
+      modelo: res.modelo,
+      serie: res.serie,
+      ubicacion_id: res.ubicacion_id,
+    });
+  }
   async obtenerProgramacionPorId(
     id: string,
     clienteId: string
@@ -30,6 +55,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
     const programacion = await prisma.programacionEquipos.findMany({
       where: {
         clienteId: clienteId,
+        estado: "PENDIENTE",
       },
       orderBy: {
         fechaProgramacion: "asc",

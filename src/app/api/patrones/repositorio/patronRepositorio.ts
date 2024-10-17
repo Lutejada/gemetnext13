@@ -37,6 +37,7 @@ export const patronRepositorio: PatronRepositorio = {
         serie: dto.serie,
         marca_id: dto.marcaId,
         ubicacionId: dto.ubicacionId,
+        tipo_patron_id: dto.tipoPatronId,
       },
     });
     return patron;
@@ -139,7 +140,7 @@ export const patronRepositorio: PatronRepositorio = {
       responsable: patron.ubicacion.responsable.nombre,
     }));
 
-    const countNextPage = await prisma.programacion_equipos.count({
+    const countNextPage = await prisma.patrones.count({
       where: { cliente_id: clienteId },
       take: porPagina,
       skip,

@@ -1,12 +1,11 @@
 import { errorHandler } from "@/app/api/common/errors/error.handler";
 import { auth } from "@/lib/getSession";
-import { listarEquiposProgramadosVencer } from "../../application/servicios/listarEquiposProgramadosVencer";
 import { NextResponse } from "next/server";
-import { ListarEquiposProgramados } from "../../application/use-cases/reader/listarEquiposProgramados";
-import { EquipoReadRepositoryImp } from "../../infrastructure/reader/equipoReadRepository";
+import { ListarProgramacionEquipos } from "@/app/api/programacion-equipos/application/use-cases/listarProgramacionEquipos";
+import { ProgramacionEquiposRepositoryReadImp } from "@/app/api/programacion-equipos/infraestructure/read/programacionPatronesRepoImp";
 
-const repo = new EquipoReadRepositoryImp();
-const useCase = new ListarEquiposProgramados(repo);
+const programacionRepoRead = new ProgramacionEquiposRepositoryReadImp();
+const useCase = new ListarProgramacionEquipos(programacionRepoRead);
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);

@@ -84,7 +84,7 @@ function CrearEquiposBasicos() {
                   <FormLabel>Codigo</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Ingrese nombre de la Codigo"
+                      placeholder="Ingrese nombre del Codigo"
                       {...field}
                     />
                   </FormControl>

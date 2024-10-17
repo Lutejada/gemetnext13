@@ -1,9 +1,9 @@
-import  { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import { TipoPatron } from "../../api/tipoPatron/dominio";
 import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
-import useSWR from 'swr';
+import useSWR from "swr";
 import { CrearTipoPatronDto } from "../../api/tipoPatron/dtos/crear";
 
 export const ObtenerTipoPatrones = () => {
@@ -13,20 +13,15 @@ export const ObtenerTipoPatrones = () => {
     fetcher
   );
   return {
-    responsables: data ?? [],
+    tipoPatrones: data ?? [],
     isLoading,
     isError: error,
   };
 };
 
-
 export const crearTipoPatron = () => {
-
-  const fetcher = (
-    url: string,
-    { arg }: { arg: CrearTipoPatronDto }
-  ) => httpBase.post(url, arg).then((res) => res.data);
-
+  const fetcher = (url: string, { arg }: { arg: CrearTipoPatronDto }) =>
+    httpBase.post(url, arg).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/tipoPatron",
@@ -36,7 +31,7 @@ export const crearTipoPatron = () => {
   return {
     isLoading: isMutating,
     tipoPatron: data,
-    crear:trigger,
+    crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };
