@@ -74,6 +74,7 @@ export interface EquipoReadRepository {
     id: string,
     clienteId: string
   ): Promise<ProgramacionEquipos | null>;
+  obtenerPorID(ID: string, clienteID: string): Promise<Equipo | null>;
 }
 export interface EquipoWriteRepository {
   cambiarProgramacionEstado(

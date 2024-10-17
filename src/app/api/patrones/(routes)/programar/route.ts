@@ -14,8 +14,8 @@ import { ListarProgramacionPatrones } from "@/app/api/programacion-patrones/appl
 
 const programacionPatronesRepo = new ProgramacionPatronesWriteRepoImp();
 const actividadRepo = new ActividadRepoReadImp();
-const patronRepo = new PatronRepositoryReadImp();
 const frecuenciaRepo = new FrecuenciaRepositoryReadImp();
+const patronRepo = new PatronRepositoryReadImp();
 const programacionRepoRead = new ProgramacionPatronesRepositoryReadImp();
 const crearProgramacionUseCase = new CrearProgramacionPatrones(
   programacionPatronesRepo,

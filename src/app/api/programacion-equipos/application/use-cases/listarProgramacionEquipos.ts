@@ -1,35 +1,35 @@
-import { differenceInDays, format, startOfDay } from "date-fns";
-import { ProgramacionEquipos } from "../../../dominio";
-import { EquipoReadRepository } from "../../../dominio/repository/index";
+import { differenceInDays, startOfDay, format } from "date-fns";
+import { ProgramacionEquipos } from "../../domain/entity";
+import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/indext";
 import {
-  EquipoProgramacionDto,
   Estatus,
-} from "../../dtos/listaProgramacionEquipos.output";
-
-export class ListarEquiposProgramados {
-  constructor(private repository: EquipoReadRepository) {}
-
-  async execute(clienteId: string): Promise<EquipoProgramacionDto[]> {
-    const equipos = await this.repository.listarEquiposProgramadosPorVencer(
+  PatronProgramacionDto,
+} from "../dto/listadoPatronesProgramados.dto";
+export class ListarProgramacionEquipos {
+  constructor(
+    private programacionRepoRead: ProgramacionEquiposRepositoryRead
+  ) {}
+  async execute(clienteId: string) {
+    const listado = await this.programacionRepoRead.listarProgramaciones(
       clienteId
     );
-    return this.converToDTO(equipos);
+    return this.converToDTO(listado);
   }
 
   private converToDTO(
     programacion: ProgramacionEquipos[]
-  ): EquipoProgramacionDto[] {
+  ): PatronProgramacionDto[] {
     return programacion.map((p) => {
       const reminderStatus = this.calculateLabel(p.fechaProgramacion);
       return {
         actividad: p.actividad?.descripcion!,
         codigo: p.equipo?.codigo!,
         descripcion: p.equipo?.descripcion!,
-        fechaProgramacion: format(p.fechaProgramacion, "dd-MM-yyyy"),
+        fechaProgramacion: format(new Date(p.fechaProgramacion), "dd-MM-yyyy"),
         frecuencia: p.frecuencia?.descripcion!,
         alertaEstado: reminderStatus,
         id: p.id,
-        estado: p.estado
+        estado: p.estado ?? "PENDIENTE",
       };
     });
   }

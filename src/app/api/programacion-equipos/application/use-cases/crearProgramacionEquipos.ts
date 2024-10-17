@@ -1,24 +1,24 @@
 import { ActividadRepositoryRead } from "@/app/api/actividad/dominio/repository";
-import { ProgramacionPatrones } from "../../domain/entity";
+import { ProgramacionEquipos } from "../../domain/entity";
 import {
-  ProgramacionPatronesRepositoryRead,
-  ProgramacionPatronesRepositoryWrite,
+  ProgramacionEquiposRepositoryRead,
+  ProgramacionEquiposRepositoryWrite,
 } from "../../domain/repository/indext";
 import { CrearProgramacionPatronDto } from "../dto/crearProgramation.dto";
 import { ActividadNoExiste } from "@/app/api/actividad/dominio/errors";
 import { addDays, getYear } from "date-fns";
-import { PatronRepositoryRead } from "../../../patrones/dominio/repository/index";
 import { PatronNoExiste } from "../../../patrones/errors";
 import { FrecuenciaRepositoryRead } from "@/app/api/frecuencia/dominio/repository";
 import { FrecuenciaNoExiste } from "@/app/api/frecuencia/dominio/errors";
 import { ProgramacionYaExiste } from "../../domain/errors";
-export class CrearProgramacionPatrones {
+import { EquipoReadRepository } from "../../../equipos/dominio/repository/index";
+export class CrearProgramacionEquipos {
   constructor(
-    private programacionRepoWrite: ProgramacionPatronesRepositoryWrite,
+    private programacionRepoWrite: ProgramacionEquiposRepositoryWrite,
     private actividadRepo: ActividadRepositoryRead,
-    private patronRepo: PatronRepositoryRead,
+    private equipoRepo: EquipoReadRepository,
     private frecuenciaRepo: FrecuenciaRepositoryRead,
-    private programacionRepoRead: ProgramacionPatronesRepositoryRead
+    private programacionRepoRead: ProgramacionEquiposRepositoryRead
   ) {}
   async execute(clienteId: string, dto: CrearProgramacionPatronDto) {
     const actividad = await this.actividadRepo.obtenerPorId(
@@ -42,25 +42,24 @@ export class CrearProgramacionPatrones {
       await this.programacionRepoRead.listaProgramacionesPorFrecuenciaYActividad(
         clienteId,
         actividad.id,
-        frecuencia.id,
+        frecuencia.id
       );
     if (progracionesEncontradas.length > 0) {
       throw new ProgramacionYaExiste();
     }
 
-    const patron = await this.patronRepo.obtenerPorID(dto.patronId, clienteId);
-    if (!patron) {
+    const equipo = await this.equipoRepo.obtenerPorID(dto.patronId, clienteId);
+    if (!equipo) {
       throw new PatronNoExiste();
     }
-    const programacionInicial = new ProgramacionPatrones({
+    const programacionInicial = new ProgramacionEquipos({
+      id: "",
       actividad: actividad,
-      cliente: { id: clienteId, nombre: clienteId },
       fechaActualizacion: new Date(),
       fechaCreacion: new Date(),
       fechaProgramacion: dto.fechaProgramacion,
       frecuencia: frecuencia,
-      id: "",
-      patron: patron,
+      equipo: equipo,
     });
     const programaciones =
       this.crearProgramacionPorFrecuencia(programacionInicial);
@@ -71,24 +70,23 @@ export class CrearProgramacionPatrones {
   }
 
   crearProgramacionPorFrecuencia = (
-    programacionInicial: ProgramacionPatrones
-  ): ProgramacionPatrones[] => {
-    const dtoList: ProgramacionPatrones[] = [programacionInicial];
-    const cantidadDias = programacionInicial.frecuencia.cantidad_dias;
+    programacionInicial: ProgramacionEquipos
+  ): ProgramacionEquipos[] => {
+    const dtoList: ProgramacionEquipos[] = [programacionInicial];
+    const cantidadDias = programacionInicial?.frecuencia?.cantidad_dias ?? 30;
     const initialDate = new Date(programacionInicial.fechaProgramacion);
     const currentYear = getYear(initialDate);
     let yearOfTheNextDate = getYear(addDays(initialDate, cantidadDias));
     let auxDate = initialDate;
     while (currentYear >= yearOfTheNextDate) {
-      const nextDate = addDays(auxDate, cantidadDias);
+      const nextDate = addDays(auxDate, cantidadDias); 
       auxDate = nextDate;
       dtoList.push({
-        cliente: programacionInicial.cliente,
         actividad: programacionInicial.actividad,
         fechaActualizacion: programacionInicial.fechaActualizacion,
         fechaCreacion: programacionInicial.fechaCreacion,
         frecuencia: programacionInicial.frecuencia,
-        patron: programacionInicial.patron,
+        equipo: programacionInicial.equipo,
         id: programacionInicial.id,
         fechaProgramacion: nextDate.toISOString(),
       });
