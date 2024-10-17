@@ -16,6 +16,23 @@ export class Patron {
   datos_complementarios?: DatosComplementariosPatrones | null;
   ubicacion?: Ubicacion;
   cliente?: Cliente;
+
+  constructor(attributes: Partial<Patron> = {}) {
+    this.id = attributes.id || "";
+    this.codigo = attributes.codigo || "";
+    this.descripcion = attributes.descripcion || "";
+    this.modelo = attributes.modelo || "";
+    this.serie = attributes.serie || "";
+    this.marca_id = attributes.marca_id;
+    this.fecha_creacion = attributes.fecha_creacion || new Date();
+    this.fecha_actualizacion = attributes.fecha_actualizacion || new Date();
+    this.fecha_inactivacion = attributes.fecha_inactivacion || null;
+    this.ubicacionId = attributes.ubicacionId;
+    this.datos_metrologicos = attributes.datos_metrologicos || null;
+    this.datos_complementarios = attributes.datos_complementarios || null;
+    this.ubicacion = attributes.ubicacion;
+    this.cliente = attributes.cliente;
+  }
 }
 
 export interface DatosMetrologicosPatrones {

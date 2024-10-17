@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/dialog";
 import { DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { FormEjecucionEquipo } from "./form";
+import { FormEjecucionPatron } from "./form";
 import { EstadoProgramacion } from "@prisma/client";
 import {
   Estatus,
@@ -120,8 +120,8 @@ export const columns: ColumnDef<PatronProgramacionDto>[] = [
                   Ingresa la informacion solicitada
                 </DialogDescription>
               </DialogHeader>
-              <FormEjecucionEquipo
-                programacionEquipoId={row.original.id}
+              <FormEjecucionPatron
+                programacionPatronId={row.original.id}
                 closeModal={closeModal}
               />
             </DialogContent>

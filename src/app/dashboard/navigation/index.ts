@@ -45,6 +45,10 @@ export const routes: Route[] = [
       {
         name:'Ver Programacion',
         path:'/programacion',
+      },
+      {
+        name:'Ver Ejecucion',
+        path:'/ejecucion',
       }
     ]
   },

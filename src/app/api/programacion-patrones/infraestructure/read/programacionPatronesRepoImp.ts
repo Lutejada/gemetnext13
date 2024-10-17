@@ -9,6 +9,32 @@ import { Frecuencia } from "@/app/api/frecuencia/dominio";
 export class ProgramacionPatronesRepositoryReadImp
   implements ProgramacionPatronesRepositoryRead
 {
+  async obtenerProgramacionPorId(
+    ID: string,
+    clienteId: string
+  ): Promise<ProgramacionPatrones | null> {
+    const res = await prisma.programacionPatrones.findUnique({
+      where: {
+        id: ID,
+        clienteId,
+      },
+    });
+    if (!res) {
+      return null;
+    }
+    return new ProgramacionPatrones({
+      id: res.id,
+      actividad: new Actividad(),
+      cliente: new Cliente(),
+      patron: new Patron(),
+      fechaActualizacion: res.fechaActualizacion,
+      fechaCreacion: res.fechaActualizacion,
+      fechaProgramacion: res.fechaProgramacion,
+      frecuencia: new Frecuencia(),
+      fechaInactivacion: res.fechaInactivacion,
+      estado: res.estado,
+    });
+  }
   async listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,

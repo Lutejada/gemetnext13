@@ -39,17 +39,18 @@ model equipo {
 }
 
 model responsable {
-  id                  String             @id @default(cuid())
+  id                  String              @id @default(cuid())
   ubicacion           ubicacion[]
-  identificacion      String             @unique @db.VarChar(10)
-  nombre              String             @db.VarChar(40)
-  apellido            String             @db.VarChar(40)
-  fecha_creacion      DateTime           @default(now())
-  fecha_actualizacion DateTime           @updatedAt
+  identificacion      String              @unique @db.VarChar(10)
+  nombre              String              @db.VarChar(40)
+  apellido            String              @db.VarChar(40)
+  fecha_creacion      DateTime            @default(now())
+  fecha_actualizacion DateTime            @updatedAt
   fecha_inactivacion  DateTime?
   cliente_id          String
-  cliente             cliente            @relation(fields: [cliente_id], references: [id])
+  cliente             cliente             @relation(fields: [cliente_id], references: [id])
   ejecucion_equipos   EjecucionEquipos[]
+  EjecucionPatrones   EjecucionPatrones[]
 
   @@index([cliente_id])
 }
@@ -279,21 +280,21 @@ model datos_complementarios_patrones {
 }
 
 model ProgramacionEquipos {
-  id                 String             @id @default(cuid())
-  actividad          tipo_actividad     @relation(fields: [actividadId], references: [id])
-  actividadId        String             @map("actividad_id")
-  frecuencia         frecuencia         @relation(fields: [frecuenciaId], references: [id])
-  frecuenciaId       String             @map("frecuencia_id")
-  equipo             equipo             @relation(fields: [equipoId], references: [id])
-  equipoId           String             @map("equipo_id")
-  fechaProgramacion  DateTime           @map("fecha_programacion")
-  fechaCreacion      DateTime           @default(now()) @map("fecha_creacion")
-  fechaActualizacion DateTime           @updatedAt @map("fecha_actualizacion")
-  fechaInactivacion  DateTime?          @map("fecha_inactivacion")
-  clienteId          String             @map("cliente_id")
-  cliente            cliente            @relation(fields: [clienteId], references: [id])
-  estado             EstadoProgramacion @default(PENDIENTE)
-  EjecucionEquipos   EjecucionEquipos[]
+  id                  String              @id @default(cuid())
+  actividad           tipo_actividad      @relation(fields: [actividadId], references: [id])
+  actividadId         String              @map("actividad_id")
+  frecuencia          frecuencia          @relation(fields: [frecuenciaId], references: [id])
+  frecuenciaId        String              @map("frecuencia_id")
+  equipo              equipo              @relation(fields: [equipoId], references: [id])
+  equipoId            String              @map("equipo_id")
+  fechaProgramacion   DateTime            @map("fecha_programacion")
+  fechaCreacion       DateTime            @default(now()) @map("fecha_creacion")
+  fechaActualizacion  DateTime            @updatedAt @map("fecha_actualizacion")
+  fechaInactivacion   DateTime?           @map("fecha_inactivacion")
+  clienteId           String              @map("cliente_id")
+  cliente             cliente             @relation(fields: [clienteId], references: [id])
+  estado              EstadoProgramacion  @default(PENDIENTE)
+  EjecucionEquipos    EjecucionEquipos[]
 
   @@index([clienteId])
   @@map("programacion_equipos")
@@ -314,6 +315,7 @@ model ProgramacionPatrones {
   clienteId          String             @map("cliente_id")
   cliente            cliente            @relation(fields: [clienteId], references: [id])
   estado             EstadoProgramacion @default(PENDIENTE)
+  EjecucionPatrones  EjecucionPatrones[]
 
   @@index([clienteId])
   @@map("programacion_patrones")
@@ -340,6 +342,7 @@ model cliente {
   programacion_equipos           ProgramacionEquipos[]
   programacion_patrones          ProgramacionPatrones[]
   EjecucionEquipos               EjecucionEquipos[]
+  EjecucionPatrones              EjecucionPatrones[]
 }
 
 model EjecucionEquipos {
@@ -356,6 +359,22 @@ model EjecucionEquipos {
 
   @@index([clienteId, programacionEquipoId])
   @@map("ejecucion_equipos")
+}
+
+model EjecucionPatrones {
+  id                    String               @id @default(uuid())
+  fechaEjecucion        DateTime             @map("fecha_ejecucion")
+  fechaCreacion         DateTime             @default(now()) @map("fecha_creacion")
+  clienteId             String               @map("cliente_id")
+  observaciones         String
+  ejecutorId            String               @map("ejecutor_id")
+  cliente               cliente              @relation(fields: [clienteId], references: [id])
+  responsable           responsable          @relation(fields: [ejecutorId], references: [id])
+  programacionPatron    ProgramacionPatrones @relation(fields: [programacionPatronId], references: [id])
+  programacionPatronId  String               @unique @map("programacion_patron_id")
+
+  @@index([clienteId, programacionPatronId])
+  @@map("ejecucion_patrones")
 }
 
 enum Role {

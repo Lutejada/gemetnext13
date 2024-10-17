@@ -34,8 +34,8 @@ import {
 } from "@/components/ui/select";
 import { obtenerResponsables } from "@/app/dashboard/hooks/useResponsables";
 import { Textarea } from "@/components/ui/textarea";
-import { crearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { crearEjecucionPatron } from "@/app/dashboard/hooks/useEjecucionPatron";
 
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
@@ -50,13 +50,13 @@ const FormSchema = z.object({
     }),
 });
 interface Props {
-  programacionEquipoId: string;
+  programacionPatronId: string;
   closeModal: () => void
 }
 
-export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props) {
+export function FormEjecucionPatron({ programacionPatronId, closeModal }: Props) {
   const { responsables } = obtenerResponsables();
-  const { crear, error, errorMsg, isLoading } = crearEjecucionEquipo();
+  const { crear, error, errorMsg, isLoading } = crearEjecucionPatron();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -66,10 +66,10 @@ export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props)
       ejecutorId: data.responsable,
       fechaEjecucion: data.fechaEjecucion,
       observaciones: data.observaciones,
-      programacionEquipoId: programacionEquipoId,
+      programacionPatronId: programacionPatronId,
     });
     toast({
-      title: "Equipo ejecutado corrrectament",
+      title: "Patron ejecutado corrrectamente",
       variant: "success",
     });
     closeModal()
