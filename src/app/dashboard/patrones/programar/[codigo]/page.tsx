@@ -80,7 +80,7 @@ export default function Programar() {
       title: "patron se guardo correctamente",
       variant: "success",
     });
-    router.push("/dashboard/patrones/consultar");
+    router.push("/dashboard/patrones/programacion");
   }
 
   return (

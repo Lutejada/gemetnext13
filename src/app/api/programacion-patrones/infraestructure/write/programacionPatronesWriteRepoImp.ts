@@ -11,7 +11,7 @@ export class ProgramacionPatronesWriteRepoImp
     clienteId: string,
     estado: EstadoProgramacion
   ): Promise<void> {
-    prisma.programacionPatrones.update({
+    await prisma.programacionPatrones.update({
       where: {
         clienteId,
         id,

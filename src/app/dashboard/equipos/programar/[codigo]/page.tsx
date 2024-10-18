@@ -73,7 +73,7 @@ export default function Programar() {
     await crear({
       actividadId: values.actividad,
       codigo: values.codigo,
-      fechaProgramacion: values.fechaInicio,
+      fechaProgramacion: values.fechaInicio.toISOString(),
       frecuenciaId: values.frecuencia,
       equipoId: equipo?.id!,
     });
@@ -81,7 +81,7 @@ export default function Programar() {
       title: "Equipo se guardo correctamente",
       variant: "success",
     });
-    router.push("/dashboard/equipos/consultar");
+    router.push("/dashboard/equipos/programacion");
   }
 
   return (
