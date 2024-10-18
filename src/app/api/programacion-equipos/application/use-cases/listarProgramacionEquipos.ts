@@ -3,7 +3,7 @@ import { ProgramacionEquipos } from "../../domain/entity";
 import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/indext";
 import {
   Estatus,
-  PatronProgramacionDto,
+  EquipoProgramacionDto,
 } from "../dto/listadoPatronesProgramados.dto";
 export class ListarProgramacionEquipos {
   constructor(
@@ -18,7 +18,7 @@ export class ListarProgramacionEquipos {
 
   private converToDTO(
     programacion: ProgramacionEquipos[]
-  ): PatronProgramacionDto[] {
+  ): EquipoProgramacionDto[] {
     return programacion.map((p) => {
       const reminderStatus = this.calculateLabel(p.fechaProgramacion);
       return {

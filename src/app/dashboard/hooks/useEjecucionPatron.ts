@@ -27,12 +27,7 @@ export const obtenerEjecucionPatrones = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
   const { data, error, isLoading } = useSWR<ListarEjecucionDTO[]>(
     "/ejecucion-patron",
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    fetcher
   );
   return {
     ejecuciones: data ?? [],

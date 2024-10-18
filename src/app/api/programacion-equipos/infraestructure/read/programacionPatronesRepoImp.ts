@@ -86,7 +86,7 @@ export class ProgramacionEquiposRepositoryReadImp
           },
           equipo: {
             codigo: e.equipo.codigo,
-            descripcion: e.equipo.codigo,
+            descripcion: e.equipo.descripcion,
             id: e.equipo.id,
             fecha_actualizacion: e.equipo.fecha_actualizacion,
             fecha_creacion: e.equipo.fecha_creacion,

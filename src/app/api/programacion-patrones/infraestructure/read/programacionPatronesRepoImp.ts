@@ -93,7 +93,7 @@ export class ProgramacionPatronesRepositoryReadImp
           cliente: new Cliente(),
           patron: {
             codigo: e.patron.codigo,
-            descripcion: e.patron.codigo,
+            descripcion: e.patron.descripcion,
             id: e.patron.id,
             fecha_actualizacion: e.patron.fecha_actualizacion,
             fecha_creacion: e.patron.fecha_creacion,

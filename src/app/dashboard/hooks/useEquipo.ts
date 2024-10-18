@@ -12,8 +12,8 @@ import { EditarDatosMetrologicosDto } from "@/app/api/equipos/application/dtos/e
 import { EditarDatosComplementariosDto } from "@/app/api/equipos/application/dtos/editarDatosComplementarios.dto";
 
 import { ObtenerEquiposDtoOutput } from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
-import { EquipoProgramacionDto } from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "@/app/api/common/types";
+import { EquipoProgramacionDto } from "@/app/api/programacion-equipos/application/dto/listadoPatronesProgramados.dto";
 
 export const obtenerEquiposPorTermino = () => {
   const fetcher = (url: string, { arg }: { arg?: ObtenerDatosDto }) =>
