@@ -36,6 +36,8 @@ import { obtenerResponsables } from "@/app/dashboard/hooks/useResponsables";
 import { Textarea } from "@/components/ui/textarea";
 import { crearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useRouter } from "next/navigation";
+
 
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
@@ -60,6 +62,7 @@ export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props)
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
+  const router = useRouter();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     await crear({
@@ -69,9 +72,10 @@ export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props)
       programacionEquipoId: programacionEquipoId,
     });
     toast({
-      title: "Equipo ejecutado corrrectament",
+      title: "Equipo ejecutado corrrectamente",
       variant: "success",
     });
+    router.push("/dashboard/equipos/ejecucion")
     closeModal()
   }
 

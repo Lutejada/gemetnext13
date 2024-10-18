@@ -36,6 +36,7 @@ import { obtenerResponsables } from "@/app/dashboard/hooks/useResponsables";
 import { Textarea } from "@/components/ui/textarea";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { crearEjecucionPatron } from "@/app/dashboard/hooks/useEjecucionPatron";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
@@ -55,6 +56,7 @@ interface Props {
 }
 
 export function FormEjecucionPatron({ programacionPatronId, closeModal }: Props) {
+  const router = useRouter();
   const { responsables } = obtenerResponsables();
   const { crear, error, errorMsg, isLoading } = crearEjecucionPatron();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -71,8 +73,9 @@ export function FormEjecucionPatron({ programacionPatronId, closeModal }: Props)
     toast({
       title: "Patron ejecutado corrrectamente",
       variant: "success",
-    });
+    });    
     closeModal()
+    router.push("/dashboard/patrones/ejecucion")
   }
 
   return (
