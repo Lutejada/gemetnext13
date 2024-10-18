@@ -1,6 +1,6 @@
 import { EstadoProgramacion } from "@prisma/client";
 
-export class PatronProgramacionDto {
+export class EquipoProgramacionDto {
     id:string;
     codigo: string;
     descripcion: string;

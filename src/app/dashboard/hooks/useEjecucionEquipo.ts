@@ -3,7 +3,7 @@ import { ListarEjecucionDTO } from "@/app/api/ejecucion-equipo/application/dto/l
 import { httpBase } from "@/app/config/api-base";
 import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
-import useSWR from 'swr';
+import useSWR from "swr";
 
 export const crearEjecucionEquipo = () => {
   const fetcher = (url: string, { arg }: { arg: CrearEjecucionDTO }) =>
@@ -27,12 +27,7 @@ export const obtenerEjecucionEquipos = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
   const { data, error, isLoading } = useSWR<ListarEjecucionDTO[]>(
     "/ejecucion-equipo",
-    fetcher,
-    {
-      revalidateIfStale: false,
-      revalidateOnFocus: false,
-      revalidateOnReconnect: false,
-    }
+    fetcher
   );
   return {
     ejecuciones: data ?? [],
