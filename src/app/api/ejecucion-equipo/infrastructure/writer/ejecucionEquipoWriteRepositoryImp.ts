@@ -5,8 +5,12 @@ import { EjecucionEquipoWriteRepository } from "../../dominio/repository";
 export class EjecucionEquipoWriteRepositoryImp
   implements EjecucionEquipoWriteRepository
 {
-  async crear(ejecucionEquipo: EjecucionEquipo): Promise<void> {
-    await prisma.ejecucionEquipos.create({
+  async crear(
+    ejecucionEquipo: EjecucionEquipo
+  ): Promise<
+    Omit<EjecucionEquipo, "cliente" | "responsable" | "programacionEquipo">
+  > {
+    const res = await prisma.ejecucionEquipos.create({
       data: {
         observaciones: ejecucionEquipo.observaciones,
         clienteId: ejecucionEquipo.cliente.id,
@@ -15,5 +19,11 @@ export class EjecucionEquipoWriteRepositoryImp
         programacionEquipoId: ejecucionEquipo.programacionEquipo.id,
       },
     });
+
+    return {
+      fechaEjecucion: res.fechaEjecucion,
+      id: res.id,
+      observaciones: res.observaciones,
+    };
   }
 }

@@ -11,13 +11,15 @@ import {
 import { EstadoProgramacion } from "@/app/api/equipos/dominio";
 import { ResponsableRepositoryReader } from "@/app/api/responsables/domain/repository";
 import { CrearEjecucionDTO } from "../../dto/crearEjecucionEquipo";
+import { IFilesAdaptor } from "@/app/api/common/files/saveFiles";
 
 export class CrearEjecucionEquipos {
   constructor(
     private ejecucionRepo: EjecucionEquipoWriteRepository,
     private programacionRepo: EquipoReadRepository,
     private programacionRepoWrite: EquipoWriteRepository,
-    private responsableRepo: ResponsableRepositoryReader
+    private responsableRepo: ResponsableRepositoryReader,
+    private saveFilesAdaptor: IFilesAdaptor
   ) {}
   async execute(clienteId: string, dto: CrearEjecucionDTO) {
     const responsable = await this.responsableRepo.obtenerResponsablePorID(
@@ -38,7 +40,7 @@ export class CrearEjecucionEquipos {
     if (programacionEquipo.estado === EstadoProgramacion.COMPLETADO) {
       throw new ProgramacionYaCompletada();
     }
-    await this.ejecucionRepo.crear({
+    const ejecucionEquipoCreado = await this.ejecucionRepo.crear({
       observaciones: dto.observaciones,
       fechaEjecucion: dto.fechaEjecucion,
       responsable: responsable,
@@ -53,5 +55,10 @@ export class CrearEjecucionEquipos {
       clienteId,
       EstadoProgramacion.COMPLETADO
     );
+    if (dto.archivos) {
+      // /ejecucion-equipos/clienteID/ejecucionID
+      const pathName = `ejecucion-equipos/${clienteId}/${ejecucionEquipoCreado.id}`;
+      await this.saveFilesAdaptor.saveFiles(pathName, dto.archivos);
+    }
   }
 }

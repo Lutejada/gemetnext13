@@ -37,7 +37,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { crearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
-
+import { Input } from "@/components/ui/input";
+import { validateFileSize } from "@/app/api/common/files/filesSize";
 
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
@@ -45,18 +46,24 @@ const FormSchema = z.object({
   observaciones: z
     .string()
     .min(10, {
-      message: "Bio must be at least 10 characters.",
+      message: "Observaciones minimo 10 caracteres",
     })
     .max(160, {
-      message: "Bio must not be longer than 30 characters.",
+      message: "Observaciones maximo 160 caracteres.",
     }),
+  archivos: z.any().refine(validateFileSize, {
+    message: "Los archivos no deben pensar mas de 4 MB",
+  }),
 });
 interface Props {
   programacionEquipoId: string;
-  closeModal: () => void
+  closeModal: () => void;
 }
 
-export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props) {
+export function FormEjecucionEquipo({
+  programacionEquipoId,
+  closeModal,
+}: Props) {
   const { responsables } = obtenerResponsables();
   const { crear, error, errorMsg, isLoading } = crearEjecucionEquipo();
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -67,16 +74,17 @@ export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props)
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     await crear({
       ejecutorId: data.responsable,
-      fechaEjecucion: data.fechaEjecucion,
+      fechaEjecucion: data.fechaEjecucion.toISOString(),
       observaciones: data.observaciones,
       programacionEquipoId: programacionEquipoId,
+      archivos: data.archivos,
     });
     toast({
       title: "Equipo ejecutado corrrectamente",
       variant: "success",
     });
-    router.push("/dashboard/equipos/ejecucion")
-    closeModal()
+    router.push("/dashboard/equipos/ejecucion");
+    closeModal();
   }
 
   return (
@@ -165,6 +173,32 @@ export function FormEjecucionEquipo({ programacionEquipoId, closeModal }: Props)
                   {...field}
                 />
               </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="archivos"
+          render={({ field: { value, onChange, ...fieldProps } }) => (
+            <FormItem>
+              <FormLabel>Archivos</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  multiple
+                  accept=".pdf,application/pdf"
+                  className="cursor-pointer"
+                  onChange={(event) => {
+                    console.log(event.target.files);
+                    onChange(event.target.files);
+                  }}
+                  {...fieldProps}
+                />
+              </FormControl>
+              <FormDescription>
+                Seleccione uno o más archivos PDF
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
