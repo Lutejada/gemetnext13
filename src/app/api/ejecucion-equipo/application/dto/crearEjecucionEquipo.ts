@@ -1,4 +1,4 @@
-import { validateFileSize } from "@/app/api/common/files/filesSize";
+import { validateFileSizeServer } from "@/app/api/common/files/filesSize";
 import * as z from "zod";
 
 export interface CrearEjecucionDTO {
@@ -14,7 +14,7 @@ export const schema = z.object({
   observaciones: z.string({ description: "observaciones" }),
   ejecutorId: z.string({ description: "ejecutorId" }),
   programacionEquipoId: z.string({ description: "programacionEquipoId" }),
-  archivos: z.any().refine(validateFileSize, {
+  archivos: z.any().refine(validateFileSizeServer, {
     message: "Los archivos no deben pensar mas de 4 MB",
   }),
 });

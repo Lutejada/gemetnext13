@@ -2,6 +2,11 @@ import { Responsable } from "@/app/api/responsables/domain/entity";
 import { Cliente } from "../../../cliente/dominio";
 import { ProgramacionEquipos } from "@/app/api/equipos/dominio";
 
+export interface Documentos {
+  name?: string;
+  url?: string;
+}
+
 export class EjecucionEquipo {
   id: string;
   fechaEjecucion: Date | string;
@@ -9,6 +14,7 @@ export class EjecucionEquipo {
   cliente: Cliente;
   responsable: Responsable;
   programacionEquipo: ProgramacionEquipos;
+  documentos?: Documentos[]
 
   constructor(attributes: EjecucionEquipo) {
     this.id = attributes.id;
@@ -17,5 +23,6 @@ export class EjecucionEquipo {
     this.cliente = attributes.cliente;
     this.responsable = attributes.responsable;
     this.programacionEquipo = attributes.programacionEquipo;
+    this.documentos = attributes.documentos ?? [];
   }
 }

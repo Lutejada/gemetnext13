@@ -1,3 +1,4 @@
+import { Documentos } from "../../dominio/entity";
 
 export interface ListarEjecucionDTO {
   codigo: string;
@@ -5,4 +6,5 @@ export interface ListarEjecucionDTO {
   observaciones: string;
   fechaEjecucion: string | Date;
   equipoDescripcion: string;
+  documentos?: Documentos[];
 }

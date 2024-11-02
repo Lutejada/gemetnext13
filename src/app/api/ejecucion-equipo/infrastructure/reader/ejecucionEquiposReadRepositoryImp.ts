@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { EjecucionEquipo } from "../../dominio/entity";
+import { Documentos, EjecucionEquipo } from "../../dominio/entity";
 import { EjecucionEquipoReadRepository } from "../../dominio/repository";
 import { Cliente } from "../../../cliente/dominio/index";
 import {
@@ -32,6 +32,7 @@ export class EjecucionEquiposReadRepositoryImp
           fechaEjecucion: res.fechaEjecucion,
           observaciones: res.observaciones,
           cliente: { id: clienteId, nombre: clienteId },
+          documentos: res.documentos as Documentos[],
           programacionEquipo: new ProgramacionEquipos({
             id: res.programacionEquipo.id,
             estado: res.programacionEquipo.estado as EstadoProgramacion,

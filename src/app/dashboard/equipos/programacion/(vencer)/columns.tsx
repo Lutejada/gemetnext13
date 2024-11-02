@@ -2,10 +2,6 @@
 
 import { ColumnDef } from "@tanstack/react-table";
 
-import {
-  EquipoProgramacionDto,
-  Estatus,
-} from "@/app/api/equipos/application/dtos/listaProgramacionEquipos.output";
 import { Badge } from "@/components/badge";
 import clsx from "clsx";
 import { useState } from "react";
@@ -26,6 +22,10 @@ import { DialogHeader } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { FormEjecucionEquipo } from "./form";
 import { EstadoProgramacion } from "@prisma/client";
+import {
+  EquipoProgramacionDto,
+  Estatus,
+} from "@/app/api/programacion-equipos/application/dto/listadoPatronesProgramados.dto";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
@@ -77,7 +77,8 @@ export const columns: ColumnDef<EquipoProgramacionDto>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
-      const isCompleted = row.original.estado === EstadoProgramacion.COMPLETADO ? true : false
+      const isCompleted =
+        row.original.estado === EstadoProgramacion.COMPLETADO ? true : false;
       const [isOpenModal, setIsOpenModal] = useState(false);
       const [isClickOpenModal, setIsClickOpenModal] = useState(false);
       const clickOpenModal = () => {

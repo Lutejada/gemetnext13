@@ -38,7 +38,7 @@ import { crearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
-import { validateFileSize } from "@/app/api/common/files/filesSize";
+import { validateFileListSize } from "@/app/api/common/files/filesSize";
 
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
@@ -51,7 +51,7 @@ const FormSchema = z.object({
     .max(160, {
       message: "Observaciones maximo 160 caracteres.",
     }),
-  archivos: z.any().refine(validateFileSize, {
+  archivos: z.any().refine(validateFileListSize, {
     message: "Los archivos no deben pensar mas de 4 MB",
   }),
 });

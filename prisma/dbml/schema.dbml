@@ -228,6 +228,7 @@ Table ejecucion_equipos {
   observaciones String [not null]
   ejecutorId String [not null]
   programacionEquipoId String [unique, not null]
+  documentos Json [not null, default: '[]']
 }
 
 Table ejecucion_patrones {

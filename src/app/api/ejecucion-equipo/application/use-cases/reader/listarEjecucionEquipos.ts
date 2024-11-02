@@ -18,6 +18,7 @@ export class ListarEjecucionEquipos {
       equipoDescripcion: e.programacionEquipo.equipo?.descripcion ?? "",
       fechaEjecucion: format(new Date(e.fechaEjecucion), "dd-MM-yyyy"),
       responsable: e.responsable.nombre + " " + e.responsable.apellido,
+      documentos: e.documentos
     }));
   }
 }
