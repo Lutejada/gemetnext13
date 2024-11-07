@@ -239,6 +239,7 @@ Table ejecucion_patrones {
   observaciones String [not null]
   ejecutorId String [not null]
   programacionPatronId String [unique, not null]
+  documentos Json [not null, default: '[]']
 }
 
 Enum Role {

@@ -373,6 +373,7 @@ model EjecucionPatrones {
   responsable          responsable          @relation(fields: [ejecutorId], references: [id])
   programacionPatron   ProgramacionPatrones @relation(fields: [programacionPatronId], references: [id])
   programacionPatronId String               @unique @map("programacion_patron_id")
+  documentos           Json                @default("[]")
 
   @@index([clienteId, programacionPatronId])
   @@map("ejecucion_patrones")

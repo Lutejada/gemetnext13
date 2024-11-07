@@ -4,5 +4,5 @@ export interface EjecucionPatronReadRepository {
   listar(clienteId:string):Promise<EjecucionPatron[]>
 }
 export interface EjecucionPatronWriteRepository {
-  crear(ejecucionPatron: Omit<EjecucionPatron, "id">): Promise<void>;
+  crear(ejecucionPatron: EjecucionPatron): Promise<void>;
 }

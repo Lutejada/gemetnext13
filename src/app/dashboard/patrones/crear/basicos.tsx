@@ -80,7 +80,7 @@ export default function CrearPatronesBasicos() {
 
   return (
     <>
-      <h2 className="text-center mb-4 font-semibold">Crear PatronW</h2>
+      <h2 className="text-center mb-4 font-semibold">Crear Patron</h2>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

@@ -12,13 +12,17 @@ import {
   ProgramacionPatronesRepositoryRead,
   ProgramacionPatronesRepositoryWrite,
 } from "@/app/api/programacion-patrones/domain/repository/indext";
+import { IFilesAdaptor } from "@/app/api/common/files/saveFiles";
+import { randomUUID } from "crypto";
+import { Documentos } from "../../../dominio/entity";
 
 export class CrearEjecucionPatrones {
   constructor(
     private ejecucionRepo: EjecucionPatronWriteRepository,
     private programacionRepoRead: ProgramacionPatronesRepositoryRead,
     private programacionRepoWrite: ProgramacionPatronesRepositoryWrite,
-    private responsableRepo: ResponsableRepositoryReader
+    private responsableRepo: ResponsableRepositoryReader,
+    private saveFilesAdaptor: IFilesAdaptor
   ) {}
   async execute(clienteId: string, dto: CrearEjecucionDTO) {
     const responsable = await this.responsableRepo.obtenerResponsablePorID(
@@ -39,7 +43,16 @@ export class CrearEjecucionPatrones {
     if (programacionPatron.estado === EstadoProgramacion.COMPLETADO) {
       throw new ProgramacionYaCompletada();
     }
+    const ejecucionPatronId = randomUUID().toString();
+    let archivosUrls: Documentos[] = [];
+    if (dto.archivos) {
+      // /ejecucion-patrones/clienteID/ejecucionID
+      const pathName = `ejecucion-equipos/${clienteId}/${ejecucionPatronId}`;
+      const res = await this.saveFilesAdaptor.saveFiles(pathName, dto.archivos);
+      archivosUrls = res;
+    }
     await this.ejecucionRepo.crear({
+      id: ejecucionPatronId,
       observaciones: dto.observaciones,
       fechaEjecucion: dto.fechaEjecucion,
       responsable: responsable,
@@ -48,6 +61,7 @@ export class CrearEjecucionPatrones {
         nombre: clienteId,
       },
       programacionPatron: programacionPatron,
+      documentos: archivosUrls,
     });
     await this.programacionRepoWrite.cambiarProgramacionEstado(
       dto.programacionPatronId,

@@ -13,11 +13,12 @@ export class ListarEjecucionPatrones {
 
   private convertToDto(listado: EjecucionPatron[]): ListarEjecucionDTO[] {
     return listado.map((e) => ({
-      codigo: e.programacionPatron.patron?.codigo ?? "knonw",
+      codigo: e.programacionPatron.patron?.codigo ?? "unknown",
       observaciones: e.observaciones,
       patronDescripcion: e.programacionPatron.patron?.descripcion ?? "",
       fechaEjecucion: format(new Date(e.fechaEjecucion), "dd-MM-yyyy"),
       responsable: e.responsable.nombre + " " + e.responsable.apellido,
+      documentos: e.documentos,
     }));
   }
 }

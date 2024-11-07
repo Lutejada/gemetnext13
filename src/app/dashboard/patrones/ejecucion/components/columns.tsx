@@ -6,10 +6,14 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal } from "lucide-react";
+import Link from "next/link";
 
 export const columns: ColumnDef<ListarEjecucionDTO>[] = [
   {
@@ -47,19 +51,42 @@ export const columns: ColumnDef<ListarEjecucionDTO>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const documentos = row.original?.documentos;
+
       return (
-        <>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="h-8 w-8 p-0">
-                <MoreHorizontal className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem>Ejecutar</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        </>
+        <DropdownMenu>
+          <DropdownMenuTrigger>
+            <Button variant="ghost" className="h-8 w-8 p-0">
+              <MoreHorizontal className="h-4 w-4" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuSub>
+              {documentos?.length ? (
+                <>
+                  <DropdownMenuSubTrigger>Documentos</DropdownMenuSubTrigger>
+                  <DropdownMenuSubContent>
+                    {documentos?.map((e) => (
+                      <>
+                        <DropdownMenuItem>
+                          <Link
+                            rel="noopener noreferrer"
+                            target="_blank"
+                            href={e.url ?? ""}
+                          >
+                            {e.name}
+                          </Link>
+                        </DropdownMenuItem>
+                      </>
+                    ))}
+                  </DropdownMenuSubContent>
+                </>
+              ) : (
+                <DropdownMenuItem>No hay Documentos</DropdownMenuItem>
+              )}
+            </DropdownMenuSub>
+          </DropdownMenuContent>
+        </DropdownMenu>
       );
     },
   },

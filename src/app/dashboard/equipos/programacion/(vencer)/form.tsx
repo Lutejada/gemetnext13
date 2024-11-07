@@ -51,9 +51,12 @@ const FormSchema = z.object({
     .max(160, {
       message: "Observaciones maximo 160 caracteres.",
     }),
-  archivos: z.any().refine(validateFileListSize, {
-    message: "Los archivos no deben pensar mas de 4 MB",
-  }),
+  archivos: z
+    .any()
+    .refine(validateFileListSize, {
+      message: "Los archivos no deben pensar mas de 4 MB",
+    })
+    .optional(),
 });
 interface Props {
   programacionEquipoId: string;

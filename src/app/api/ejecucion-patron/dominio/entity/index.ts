@@ -1,6 +1,10 @@
 import { Responsable } from "@/app/api/responsables/domain/entity";
 import { Cliente } from "../../../cliente/dominio";
 import { ProgramacionPatrones } from "@/app/api/programacion-patrones/domain/entity";
+export interface Documentos {
+  name?: string;
+  url?: string;
+}
 
 export class EjecucionPatron {
   id: string;
@@ -9,6 +13,7 @@ export class EjecucionPatron {
   cliente: Cliente;
   responsable: Responsable;
   programacionPatron: ProgramacionPatrones;
+  documentos?: Documentos[]
 
   constructor(attributes: EjecucionPatron) {
     this.id = attributes.id;
@@ -17,5 +22,6 @@ export class EjecucionPatron {
     this.cliente = attributes.cliente;
     this.responsable = attributes.responsable;
     this.programacionPatron = attributes.programacionPatron;
+    this.documentos = attributes.documentos ?? [];
   }
 }

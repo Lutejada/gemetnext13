@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/prisma";
-import { EjecucionPatron } from "../../dominio/entity";
+import { Documentos, EjecucionPatron } from "../../dominio/entity";
 import { EjecucionPatronReadRepository } from "../../dominio/repository";
 
 import { Responsable } from "@/app/api/responsables/domain/entity";
@@ -33,6 +33,7 @@ export class EjecucionPatronesReadRepositoryImp
           fechaEjecucion: res.fechaEjecucion,
           observaciones: res.observaciones,
           cliente: { id: clienteId, nombre: clienteId },
+          documentos: res.documentos as Documentos[],
           programacionPatron: new ProgramacionPatrones({
             id: res.programacionPatron.id,
             estado: res.programacionPatron.estado as EstadoProgramacion,
@@ -53,7 +54,7 @@ export class EjecucionPatronesReadRepositoryImp
             }),
             actividad: new Actividad(),
             cliente: new Cliente(),
-            frecuencia: new Frecuencia()
+            frecuencia: new Frecuencia(),
           }),
           responsable: new Responsable({
             id: res.responsable.id,
