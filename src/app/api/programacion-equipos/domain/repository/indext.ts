@@ -6,7 +6,8 @@ export interface ProgramacionEquiposRepositoryRead {
   listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,
-    frecuenciaId: string
+    frecuenciaId: string,
+    equipoId: string
   ): Promise<ProgramacionEquipos[]>;
   obtenerProgramacionPorId(
     ID: string,

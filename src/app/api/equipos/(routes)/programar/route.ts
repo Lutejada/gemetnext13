@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { crearProgramacionEquipos } from "../../application/servicios/crearProgramacionEquipo";
 import { ObtenerDatosDto } from "@/app/api/common/types";
 import { auth } from "@/lib/getSession";
 import { validarCrearProgramacion } from "../../application/dtos/crearProgramation.dto";
 import { EquipoReadRepositoryImp } from "../../infrastructure/reader/equipoReadRepository";
 import { ListarProgramacionEquipos } from "@/app/api/programacion-equipos/application/use-cases/listarProgramacionEquipos";
-import { ProgramacionEquiposRepositoryReadImp } from "@/app/api/programacion-equipos/infraestructure/read/programacionPatronesRepoImp";
+import { ProgramacionEquiposRepositoryReadImp } from "@/app/api/programacion-equipos/infraestructure/read/programacionEquipoRepoImp";
 import { CrearProgramacionEquipos } from "@/app/api/programacion-equipos/application/use-cases/crearProgramacionEquipos";
-import { ProgramacionEquiposWriteRepoImp } from "@/app/api/programacion-equipos/infraestructure/write/programacionPatronesWriteRepoImp";
+import { ProgramacionEquiposWriteRepoImp } from "@/app/api/programacion-equipos/infraestructure/write/programacionEquipoWriteRepoImp";
 import { ActividadRepoReadImp } from "@/app/api/actividad/infraestructure/read/actividadRepoRead";
 import { FrecuenciaRepositoryReadImp } from "@/app/api/frecuencia/infraestructure/repository/read/frecuenciaRepoImp";
 const equipoRepoRead = new EquipoReadRepositoryImp();
