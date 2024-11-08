@@ -38,13 +38,15 @@ export class ProgramacionPatronesRepositoryReadImp
   async listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,
-    frecuenciaId: string
+    frecuenciaId: string,
+    patronId: string
   ): Promise<ProgramacionPatrones[]> {
     const res = await prisma.programacionPatrones.findMany({
       where: {
         clienteId,
         actividadId,
         frecuenciaId,
+        patronId,
       },
     });
     return res.map(

@@ -4,7 +4,7 @@ import {
   ProgramacionEquiposRepositoryRead,
   ProgramacionEquiposRepositoryWrite,
 } from "../../domain/repository/indext";
-import { CrearProgramacionPatronDto } from "../dto/crearProgramation.dto";
+import { CrearProgramacionEquipoDto } from "../dto/crearProgramation.dto";
 import { ActividadNoExiste } from "@/app/api/actividad/dominio/errors";
 import { addDays, getYear } from "date-fns";
 import { PatronNoExiste } from "../../../patrones/errors";
@@ -12,6 +12,7 @@ import { FrecuenciaRepositoryRead } from "@/app/api/frecuencia/dominio/repositor
 import { FrecuenciaNoExiste } from "@/app/api/frecuencia/dominio/errors";
 import { ProgramacionYaExiste } from "../../domain/errors";
 import { EquipoReadRepository } from "../../../equipos/dominio/repository/index";
+import { EquipoNoExiste } from "@/app/api/equipos/dominio/errors";
 export class CrearProgramacionEquipos {
   constructor(
     private programacionRepoWrite: ProgramacionEquiposRepositoryWrite,
@@ -20,7 +21,7 @@ export class CrearProgramacionEquipos {
     private frecuenciaRepo: FrecuenciaRepositoryRead,
     private programacionRepoRead: ProgramacionEquiposRepositoryRead
   ) {}
-  async execute(clienteId: string, dto: CrearProgramacionPatronDto) {
+  async execute(clienteId: string, dto: CrearProgramacionEquipoDto) {
     const actividad = await this.actividadRepo.obtenerPorId(
       dto.actividadId,
       clienteId
@@ -38,20 +39,22 @@ export class CrearProgramacionEquipos {
       throw new FrecuenciaNoExiste();
     }
 
+    const equipo = await this.equipoRepo.obtenerPorID(dto.equipoId, clienteId);
+    if (!equipo) {
+      throw new EquipoNoExiste();
+    }
+
     const progracionesEncontradas =
       await this.programacionRepoRead.listaProgramacionesPorFrecuenciaYActividad(
         clienteId,
         actividad.id,
-        frecuencia.id
+        frecuencia.id,
+        equipo.id
       );
     if (progracionesEncontradas.length > 0) {
       throw new ProgramacionYaExiste();
     }
 
-    const equipo = await this.equipoRepo.obtenerPorID(dto.patronId, clienteId);
-    if (!equipo) {
-      throw new PatronNoExiste();
-    }
     const programacionInicial = new ProgramacionEquipos({
       id: "",
       actividad: actividad,
@@ -79,7 +82,7 @@ export class CrearProgramacionEquipos {
     let yearOfTheNextDate = getYear(addDays(initialDate, cantidadDias));
     let auxDate = initialDate;
     while (currentYear >= yearOfTheNextDate) {
-      const nextDate = addDays(auxDate, cantidadDias); 
+      const nextDate = addDays(auxDate, cantidadDias);
       auxDate = nextDate;
       dtoList.push({
         actividad: programacionInicial.actividad,

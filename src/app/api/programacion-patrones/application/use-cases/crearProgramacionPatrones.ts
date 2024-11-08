@@ -38,20 +38,22 @@ export class CrearProgramacionPatrones {
       throw new FrecuenciaNoExiste();
     }
 
+    const patron = await this.patronRepo.obtenerPorID(dto.patronId, clienteId);
+    if (!patron) {
+      throw new PatronNoExiste();
+    }
+
     const progracionesEncontradas =
       await this.programacionRepoRead.listaProgramacionesPorFrecuenciaYActividad(
         clienteId,
         actividad.id,
         frecuencia.id,
+        patron.id
       );
     if (progracionesEncontradas.length > 0) {
       throw new ProgramacionYaExiste();
     }
 
-    const patron = await this.patronRepo.obtenerPorID(dto.patronId, clienteId);
-    if (!patron) {
-      throw new PatronNoExiste();
-    }
     const programacionInicial = new ProgramacionPatrones({
       actividad: actividad,
       cliente: { id: clienteId, nombre: clienteId },

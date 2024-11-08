@@ -6,7 +6,8 @@ export interface ProgramacionPatronesRepositoryRead {
   listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,
-    frecuenciaId: string
+    frecuenciaId: string,
+    patronId: string
   ): Promise<ProgramacionPatrones[]>;
   obtenerProgramacionPorId(
     ID: string,
