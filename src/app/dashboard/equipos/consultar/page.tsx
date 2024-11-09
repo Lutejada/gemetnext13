@@ -4,7 +4,7 @@ import { columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import SearchForm from "@/components/serch-form";
 import { useEffect } from "react";
-import Paginador from "../../../../../components/paginador";
+import Paginador from "../../../../components/paginador";
 export default function DemoPage() {
   const { obtenerEquipos, equipos, existeSiguientePagina } = obtenerEquiposPorTermino();
   useEffect(() => {
