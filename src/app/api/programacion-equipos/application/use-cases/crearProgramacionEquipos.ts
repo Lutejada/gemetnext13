@@ -45,7 +45,7 @@ export class CrearProgramacionEquipos {
     }
 
     const progracionesEncontradas =
-      await this.programacionRepoRead.listaProgramacionesPorFrecuenciaYActividad(
+      await this.programacionRepoRead.listaProgramacionesActivas(
         clienteId,
         actividad.id,
         frecuencia.id,

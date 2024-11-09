@@ -3,7 +3,7 @@ import { ProgramacionEquipos } from "../entity";
 
 export interface ProgramacionEquiposRepositoryRead {
   listarProgramaciones(clienteId: string): Promise<ProgramacionEquipos[]>;
-  listaProgramacionesPorFrecuenciaYActividad(
+  listaProgramacionesActivas(
     clienteId: string,
     actividadId: string,
     frecuenciaId: string,

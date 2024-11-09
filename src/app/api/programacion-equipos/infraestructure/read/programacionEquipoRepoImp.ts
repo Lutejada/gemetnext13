@@ -31,7 +31,7 @@ export class ProgramacionEquiposRepositoryReadImp
       estado: res.estado,
     });
   }
-  async listaProgramacionesPorFrecuenciaYActividad(
+  async listaProgramacionesActivas(
     clienteId: string,
     actividadId: string,
     frecuenciaId: string,
@@ -43,6 +43,7 @@ export class ProgramacionEquiposRepositoryReadImp
         actividadId,
         frecuenciaId,
         equipoId,
+        estado: "PENDIENTE",
       },
     });
     return res.map(

@@ -44,7 +44,7 @@ export class CrearProgramacionPatrones {
     }
 
     const progracionesEncontradas =
-      await this.programacionRepoRead.listaProgramacionesPorFrecuenciaYActividad(
+      await this.programacionRepoRead.listaProgramacionesActivas(
         clienteId,
         actividad.id,
         frecuencia.id,

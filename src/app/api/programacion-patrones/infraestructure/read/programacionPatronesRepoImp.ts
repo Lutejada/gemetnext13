@@ -35,7 +35,7 @@ export class ProgramacionPatronesRepositoryReadImp
       estado: res.estado,
     });
   }
-  async listaProgramacionesPorFrecuenciaYActividad(
+  async listaProgramacionesActivas(
     clienteId: string,
     actividadId: string,
     frecuenciaId: string,
@@ -47,6 +47,7 @@ export class ProgramacionPatronesRepositoryReadImp
         actividadId,
         frecuenciaId,
         patronId,
+        estado: "PENDIENTE",
       },
     });
     return res.map(
