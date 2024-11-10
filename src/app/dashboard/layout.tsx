@@ -1,16 +1,20 @@
-import Navbar from './components/Navbar'
-import { Sidebar } from './components/Sidebar'
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import Navbar from "./components/Navbar";
+import { Sidebar } from "./components/Sidebar";
+import { AppSidebar } from "@/components/app-sidebar";
 
-export default function DashboardLayout ({
-  children
+export default function DashboardLayout({
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <div className='h-full grid grid-cols-[220px_1fr] grid-rows-[70px_1fr]'>
-      <Sidebar />
-      <Navbar />
-      <main className='col-start-2 p-4'>{children}</main>
-    </div>
-  )
+    <SidebarProvider>
+      <AppSidebar />
+      <main>
+        <SidebarTrigger />
+        {children}
+      </main>
+    </SidebarProvider>
+  );
 }
