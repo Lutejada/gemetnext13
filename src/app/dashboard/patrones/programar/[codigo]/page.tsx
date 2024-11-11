@@ -37,7 +37,10 @@ import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { obtenerActividades } from "../../../hooks/useActividad";
 import { obtenerFrecuencias } from "../../../hooks/useFrecuencia";
-import { crearProgramacionPatron, obtenerPatronPorCodigo } from "../../../hooks/usePatron";
+import {
+  crearProgramacionPatron,
+  obtenerPatronPorCodigo,
+} from "../../../hooks/usePatron";
 
 const formSchema = z.object({
   codigo: z.string(),
@@ -68,7 +71,6 @@ export default function Programar() {
     form.setValue("descripcion", patron?.descripcion!);
   }, [patron]);
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
     await crear({
       actividadId: values.actividad,
       codigo: values.codigo,

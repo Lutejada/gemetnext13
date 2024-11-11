@@ -6,7 +6,6 @@ import { crearUsuario } from "./servicios/crearUsuario";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    console.log({body});
     validarCrearUsuarioDto(body);
     await crearUsuario(body);
     return NextResponse.json({ msg: "usuario creado" });

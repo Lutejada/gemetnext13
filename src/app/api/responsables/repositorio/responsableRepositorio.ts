@@ -7,7 +7,6 @@ const crearResponsable = async (
   responsable: CrearResponsableDto,
   clienteId: string
 ): Promise<void> => {
-  console.log(clienteId);
   await prisma.responsable.create({
     data: {
       identificacion: responsable.identificacion,

@@ -81,7 +81,6 @@ function EditarDatosComplementarios({ patron }: Props) {
   }
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
     await editar({
       codigo: values.codigo,
       utilizaSoftware: values.utilizaSoftware,

@@ -1,19 +1,7 @@
 "use client";
 
 import * as React from "react";
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  LucideIcon,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react";
+import { LucideIcon } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
 import { NavUser } from "@/components/nav-user";
@@ -27,19 +15,6 @@ import {
 } from "@/components/ui/sidebar";
 import { routes } from "@/app/dashboard/navigation";
 
-interface NavItem {
-  title: string;
-  url: string;
-  icon?: LucideIcon;
-  isActive?: boolean;
-  items?: SubNavItem[];
-}
-
-interface SubNavItem {
-  title: string;
-  url: string;
-}
-// This is sample data.
 const data = {
   user: {
     name: "shadcn",

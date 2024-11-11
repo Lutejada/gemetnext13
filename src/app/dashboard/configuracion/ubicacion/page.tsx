@@ -48,7 +48,6 @@ export default function Ubicacion() {
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
     await crear({
       nombre: values.nombre,
       responsable_id: values.responsable,
@@ -90,12 +89,9 @@ export default function Ubicacion() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Responsable</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
-                      <SelectTrigger >
+                      <SelectTrigger>
                         <SelectValue placeholder="Seleccione un responsable" />
                       </SelectTrigger>
                     </FormControl>
