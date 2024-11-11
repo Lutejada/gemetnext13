@@ -39,7 +39,6 @@ export default function ProfileForm() {
   // ...ç
   // 1. Define your form.
   const router = useRouter();
-  console.log();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,8 +57,6 @@ export default function ProfileForm() {
       cliente: getSubdomain(),
       redirect: false,
     });
-
-    console.log(res);
     if (res?.error) return;
     router.push("/dashboard");
   }
@@ -68,21 +65,11 @@ export default function ProfileForm() {
     <>
       <div className=" flex container relative h-[729px] flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <div className="relative hidden h-full flex-col bg-muted text-white lg:flex dark:border-r">
-          <Image
-            src="/banner-login.jpg"
-            alt="me"
-            width={1280}
-            height={843}
-          />
+          <Image src="/banner-login.jpg" alt="me" width={1280} height={843} />
         </div>
         <div className="w-full p-4 md:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <Image
-              src="/logo.jpg"
-              alt="me"
-              width={150}
-              height={50}
-            />
+            <Image src="/logo.jpg" alt="me" width={150} height={50} />
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}

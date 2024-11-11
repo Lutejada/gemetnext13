@@ -56,8 +56,6 @@ export default function CrearPatronesBasicos() {
     },
   });
 
-  console.log(form);
-
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

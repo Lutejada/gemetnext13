@@ -1,94 +1,109 @@
-export interface Route {
-  name: string;
-  icon?: any;
-  path: string;
-  subRoute?: Route[];
+import { LucideIcon, Scale, Settings, Weight } from "lucide-react";
+
+// export interface Route {
+//   name: string;
+//   icon?: any;
+//   path: string;
+//   items?: Route[];
+// }
+
+interface Route {
+  title: string;
+  url: string;
+  icon?: LucideIcon;
+  isActive?: boolean;
+  items?: SubNavItem[];
+}
+
+interface SubNavItem {
+  title: string;
+  url: string;
 }
 
 export const routes: Route[] = [
   {
-    name: "Equipos",
-    icon:'',
-    path:'/equipos',
-    subRoute:[
+    title: "Equipos",
+    icon: Scale,
+    url: "/equipos",
+    items: [
       {
-        name:'Crear',
-        path:'/crear',
+        title: "Crear",
+        url: "/crear",
       },
       {
-        name:'Consultar',
-        path:'/consultar',
+        title: "Consultar",
+        url: "/consultar",
       },
       {
-        name:'Ver Programacion',
-        path:'/programacion',
+        title: "Ver Programacion",
+        url: "/programacion",
       },
       {
-        name:'Ver Ejecicion',
-        path:'/ejecucion',
-      }
-    ]
+        title: "Ver Ejecicion",
+        url: "/ejecucion",
+      },
+    ],
   },
   {
-    name: "Patrones",
-    icon:'',
-    path:'/patrones',
-    subRoute:[
+    title: "Patrones",
+    icon: Weight,
+    url: "/patrones",
+    items: [
       {
-        name:'Crear',
-        path:'/crear',
+        title: "Crear",
+        url: "/crear",
       },
       {
-        name:'Consultar',
-        path:'/consultar',
+        title: "Consultar",
+        url: "/consultar",
       },
       {
-        name:'Ver Programacion',
-        path:'/programacion',
+        title: "Ver Programacion",
+        url: "/programacion",
       },
       {
-        name:'Ver Ejecucion',
-        path:'/ejecucion',
-      }
-    ]
+        title: "Ver Ejecucion",
+        url: "/ejecucion",
+      },
+    ],
   },
   {
-    name: "Configuracion",
-    icon:'',
-    path:'/configuracion',
-    subRoute:[
+    title: "Configuracion",
+    icon: Settings,
+    url: "/configuracion",
+    items: [
       {
-        name:'Responsable',
-        path:'/responsable',
+        title: "Responsable",
+        url: "/responsable",
       },
       {
-        name:'Ubicacion',
-        path:'/ubicacion',
+        title: "Ubicacion",
+        url: "/ubicacion",
       },
       {
-        name:'Magnitud',
-        path:'/magnitud',
+        title: "Magnitud",
+        url: "/magnitud",
       },
       {
-        name:'Variables',
-        path:'/variables',
+        title: "Variables",
+        url: "/variables",
       },
       {
-        name:'Actividades',
-        path:'/actividad',
+        title: "Actividades",
+        url: "/actividad",
       },
       {
-        name:'Frecuencias',
-        path:'/frecuencia',
+        title: "Frecuencias",
+        url: "/frecuencia",
       },
       {
-        name:'Marca',
-        path:'/marca',
+        title: "Marca",
+        url: "/marca",
       },
       {
-        name:'Tipo Patron',
-        path:'/tipoPatron',
+        title: "Tipo Patron",
+        url: "/tipoPatron",
       },
-    ]
+    ],
   },
 ];
