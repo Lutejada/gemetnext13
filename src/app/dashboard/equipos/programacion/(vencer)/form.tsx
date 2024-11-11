@@ -193,7 +193,6 @@ export function FormEjecucionEquipo({
                   accept=".pdf,application/pdf"
                   className="cursor-pointer"
                   onChange={(event) => {
-                    console.log(event.target.files);
                     onChange(event.target.files);
                   }}
                   {...fieldProps}

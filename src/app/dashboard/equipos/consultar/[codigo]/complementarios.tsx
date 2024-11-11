@@ -51,7 +51,6 @@ interface Props {
   equipo: Equipo;
 }
 function EditarDatosComplementarios({ equipo }: Props) {
-  
   const { editar, errorMsg, error, isLoading } = editarDatosComplementarios();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -75,7 +74,6 @@ function EditarDatosComplementarios({ equipo }: Props) {
   const [isDisabled, setIsDisabled] = useState(true);
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
     await editar({
       codigo: values.codigo,
       utilizaSoftware: values.utilizaSoftware,

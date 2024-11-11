@@ -27,25 +27,24 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-const formSchema = z
-  .object({
-    codigo: z.string({ description: "codigo requerido" }),
-    descripcionEspecificaciones: z
-      .string({
-        description: "descripcionEspecificaciones requerido",
-      })
-      .optional(),
-    cumpleEspecificacionInstalaciones: z.nativeEnum(cumple),
-    utilizaSoftware: z.nativeEnum(cumple),
-    descripcionSoftware: z.string().optional(),
-    versionSoftware: z
-      .string({ description: "versionSoftware requerido" })
-      .optional(),
-    fireware: z.string({ description: "fireware requerido" }).optional(),
-    observaciones: z
-      .string({ description: "observaciones requerido" })
-      .optional(),
-  })
+const formSchema = z.object({
+  codigo: z.string({ description: "codigo requerido" }),
+  descripcionEspecificaciones: z
+    .string({
+      description: "descripcionEspecificaciones requerido",
+    })
+    .optional(),
+  cumpleEspecificacionInstalaciones: z.nativeEnum(cumple),
+  utilizaSoftware: z.nativeEnum(cumple),
+  descripcionSoftware: z.string().optional(),
+  versionSoftware: z
+    .string({ description: "versionSoftware requerido" })
+    .optional(),
+  fireware: z.string({ description: "fireware requerido" }).optional(),
+  observaciones: z
+    .string({ description: "observaciones requerido" })
+    .optional(),
+});
 function CrearDatosmetrologicos() {
   const { crear, error, errorMsg, isLoading } = crearDatosComplementarios();
 
@@ -66,7 +65,6 @@ function CrearDatosmetrologicos() {
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log({ values });
     await crear({
       ...values,
     });
@@ -102,10 +100,7 @@ function CrearDatosmetrologicos() {
                 <FormItem>
                   <FormLabel>Descripcion Especificaciones</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Ingrese Especificaciones"
-                      {...field}
-                    />
+                    <Input placeholder="Ingrese Especificaciones" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -176,7 +171,10 @@ function CrearDatosmetrologicos() {
                 <FormItem>
                   <FormLabel>Descripcion software</FormLabel>
                   <FormControl>
-                    <Input placeholder="Ingrese la Descripcion del Software" {...field} />
+                    <Input
+                      placeholder="Ingrese la Descripcion del Software"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

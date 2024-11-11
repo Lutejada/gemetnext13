@@ -14,9 +14,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className="h-screen">
+      <body>
         {children}
-
         <Toaster />
       </body>
     </html>

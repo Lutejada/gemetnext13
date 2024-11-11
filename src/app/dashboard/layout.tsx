@@ -1,16 +1,50 @@
-import Navbar from './components/Navbar'
-import { Sidebar } from './components/Sidebar'
+import { AppSidebar } from "@/components/app-sidebar";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { Separator } from "@/components/ui/separator";
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from "@/components/ui/sidebar";
 
-export default function DashboardLayout ({
-  children
+import AuthProvider from "./components/AuthProvider";
+export default function DashboardLayout({
+  children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
-    <div className='h-full grid grid-cols-[220px_1fr] grid-rows-[70px_1fr]'>
-      <Sidebar />
-      <Navbar />
-      <main className='col-start-2 p-4'>{children}</main>
-    </div>
-  )
+    <AuthProvider>
+      <SidebarProvider>
+        <AppSidebar />
+        <SidebarInset>
+          <header className="flex sticky top-0 bg-background h-16 shrink-0 items-center gap-2 border-b px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
+          </header>
+          <main className="col-start-2 p-4">{children}</main>
+        </SidebarInset>
+      </SidebarProvider>
+    </AuthProvider>
+  );
 }

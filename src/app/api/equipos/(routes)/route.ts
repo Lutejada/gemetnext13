@@ -38,7 +38,6 @@ export async function GET(request: Request) {
     const termino = searchParams.get("termino");
     const valor = searchParams.get("valor");
     const page = Number(searchParams.get("page")) || 1;
-    console.log(page);
     const session = await auth();
     const equipos = await obtenerEquipos(
       { termino, valor, page },
