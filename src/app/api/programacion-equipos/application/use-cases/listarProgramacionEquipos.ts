@@ -4,19 +4,36 @@ import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/index
 import {
   Estatus,
   EquipoProgramacionDto,
+  ResponseListadoPatronesProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
 export class ListarProgramacionEquipos {
   constructor(
     private programacionRepoRead: ProgramacionEquiposRepositoryRead
   ) {}
-  async execute(clienteId: string) {
+  async execute(
+    clienteId: string,
+    pagina: number,
+    limite: number
+  ): Promise<ResponseListadoPatronesProgramados> {
     const listado = await this.programacionRepoRead.listarProgramaciones(
-      clienteId
+      clienteId,
+      pagina,
+      limite
     );
-    return this.converToDTO(listado);
+
+    const total = await this.programacionRepoRead.obtenerTotal(clienteId);
+    const existePaginaSiguiente = (pagina + 1) * limite < total;
+
+    const data = this.converToEquiposProgramacion(listado);
+    return {
+      data,
+      pagina,
+      existePaginaSiguiente: existePaginaSiguiente,
+      total,
+    };
   }
 
-  private converToDTO(
+  private converToEquiposProgramacion(
     programacion: ProgramacionEquipos[]
   ): EquipoProgramacionDto[] {
     return programacion.map((p) => {
