@@ -1,10 +1,8 @@
 import { prisma } from "@/src/lib/prisma";
-import { startOfToday, toDate } from "date-fns";
 import {
   DatosComplementariosEquipo,
   DatosMetrologicosEquipos,
   Equipo,
-  ProgramacionEquipos,
 } from "../dominio";
 import { CrearEquipoDto } from "../application/dtos/crearEquipo.dto";
 import { EquipoRepositorio } from "../dominio/repository/index";
@@ -14,11 +12,11 @@ import { CrearProgramacionEquipoDto } from "../application/dtos/crearProgramatio
 import { EditarDatosMetrologicosDto } from "../application/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../application/dtos/editarDatosComplementarios.dto";
 import { format } from "date-fns";
-import { EquipoProgramacionDto } from "../application/dtos/listaProgramacionEquipos.output";
 import { ObtenerDatosDto } from "../../common/types";
 import { calcularPagina } from "@/lib/queryUtils";
 import { ObtenerEquiposDtoOutput } from "../application/dtos/obtenerEquipos.dto.output";
 import { Prisma } from "@prisma/client";
+import { EquipoProgramacionDto } from "../../programacion-equipos/application/dto/listadoPatronesProgramados.dto";
 
 const selectEquipoBasico = {
   id: true,
@@ -41,29 +39,6 @@ const selectEquipoBasico = {
 };
 
 export const equipoRepositorio: EquipoRepositorio = {
-  listarEquiposProgramadosPorVencer: async function (clienteId: string) {
-    const programacion = await prisma.programacionEquipos.findMany({
-      where: {
-        cliente_id: clienteId,
-        estado: "PENDIENTE",
-      },
-      orderBy: {
-        fecha_programacion: "asc",
-      },
-      include: {
-        actividad: true,
-        frecuencia: true,
-        equipo: true,
-      },
-    });
-    return programacion.map((e) => ({
-      actividad: e.actividad.descripcion,
-      codigo: e.equipo.codigo,
-      descripcion: e.equipo.descripcion,
-      frecuencia: e.frecuencia.descripcion,
-      fechaProgramacion: format(e.fecha_programacion, "dd-MM-yyyy"),
-    }));
-  },
   crearEquipo: async function (
     dto: CrearEquipoDto,
     clienteId: string
