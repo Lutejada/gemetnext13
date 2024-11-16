@@ -11,7 +11,7 @@ import { CrearEjecucionDTO } from "../../dto/crearEjecucionPatron";
 import {
   ProgramacionPatronesRepositoryRead,
   ProgramacionPatronesRepositoryWrite,
-} from "@/app/api/programacion-patrones/domain/repository/indext";
+} from "@/app/api/programacion-patrones/domain/repository";
 import { IFilesAdaptor } from "@/app/api/common/files/saveFiles";
 import { randomUUID } from "crypto";
 import { Documentos } from "../../../dominio/entity";

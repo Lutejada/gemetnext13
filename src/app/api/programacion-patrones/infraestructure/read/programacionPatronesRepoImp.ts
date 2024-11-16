@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ProgramacionPatrones } from "../../domain/entity";
-import { ProgramacionPatronesRepositoryRead } from "../../domain/repository/indext";
+import { ProgramacionPatronesRepositoryRead } from "../../domain/repository";
 import { Actividad } from "../../../actividad/dominio/index";
 import { Cliente } from "@/app/api/cliente/dominio";
 import { Patron } from "../../../patrones/dominio";
@@ -9,6 +9,11 @@ import { Frecuencia } from "@/app/api/frecuencia/dominio";
 export class ProgramacionPatronesRepositoryReadImp
   implements ProgramacionPatronesRepositoryRead
 {
+  async obtenerTotal(clienteId: string): Promise<number> {
+    return prisma.programacionPatrones.count({
+      where: { clienteId, estado: "PENDIENTE" },
+    });
+  }
   async obtenerProgramacionPorId(
     ID: string,
     clienteId: string
@@ -66,13 +71,17 @@ export class ProgramacionPatronesRepositoryReadImp
     );
   }
   async listarProgramaciones(
-    clienteId: string
+    clienteId: string,
+    page: number,
+    limit: number
   ): Promise<ProgramacionPatrones[]> {
     const res = await prisma.programacionPatrones.findMany({
       where: {
         clienteId: clienteId,
         estado: "PENDIENTE",
       },
+      take: limit,
+      skip: page,
       include: {
         actividad: true,
         patron: true,

@@ -1,22 +1,40 @@
 import { differenceInDays, startOfDay, format } from "date-fns";
 import { ProgramacionPatrones } from "../../domain/entity";
-import { ProgramacionPatronesRepositoryRead } from "../../domain/repository/indext";
+import { ProgramacionPatronesRepositoryRead } from "../../domain/repository";
 import {
   Estatus,
   PatronProgramacionDto,
+  ResponseListadoPatronesProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
+import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 export class ListarProgramacionPatrones {
   constructor(
     private programacionRepoRead: ProgramacionPatronesRepositoryRead
   ) {}
-  async execute(clienteId: string) {
+  async execute(
+    clienteId: string,
+    pagina: number,
+    limite: number
+  ): Promise<ResponseListadoPatronesProgramados> {
+    const { porPagina, skip } = calcularPagina(pagina, limite);
     const listado = await this.programacionRepoRead.listarProgramaciones(
-      clienteId
+      clienteId,
+      skip,
+      porPagina
     );
-    return this.converToDTO(listado);
+    const total = await this.programacionRepoRead.obtenerTotal(clienteId);
+    const existePaginaSiguiente = paginaSiguienteExiste(pagina, total, limite);
+
+    const data = this.converToPatronesProgramacion(listado);
+    return {
+      data,
+      pagina,
+      existePaginaSiguiente: existePaginaSiguiente,
+      total,
+    };
   }
 
-  private converToDTO(
+  private converToPatronesProgramacion(
     programacion: ProgramacionPatrones[]
   ): PatronProgramacionDto[] {
     return programacion.map((p) => {

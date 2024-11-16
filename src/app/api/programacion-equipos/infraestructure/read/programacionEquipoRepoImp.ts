@@ -3,10 +3,16 @@ import { ProgramacionEquipos } from "../../domain/entity";
 import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/indext";
 import { Actividad } from "../../../actividad/dominio/index";
 import { Frecuencia } from "@/app/api/frecuencia/dominio";
+import { calcularPagina } from "@/lib/pagination";
 
 export class ProgramacionEquiposRepositoryReadImp
   implements ProgramacionEquiposRepositoryRead
 {
+  async obtenerTotal(clienteId: string): Promise<number> {
+    return prisma.programacionEquipos.count({
+      where: { clienteId, estado: "PENDIENTE" },
+    });
+  }
   async obtenerProgramacionPorId(
     ID: string,
     clienteId: string
@@ -60,13 +66,17 @@ export class ProgramacionEquiposRepositoryReadImp
     );
   }
   async listarProgramaciones(
-    clienteId: string
+    clienteId: string,
+    page: number,
+    limit: number
   ): Promise<ProgramacionEquipos[]> {
     const res = await prisma.programacionEquipos.findMany({
       where: {
         clienteId: clienteId,
         estado: "PENDIENTE",
       },
+      take: limit,
+      skip: page,
       include: {
         actividad: true,
         equipo: true,

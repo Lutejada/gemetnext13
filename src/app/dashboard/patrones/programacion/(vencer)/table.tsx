@@ -4,7 +4,8 @@ import { columns } from "./columns";
 import { useEffect, useState } from "react";
 //import Paginador from "@/components/paginador";
 import { DataTable } from "@/components/data-table";
-import { obtenerProgramacionPatrones } from "../../../hooks/usePatron";
+import { obtenerProgramacionPatrones } from "../../../hooks/useProgramacionPatrones";
+import Paginador from "@/components/paginador";
 export default function ProgramacionPatrones() {
   const { obtenerPatrones, patrones } = obtenerProgramacionPatrones();
   useEffect(() => {
@@ -13,11 +14,11 @@ export default function ProgramacionPatrones() {
 
   return (
     <>
-      <DataTable columns={columns} data={patrones} />
-      {/* <Paginador
-        obtenervalores={obtenerEquipos}
-        existeSiguientePagina={existeSiguientePagina}
-      /> */}
+      <DataTable columns={columns} data={patrones?.data ?? []} />
+      <Paginador
+        obtenervalores={obtenerPatrones}
+        existeSiguientePagina={patrones?.existePaginaSiguiente!}
+      />
     </>
   );
 }

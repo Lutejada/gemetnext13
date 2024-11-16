@@ -11,7 +11,6 @@ import { CrearEquipoDto } from "../../application/dtos/crearEquipo.dto";
 import { CrearProgramacionEquipoDto } from "../../application/dtos/crearProgramation.dto";
 import { EditarDatosComplementariosDto } from "../../application/dtos/editarDatosComplementarios.dto";
 import { EditarDatosMetrologicosDto } from "../../application/dtos/editarDatosMetrologicos.dto";
-import { ListaProgramacionEquiposDTO } from "../../application/dtos/listaProgramacionEquipos.output";
 import { ObtenerEquiposDtoOutput } from "../../application/dtos/obtenerEquipos.dto.output";
 import { EstadoProgramacion } from "@prisma/client";
 
@@ -57,10 +56,6 @@ export interface EquipoRepositorio {
     dto: EditarDatosComplementariosDto,
     clienteId: string
   ) => Promise<void>;
-  listarEquiposProgramados: (
-    clienteId: string,
-    dto?: ObtenerDatosDto
-  ) => Promise<ListaProgramacionEquiposDTO>;
   listarEquiposProgramadosPorVencer: (
     clienteId: string
   ) => Promise<ProgramacionEquipos[]>;

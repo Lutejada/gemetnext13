@@ -4,19 +4,38 @@ import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/index
 import {
   Estatus,
   EquipoProgramacionDto,
+  ResponseListadoEquiposProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
+import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 export class ListarProgramacionEquipos {
   constructor(
     private programacionRepoRead: ProgramacionEquiposRepositoryRead
   ) {}
-  async execute(clienteId: string) {
+  async execute(
+    clienteId: string,
+    pagina: number,
+    limite: number
+  ): Promise<ResponseListadoEquiposProgramados> {
+    const { porPagina, skip } = calcularPagina(pagina, limite);
     const listado = await this.programacionRepoRead.listarProgramaciones(
-      clienteId
+      clienteId,
+      skip,
+      porPagina
     );
-    return this.converToDTO(listado);
+
+    const total = await this.programacionRepoRead.obtenerTotal(clienteId);
+    const existePaginaSiguiente = paginaSiguienteExiste(pagina, total, limite);
+
+    const data = this.converToEquiposProgramacion(listado);
+    return {
+      data,
+      pagina,
+      existePaginaSiguiente: existePaginaSiguiente,
+      total,
+    };
   }
 
-  private converToDTO(
+  private converToEquiposProgramacion(
     programacion: ProgramacionEquipos[]
   ): EquipoProgramacionDto[] {
     return programacion.map((p) => {

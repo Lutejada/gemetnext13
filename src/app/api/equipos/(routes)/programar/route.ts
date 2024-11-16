@@ -43,13 +43,13 @@ export async function POST(request: Request) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = searchParams.get("page");
-    const dto: ObtenerDatosDto = {
-      page: Number(page) || 1,
-    };
+    const page = Number(searchParams.get("page") ?? 1);
+    const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
     const programacion = await listarEquiposProgramados.execute(
-      session.user.cliente_id
+      session.user.cliente_id,
+      page,
+      limit
     );
     return NextResponse.json(programacion);
   } catch (error: any) {

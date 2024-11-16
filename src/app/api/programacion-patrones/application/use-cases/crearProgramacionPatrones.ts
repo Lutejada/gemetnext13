@@ -3,7 +3,7 @@ import { ProgramacionPatrones } from "../../domain/entity";
 import {
   ProgramacionPatronesRepositoryRead,
   ProgramacionPatronesRepositoryWrite,
-} from "../../domain/repository/indext";
+} from "../../domain/repository";
 import { CrearProgramacionPatronDto } from "../dto/crearProgramation.dto";
 import { ActividadNoExiste } from "@/app/api/actividad/dominio/errors";
 import { addDays, getYear } from "date-fns";
