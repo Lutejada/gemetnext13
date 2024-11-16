@@ -13,7 +13,7 @@ import { EditarDatosMetrologicosDto } from "../application/dtos/editarDatosMetro
 import { EditarDatosComplementariosDto } from "../application/dtos/editarDatosComplementarios.dto";
 import { format } from "date-fns";
 import { ObtenerDatosDto } from "../../common/types";
-import { calcularPagina } from "@/lib/queryUtils";
+import { calcularPagina } from "@/lib/pagination";
 import { ObtenerEquiposDtoOutput } from "../application/dtos/obtenerEquipos.dto.output";
 import { Prisma } from "@prisma/client";
 import { EquipoProgramacionDto } from "../../programacion-equipos/application/dto/listadoPatronesProgramados.dto";

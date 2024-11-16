@@ -6,7 +6,7 @@ import {
   EquipoProgramacionDto,
   ResponseListadoEquiposProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
-import { calcularPagina } from "@/lib/queryUtils";
+import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 export class ListarProgramacionEquipos {
   constructor(
     private programacionRepoRead: ProgramacionEquiposRepositoryRead
@@ -20,13 +20,11 @@ export class ListarProgramacionEquipos {
     const listado = await this.programacionRepoRead.listarProgramaciones(
       clienteId,
       skip,
-      porPagina,
+      porPagina
     );
 
     const total = await this.programacionRepoRead.obtenerTotal(clienteId);
-    const nextPage = pagina + 1;
-    const totalPage = total / limite;
-    const existePaginaSiguiente = nextPage <= Math.ceil(totalPage);
+    const existePaginaSiguiente = paginaSiguienteExiste(pagina, total, limite);
 
     const data = this.converToEquiposProgramacion(listado);
     return {

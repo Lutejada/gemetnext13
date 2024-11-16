@@ -1,12 +1,12 @@
 import { differenceInDays, startOfDay, format } from "date-fns";
 import { ProgramacionPatrones } from "../../domain/entity";
-import { ProgramacionPatronesRepositoryRead } from "../../domain/repository/indext";
+import { ProgramacionPatronesRepositoryRead } from "../../domain/repository";
 import {
   Estatus,
   PatronProgramacionDto,
   ResponseListadoPatronesProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
-import { calcularPagina } from "@/lib/queryUtils";
+import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 export class ListarProgramacionPatrones {
   constructor(
     private programacionRepoRead: ProgramacionPatronesRepositoryRead
@@ -23,9 +23,7 @@ export class ListarProgramacionPatrones {
       porPagina
     );
     const total = await this.programacionRepoRead.obtenerTotal(clienteId);
-    const nextPage = pagina + 1;
-    const totalPage = total / limite;
-    const existePaginaSiguiente = nextPage <= Math.ceil(totalPage);
+    const existePaginaSiguiente = paginaSiguienteExiste(pagina, total, limite);
 
     const data = this.converToPatronesProgramacion(listado);
     return {

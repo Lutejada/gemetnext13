@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ProgramacionPatrones } from "../../domain/entity";
-import { ProgramacionPatronesRepositoryWrite } from "../../domain/repository/indext";
+import { ProgramacionPatronesRepositoryWrite } from "../../domain/repository";
 import { EstadoProgramacion } from "@/app/api/equipos/dominio";
 
 export class ProgramacionPatronesWriteRepoImp

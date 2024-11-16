@@ -14,7 +14,7 @@ import {
   ObtenerPatronesDtoOutput,
   PatronesResponse,
 } from "../dtos/obtenerPatrones.dto.output";
-import { calcularPagina } from "@/lib/queryUtils";
+import { calcularPagina } from "@/lib/pagination";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";

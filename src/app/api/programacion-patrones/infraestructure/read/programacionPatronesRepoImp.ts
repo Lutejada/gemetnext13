@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { ProgramacionPatrones } from "../../domain/entity";
-import { ProgramacionPatronesRepositoryRead } from "../../domain/repository/indext";
+import { ProgramacionPatronesRepositoryRead } from "../../domain/repository";
 import { Actividad } from "../../../actividad/dominio/index";
 import { Cliente } from "@/app/api/cliente/dominio";
 import { Patron } from "../../../patrones/dominio";
