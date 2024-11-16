@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
-import useSWR from "swr";
 import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
 import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
@@ -12,8 +11,6 @@ import { EditarBasicosDto } from "../../api/patrones/dtos/editarBasicos.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from "../../api/patrones/dtos/crearProgramation.dto";
-import { ListaProgramacionPatronesDTO } from "../../api/patrones/dtos/listaProgramacionPatrones.output";
-import { PatronProgramacionDto } from "@/app/api/programacion-patrones/application/dto/listadoPatronesProgramados.dto";
 
 export const crearPatron = () => {
   const fetcher = (url: string, { arg }: { arg: CrearPatronDto }) =>
@@ -164,20 +161,5 @@ export const crearProgramacionPatron = () => {
     crear: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
-  };
-};
-
-export const obtenerProgramacionPatrones = () => {
-  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
-    httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } = useSWRMutation<
-    PatronProgramacionDto[]
-  >("/patrones/programar", fetcher);
-  return {
-    patrones: data ?? [],
-    isLoading: isMutating,
-    isError: error,
-    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
-    //existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

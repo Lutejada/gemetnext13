@@ -70,14 +70,13 @@ export class ProgramacionEquiposRepositoryReadImp
     page: number,
     limit: number
   ): Promise<ProgramacionEquipos[]> {
-    const { porPagina, skip } = calcularPagina(page, limit);
     const res = await prisma.programacionEquipos.findMany({
       where: {
         clienteId: clienteId,
         estado: "PENDIENTE",
       },
-      take: porPagina,
-      skip: skip,
+      take: limit,
+      skip: page,
       include: {
         actividad: true,
         equipo: true,

@@ -4,19 +4,39 @@ import { ProgramacionPatronesRepositoryRead } from "../../domain/repository/inde
 import {
   Estatus,
   PatronProgramacionDto,
+  ResponseListadoPatronesProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
+import { calcularPagina } from "@/lib/queryUtils";
 export class ListarProgramacionPatrones {
   constructor(
     private programacionRepoRead: ProgramacionPatronesRepositoryRead
   ) {}
-  async execute(clienteId: string) {
+  async execute(
+    clienteId: string,
+    pagina: number,
+    limite: number
+  ): Promise<ResponseListadoPatronesProgramados> {
+    const { porPagina, skip } = calcularPagina(pagina, limite);
     const listado = await this.programacionRepoRead.listarProgramaciones(
-      clienteId
+      clienteId,
+      skip,
+      porPagina
     );
-    return this.converToDTO(listado);
+    const total = await this.programacionRepoRead.obtenerTotal(clienteId);
+    const nextPage = pagina + 1;
+    const totalPage = total / limite;
+    const existePaginaSiguiente = nextPage <= Math.ceil(totalPage);
+
+    const data = this.converToPatronesProgramacion(listado);
+    return {
+      data,
+      pagina,
+      existePaginaSiguiente: existePaginaSiguiente,
+      total,
+    };
   }
 
-  private converToDTO(
+  private converToPatronesProgramacion(
     programacion: ProgramacionPatrones[]
   ): PatronProgramacionDto[] {
     return programacion.map((p) => {

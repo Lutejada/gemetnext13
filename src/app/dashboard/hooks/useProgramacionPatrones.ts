@@ -1,20 +1,20 @@
 import { ObtenerDatosDto } from "@/app/api/common/types";
-import { ResponseListadoEquiposProgramados } from "@/app/api/programacion-equipos/application/dto/listadoPatronesProgramados.dto";
+import { ResponseListadoPatronesProgramados } from "@/app/api/programacion-patrones/application/dto/listadoPatronesProgramados.dto";
 import { httpBase } from "@/app/config/api-base";
 import useSWRMutation from "swr/mutation";
 
-export const obtenerProgramacionEquipos = () => {
+export const obtenerProgramacionPatrones = () => {
   const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } =
-    useSWRMutation<ResponseListadoEquiposProgramados>(
-      "/equipos/programar",
+    useSWRMutation<ResponseListadoPatronesProgramados>(
+      "/patrones/programar",
       fetcher
     );
   return {
-    equipos: data,
+    patrones: data,
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
   };
 };

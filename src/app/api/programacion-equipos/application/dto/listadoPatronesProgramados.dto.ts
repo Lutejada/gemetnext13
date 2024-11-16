@@ -11,7 +11,7 @@ export class EquipoProgramacionDto {
   estado: EstadoProgramacion;
 }
 
-export class ResponseListadoPatronesProgramados {
+export class ResponseListadoEquiposProgramados {
   data: EquipoProgramacionDto[];
   pagina: number;
   existePaginaSiguiente: boolean;

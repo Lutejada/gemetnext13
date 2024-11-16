@@ -4,8 +4,9 @@ import { ProgramacionEquiposRepositoryRead } from "../../domain/repository/index
 import {
   Estatus,
   EquipoProgramacionDto,
-  ResponseListadoPatronesProgramados,
+  ResponseListadoEquiposProgramados,
 } from "../dto/listadoPatronesProgramados.dto";
+import { calcularPagina } from "@/lib/queryUtils";
 export class ListarProgramacionEquipos {
   constructor(
     private programacionRepoRead: ProgramacionEquiposRepositoryRead
@@ -14,15 +15,18 @@ export class ListarProgramacionEquipos {
     clienteId: string,
     pagina: number,
     limite: number
-  ): Promise<ResponseListadoPatronesProgramados> {
+  ): Promise<ResponseListadoEquiposProgramados> {
+    const { porPagina, skip } = calcularPagina(pagina, limite);
     const listado = await this.programacionRepoRead.listarProgramaciones(
       clienteId,
-      pagina,
-      limite
+      skip,
+      porPagina,
     );
 
     const total = await this.programacionRepoRead.obtenerTotal(clienteId);
-    const existePaginaSiguiente = (pagina + 1) * limite < total;
+    const nextPage = pagina + 1;
+    const totalPage = total / limite;
+    const existePaginaSiguiente = nextPage <= Math.ceil(totalPage);
 
     const data = this.converToEquiposProgramacion(listado);
     return {

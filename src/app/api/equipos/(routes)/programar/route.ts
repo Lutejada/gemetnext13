@@ -44,12 +44,12 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const page = Number(searchParams.get("page") ?? 1);
-    const pageSize = Number(searchParams.get("pageSize") ?? 5);
+    const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
     const programacion = await listarEquiposProgramados.execute(
       session.user.cliente_id,
       page,
-      pageSize
+      limit
     );
     return NextResponse.json(programacion);
   } catch (error: any) {

@@ -2,7 +2,11 @@ import { EstadoProgramacion } from "@/app/api/equipos/dominio";
 import { ProgramacionPatrones } from "../entity";
 
 export interface ProgramacionPatronesRepositoryRead {
-  listarProgramaciones(clienteId: string): Promise<ProgramacionPatrones[]>;
+  listarProgramaciones(
+    clienteId: string,
+    page: number,
+    limit: number
+  ): Promise<ProgramacionPatrones[]>;
   listaProgramacionesPorFrecuenciaYActividad(
     clienteId: string,
     actividadId: string,
@@ -13,6 +17,7 @@ export interface ProgramacionPatronesRepositoryRead {
     ID: string,
     clienteId: string
   ): Promise<ProgramacionPatrones | null>;
+  obtenerTotal(clienteId: string): Promise<number>;
 }
 
 export interface ProgramacionPatronesRepositoryWrite {

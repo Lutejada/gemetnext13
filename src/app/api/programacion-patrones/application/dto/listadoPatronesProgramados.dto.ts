@@ -10,6 +10,13 @@ export class PatronProgramacionDto {
     alertaEstado: Estatus;
     estado: EstadoProgramacion
   }
+
+  export class ResponseListadoPatronesProgramados {
+    data: PatronProgramacionDto[];
+    pagina: number;
+    existePaginaSiguiente: boolean;
+    total: number;
+  }
   
   export interface Estatus {
     descripcion: string;
