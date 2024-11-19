@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { auth } from "@/lib/getSession";
 import { validarCrearProgramacion } from "../../application/dtos/crearProgramation.dto";
 import { EquipoReadRepositoryImp } from "../../infrastructure/reader/equipoReadRepository";

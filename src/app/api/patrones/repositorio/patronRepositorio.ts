@@ -9,7 +9,7 @@ import { CrearPatronDto } from "../dtos/crearPatrones";
 import { PatronRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
-import { ObtenerDatosDto } from "../../common/types";
+import { queryValuesDTO } from "../../common/types";
 import {
   ObtenerPatronesDtoOutput,
   PatronesResponse,
@@ -100,7 +100,7 @@ export const patronRepositorio: PatronRepositorio = {
   },
   obtenerPatrones: async function (
     clienteId: string,
-    dto?: ObtenerDatosDto | undefined
+    dto?: queryValuesDTO | undefined
   ): Promise<ObtenerPatronesDtoOutput> {
     const { porPagina, skip } = calcularPagina(dto?.page ?? 1);
     const dbResponse = await prisma.patrones.findMany({
@@ -225,7 +225,7 @@ export const patronRepositorio: PatronRepositorio = {
   },
   listarPatronesProgramados: async function (
     clienteId: string,
-    dto?: ObtenerDatosDto | undefined
+    dto?: queryValuesDTO | undefined
   ): Promise<ListaProgramacionPatronesDTO> {
     const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
 

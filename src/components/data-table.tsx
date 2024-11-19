@@ -1,6 +1,6 @@
 "use client";
-import { Button } from "@/components/ui/button";
 
+import { Button } from "@/components/ui/button";
 import {
   ColumnDef,
   flexRender,
@@ -8,7 +8,6 @@ import {
   useReactTable,
   getPaginationRowModel,
 } from "@tanstack/react-table";
-
 import {
   Table,
   TableBody,
@@ -17,23 +16,38 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  isLoading: boolean; // New prop to indicate loading state
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isLoading,
 }: DataTableProps<TData, TValue>) {
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    
   });
+
+  // Function to render skeleton rows
+  const renderSkeletonRows = () => {
+    return Array.from({ length: 5 }).map((_, index) => (
+      <TableRow key={`skeleton-${index}`}>
+        {columns.map((column, cellIndex) => (
+          <TableCell key={`skeleton-cell-${cellIndex}`}>
+            <Skeleton className="h-6 w-full" />
+          </TableCell>
+        ))}
+      </TableRow>
+    ));
+  };
 
   return (
     <>
@@ -42,23 +56,23 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {table.getRowModel().rows?.length ? (
+            {isLoading ? (
+              renderSkeletonRows()
+            ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
@@ -75,18 +89,18 @@ export function DataTable<TData, TValue>({
                 </TableRow>
               ))
             ) : (
-              <TableRow  >
+              <TableRow>
                 <TableCell
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  No results.
+                  No se encontraron resultados
                 </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
-      </div>      
+      </div>
     </>
   );
 }

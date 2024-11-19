@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import { queryValuesDTO } from "@/app/api/common/types";
 
 const formSchema = z.object({
   termino: z.string().min(3, { message: "requerido" }),
@@ -30,8 +30,8 @@ const formSchema = z.object({
 
 interface Props {
   buscarPorTermino: (
-    args?: ObtenerDatosDto | undefined
-  ) => Promise< any | undefined>;
+    args?: queryValuesDTO | undefined
+  ) => Promise<any | undefined>;
 }
 
 export default function SearchForm({ buscarPorTermino }: Props) {

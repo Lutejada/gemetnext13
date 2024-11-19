@@ -6,7 +6,7 @@ import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";
 import { ObtenerPatronesDtoOutput } from "@/app/api/patrones/dtos/obtenerPatrones.dto.output";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { EditarBasicosDto } from "../../api/patrones/dtos/editarBasicos.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
@@ -68,7 +68,7 @@ export const crearDatosComplementarios = () => {
 };
 
 export const useObtenerPatrones = () => {
-  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
+  const fetcher = (url: string, { arg = {} }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } =
     useSWRMutation<ObtenerPatronesDtoOutput>("/patrones", fetcher);
@@ -76,7 +76,7 @@ export const useObtenerPatrones = () => {
     patrones: data?.patrones ?? [],
     isLoading: isMutating,
     isError: error,
-    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    obtenerPatrones: (args?: queryValuesDTO) => trigger(args as undefined),
     existeSiguientePagina: data?.existeSiguientePagina ?? false,
   };
 };

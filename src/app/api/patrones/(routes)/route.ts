@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { crearPatron } from "../servicios/crearPatron";
 import { errorHandler } from "../../common/errors/error.handler";
 import { validarCrearPatron } from "../dtos/crearPatrones";
-import { ObtenerDatosDto } from "../../common/types";
+import { queryValuesDTO } from "../../common/types";
 import { obtenerPatrones } from "../servicios/obtenerPatrones";
 import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
 import { validarEditarBasicos } from "../dtos/editarBasicos.dto";
@@ -37,7 +37,7 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const page = searchParams.get("page");
-    const dto: ObtenerDatosDto = {
+    const dto: queryValuesDTO = {
       page: Number(page) || 1,
     };
     const session = await auth();

@@ -1,9 +1,9 @@
 export interface ObtenerEquiposDtoOutput {
-  equipos: EquiposResponse[];
+  equipos: EquipoInformacionBasicaDTO[];
   existeSiguientePagina: boolean;
 }
 
-export interface EquiposResponse {
+export interface EquipoInformacionBasicaDTO {
   codigo: string;
   id: string;
   descripcion: string;

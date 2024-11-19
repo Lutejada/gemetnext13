@@ -1,8 +1,8 @@
-import { ObtenerDatosDto } from "../../common/types/index";
+import { queryValuesDTO } from "../../common/types/index";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 
 export const listarPatronesProgramados = (
-  input: ObtenerDatosDto,
+  input: queryValuesDTO,
   clienteId: string
 ) => {
   return patronRepositorio.listarPatronesProgramados(clienteId, input);

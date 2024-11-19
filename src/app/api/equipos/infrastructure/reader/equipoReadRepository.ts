@@ -1,7 +1,58 @@
 import { prisma } from "@/lib/prisma";
 import { Equipo, EstadoProgramacion, ProgramacionEquipos } from "../../dominio";
 import { EquipoReadRepository } from "../../dominio/repository/index";
+import { EquipoEntity } from "../../dominio/entity";
 export class EquipoReadRepositoryImp implements EquipoReadRepository {
+  async totalEquipos(clienteId: string): Promise<number> {
+    return prisma.equipo.count({
+      where: {
+        cliente_id: clienteId,
+      },
+    });
+  }
+  async listarEquipos(
+    clienteId: string,
+    page: number,
+    limit: number
+  ): Promise<EquipoEntity[]> {
+    const res = await prisma.equipo.findMany({
+      where: {
+        cliente_id: clienteId,
+      },
+      take: limit,
+      skip: page,
+      include: {
+        marca: true,
+        ubicacion: {
+          include: {
+            responsable: true,
+          },
+        },
+      },
+    });
+
+    return res.map(
+      (e) =>
+        new EquipoEntity({
+          id: e.id,
+          codigo: e.codigo,
+          descripcion: e.descripcion,
+          modelo: e.modelo,
+          fechaCreacion: e.fecha_creacion,
+          serie: e.serie,
+          marca: e.marca,
+          ubicacion: {
+            ...e.ubicacion,
+            responsable: {
+              ...e.ubicacion.responsable,
+              identificacion: e.ubicacion.responsable.identificacion,
+              nombre: e.ubicacion.responsable.nombre,
+              apellido: e.ubicacion.responsable.apellido,
+            },
+          },
+        })
+    );
+  }
   async obtenerPorID(ID: string, clienteID: string): Promise<Equipo | null> {
     const res = await prisma.equipo.findFirst({
       where: {

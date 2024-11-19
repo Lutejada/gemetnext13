@@ -1,6 +1,6 @@
-export interface ObtenerDatosDto {
-  termino?: string;
-  valor?: string;
-  page?: number;
+export interface queryValuesDTO {
+  termino?: string | null;
+  valor?: string | null;
+  page: number;
   limit?: number;
 }

@@ -8,7 +8,7 @@ import { CrearPatronDto } from "../dtos/crearPatrones";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
 import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
-import { ObtenerDatosDto } from "../../common/types";
+import { queryValuesDTO } from "../../common/types";
 import { EditarDatosMetrologicosDto } from "../dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";
@@ -31,7 +31,7 @@ export interface PatronRepositorio {
   ) => Promise<DatosComplementariosPatrones>;
   obtenerPatrones: (
     clienteId: string,
-    dto?: ObtenerDatosDto
+    dto?: queryValuesDTO
   ) => Promise<ObtenerPatronesDtoOutput>;
   editarDatosBasicos: (
     codigo: string,
@@ -54,6 +54,6 @@ export interface PatronRepositorio {
   ) => Promise<ProgramacionPatrones>;
   listarPatronesProgramados: (
     clienteId: string,
-    dto?: ObtenerDatosDto
+    dto?: queryValuesDTO
   ) => Promise<ListaProgramacionPatronesDTO>;
 }
