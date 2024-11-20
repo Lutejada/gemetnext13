@@ -1,5 +1,5 @@
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
-import { DatosMetrologicosYaExisten, PatronNoExiste } from "../errors";
+import { DatosMetrologicosYaExisten, PatronNoExiste } from "../dominio/errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 
 export const crearDatosMetrologicos = async (

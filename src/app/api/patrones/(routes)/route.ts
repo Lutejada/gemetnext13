@@ -8,6 +8,11 @@ import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
 import { validarEditarBasicos } from "../dtos/editarBasicos.dto";
 import { editarDatosBasicos } from "../servicios/editarDatosBasicos";
 import { auth } from "@/lib/getSession";
+import { PatronRepositoryReadImp } from "../infraestructure/repository/read";
+import { ListarPatronesUseCaseImp } from "../application/use-cases/listarPatrones";
+
+const PatronReadRepository = new PatronRepositoryReadImp();
+const listarPatronsUseCase = new ListarPatronesUseCaseImp(PatronReadRepository);
 
 export async function POST(request: Request) {
   try {
@@ -36,13 +41,21 @@ export async function PUT(request: Request) {
 export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
-    const page = searchParams.get("page");
-    const dto: queryValuesDTO = {
-      page: Number(page) || 1,
-    };
+    const termino = searchParams.get("termino");
+    const valor = searchParams.get("valor");
+    const page = Number(searchParams.get("page") ?? 1);
+    const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
-    const response = await obtenerPatrones(session.user.cliente_id, dto);
-    return NextResponse.json<ObtenerPatronesDtoOutput>(response);
+    const patrones = await listarPatronsUseCase.execute(
+      session.user.cliente_id,
+      {
+        limit,
+        page,
+        valor,
+        termino,
+      }
+    );
+    return NextResponse.json(patrones);
   } catch (error: any) {
     return errorHandler(error);
   }

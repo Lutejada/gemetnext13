@@ -1,5 +1,5 @@
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";
-import { DatosComplementariosYaExisten, PatronYaExiste } from "../errors";
+import { DatosComplementariosYaExisten, PatronYaExiste } from "../dominio/errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 

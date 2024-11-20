@@ -1,5 +1,5 @@
 import { CrearPatronDto } from "../dtos/crearPatrones";
-import { PatronYaExiste } from "../errors";
+import { PatronYaExiste } from "../dominio/errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 

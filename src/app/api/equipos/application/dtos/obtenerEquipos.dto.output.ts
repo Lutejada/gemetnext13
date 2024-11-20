@@ -3,7 +3,7 @@ export interface ObtenerEquiposDtoOutput {
   existeSiguientePagina: boolean;
 }
 
-export interface EquipoInformacionBasicaDTO {
+export class EquipoInformacionBasicaDTO {
   codigo: string;
   id: string;
   descripcion: string;

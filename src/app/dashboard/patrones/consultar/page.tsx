@@ -5,10 +5,10 @@ import { DataTable } from "@/components/data-table";
 import SearchForm from "@/components/serch-form";
 import { useEffect } from "react";
 import Paginador from "../../../../components/paginador";
-import { useObtenerPatrones } from "../../hooks/usePatron";
+import { listarPatrones } from "../../hooks/usePatron";
 export default function ConsultarPatrones() {
   const { obtenerPatrones, patrones, existeSiguientePagina, isLoading } =
-    useObtenerPatrones();
+    listarPatrones();
   useEffect(() => {
     obtenerPatrones();
   }, []);
