@@ -4,3 +4,16 @@ export interface queryValuesDTO {
   page: number;
   limit?: number;
 }
+
+export interface SearchValuesDTO {
+  termino: string;
+  valor: string;
+  page: number;
+  limit: number;
+}
+
+
+export interface PaginationOptions {
+  page: number;
+  limit: number;
+}

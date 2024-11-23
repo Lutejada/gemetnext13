@@ -1,4 +1,4 @@
-import { queryValuesDTO } from "../../../common/types";
+import { PaginationOptions, queryValuesDTO } from "../../../common/types";
 import {
   DatosMetrologicosEquipos,
   Equipo,
@@ -77,6 +77,17 @@ export interface EquipoReadRepository {
     limit: number
   ): Promise<EquipoEntity[]>;
   totalEquipos(clienteId: string): Promise<number>;
+  totalEquiposPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string
+  ): Promise<number>;
+  obtenerEquiposPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string,
+    paginationOptions: PaginationOptions
+  ): Promise<EquipoEntity[]>;
 }
 export interface EquipoWriteRepository {
   cambiarProgramacionEstado(

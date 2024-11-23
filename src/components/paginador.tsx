@@ -6,13 +6,13 @@ import { useState } from "react";
 interface Props {
   obtenervalores: (args?: queryValuesDTO) => Promise<any>;
   existeSiguientePagina: boolean;
+  currentPage: number;
 }
-const Paginador = ({ obtenervalores, existeSiguientePagina }: Props) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Paginador = ({ obtenervalores, existeSiguientePagina, currentPage }: Props) => {
+  
   const [isLoading, setIsLoading] = useState(false);
   const siguientePagina = async () => {
     setIsLoading(true);
-    setCurrentPage(currentPage + 1);
     await obtenervalores({ page: currentPage + 1 });
     setIsLoading(false);
   };
@@ -20,7 +20,6 @@ const Paginador = ({ obtenervalores, existeSiguientePagina }: Props) => {
   const paginaAnterior = async () => {
     setIsLoading(true);
     const page = Math.max(currentPage - 1, 1);
-    setCurrentPage(page);
     await obtenervalores({ page });
     setIsLoading(false);
   };

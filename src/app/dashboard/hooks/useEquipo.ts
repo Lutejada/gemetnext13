@@ -28,6 +28,7 @@ export const listarEquipos = () => {
 
   return {
     equipos: data?.data ?? [],
+    page: data?.pagina ?? 1,
     existeSiguientePagina: data?.existePaginaSiguiente ?? false,
     isLoading: isMutating,
     isError: error,

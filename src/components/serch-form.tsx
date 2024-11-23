@@ -20,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { queryValuesDTO } from "@/app/api/common/types";
+import { ReactNode } from "react";
 
 const formSchema = z.object({
   termino: z.string().min(3, { message: "requerido" }),
@@ -31,10 +32,11 @@ const formSchema = z.object({
 interface Props {
   buscarPorTermino: (
     args?: queryValuesDTO | undefined
-  ) => Promise<any | undefined>;
+  ) => Promise<void>;
+  renderSelectOptions: () => ReactNode;
 }
 
-export default function SearchForm({ buscarPorTermino }: Props) {
+export default function SearchForm({ buscarPorTermino, renderSelectOptions }: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +46,13 @@ export default function SearchForm({ buscarPorTermino }: Props) {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    await buscarPorTermino({
+      termino: values.termino,
+      valor: values.valor,
+      page: 1,
+      limit: 5,
+    });
     form.reset();
-    await buscarPorTermino({ termino: values.termino, valor: values.valor });
   }
 
   return (
@@ -53,23 +60,20 @@ export default function SearchForm({ buscarPorTermino }: Props) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="grid grid-cols-12 grid-rows-1 gap-2 mb-2"
+          className="grid grid-cols-10 md:grid-cols-6 grid-rows-1 gap-2 mb-2"
         >
           <FormField
             control={form.control}
             name="termino"
             render={({ field }) => (
-              <FormItem className="col-span-1/2">
+              <FormItem className="col-span-2">
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Buscar por" />
                     </SelectTrigger>
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="codigo">codigo</SelectItem>
-                    <SelectItem value="marca">Marca</SelectItem>
-                  </SelectContent>
+                  {renderSelectOptions()}
                 </Select>
                 <FormMessage />
               </FormItem>
