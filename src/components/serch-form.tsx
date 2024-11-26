@@ -1,4 +1,3 @@
-"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
@@ -7,16 +6,9 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { queryValuesDTO } from "@/app/api/common/types";
@@ -30,13 +22,14 @@ const formSchema = z.object({
 });
 
 interface Props {
-  buscarPorTermino: (
-    args?: queryValuesDTO | undefined
-  ) => Promise<void>;
+  buscarPorTermino: (args?: queryValuesDTO | undefined) => Promise<void>;
   renderSelectOptions: () => ReactNode;
 }
 
-export default function SearchForm({ buscarPorTermino, renderSelectOptions }: Props) {
+export default function SearchForm({
+  buscarPorTermino,
+  renderSelectOptions,
+}: Props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
