@@ -1,4 +1,4 @@
-import { PatronNoExiste } from "../errors";
+import { PatronNoExiste } from "../dominio/errors";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";
 export const validarPatronExiste = async (
   codigo: string,

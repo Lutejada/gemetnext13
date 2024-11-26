@@ -10,11 +10,6 @@ export default function Programacion() {
         Programacion de Patrones
       </h2>
       <ProgramacionPatrones />
-      {/* <DataTable columns={columns} data={equipos} />
-      <Paginador
-        obtenervalores={obtenerEquipos}
-        existeSiguientePagina={existeSiguientePagina}
-      /> */}
     </div>
   );
 }

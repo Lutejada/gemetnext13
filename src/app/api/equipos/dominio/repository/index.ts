@@ -1,4 +1,4 @@
-import { ObtenerDatosDto } from "../../../common/types";
+import { PaginationOptions, queryValuesDTO } from "../../../common/types";
 import {
   DatosMetrologicosEquipos,
   Equipo,
@@ -13,6 +13,7 @@ import { EditarDatosComplementariosDto } from "../../application/dtos/editarDato
 import { EditarDatosMetrologicosDto } from "../../application/dtos/editarDatosMetrologicos.dto";
 import { ObtenerEquiposDtoOutput } from "../../application/dtos/obtenerEquipos.dto.output";
 import { EstadoProgramacion } from "@prisma/client";
+import { EquipoEntity } from "../entity";
 
 export interface EquipoRepositorio {
   crearEquipo: (dto: CrearEquipoDto, clienteId: string) => Promise<void>;
@@ -70,6 +71,23 @@ export interface EquipoReadRepository {
     clienteId: string
   ): Promise<ProgramacionEquipos | null>;
   obtenerPorID(ID: string, clienteID: string): Promise<Equipo | null>;
+  listarEquipos(
+    clienteId: string,
+    page: number,
+    limit: number
+  ): Promise<EquipoEntity[]>;
+  totalEquipos(clienteId: string): Promise<number>;
+  totalEquiposPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string
+  ): Promise<number>;
+  obtenerEquiposPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string,
+    paginationOptions: PaginationOptions
+  ): Promise<EquipoEntity[]>;
 }
 export interface EquipoWriteRepository {
   cambiarProgramacionEstado(

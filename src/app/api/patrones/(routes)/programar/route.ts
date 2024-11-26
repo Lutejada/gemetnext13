@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../../common/errors/error.handler";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { listarPatronesProgramados } from "../../servicios/listarPatronesProgramados";
 import { auth } from "@/lib/getSession";
 import { ProgramacionPatronesWriteRepoImp } from "@/app/api/programacion-patrones/infraestructure/write/programacionPatronesWriteRepoImp";

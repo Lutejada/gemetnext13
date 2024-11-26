@@ -52,7 +52,6 @@ export default function CrearPatronesBasicos() {
       serie: "",
       marcaId: "",
       ubicacionId: "",
-      tipoPatronId: "",
     },
   });
 
@@ -68,7 +67,9 @@ export default function CrearPatronesBasicos() {
       ubicacionId: values.ubicacionId,
       tipoPatronId: values.tipoPatronId,
     });
-    form.reset();
+    form.reset({
+      tipoPatronId: "",
+    });
 
     toast({
       title: "Patron se guardo correctamente",
@@ -209,6 +210,7 @@ export default function CrearPatronesBasicos() {
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
+                    value={field.value}
                   >
                     <FormControl>
                       <SelectTrigger>

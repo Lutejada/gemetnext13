@@ -8,7 +8,7 @@ import { CrearProgramacionPatronDto } from "../dto/crearProgramation.dto";
 import { ActividadNoExiste } from "@/app/api/actividad/dominio/errors";
 import { addDays, getYear } from "date-fns";
 import { PatronRepositoryRead } from "../../../patrones/dominio/repository/index";
-import { PatronNoExiste } from "../../../patrones/errors";
+import { PatronNoExiste } from "../../../patrones/dominio/errors";
 import { FrecuenciaRepositoryRead } from "@/app/api/frecuencia/dominio/repository";
 import { FrecuenciaNoExiste } from "@/app/api/frecuencia/dominio/errors";
 import { ProgramacionYaExiste } from "../../domain/errors";

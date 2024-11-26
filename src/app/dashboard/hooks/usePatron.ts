@@ -6,11 +6,13 @@ import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";
 import { ObtenerPatronesDtoOutput } from "@/app/api/patrones/dtos/obtenerPatrones.dto.output";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { EditarBasicosDto } from "../../api/patrones/dtos/editarBasicos.dto";
 import { EditarDatosMetrologicosDto } from "@/app/api/patrones/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDatosComplementarios.dto";
 import { CrearProgramacionPatronDto } from "../../api/patrones/dtos/crearProgramation.dto";
+import { PatronInformacionBasicaDTO } from "@/app/api/patrones/application/dto/obtenerPatrones";
+import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
 
 export const crearPatron = () => {
   const fetcher = (url: string, { arg }: { arg: CrearPatronDto }) =>
@@ -67,17 +69,18 @@ export const crearDatosComplementarios = () => {
   };
 };
 
-export const useObtenerPatrones = () => {
-  const fetcher = (url: string, { arg = {} }: { arg?: ObtenerDatosDto }) =>
+export const listarPatrones = () => {
+  const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } =
-    useSWRMutation<ObtenerPatronesDtoOutput>("/patrones", fetcher);
+  const { data, error, isMutating, trigger } = useSWRMutation<
+    ResponseListadoPaginado<PatronInformacionBasicaDTO>
+  >("/patrones", fetcher);
   return {
-    patrones: data?.patrones ?? [],
+    patrones: data?.data ?? [],
     isLoading: isMutating,
     isError: error,
-    obtenerPatrones: (args?: ObtenerDatosDto) => trigger(args as undefined),
-    existeSiguientePagina: data?.existeSiguientePagina ?? false,
+    obtenerPatrones: (args?: queryValuesDTO) => trigger(args as undefined),
+    existeSiguientePagina: data?.existePaginaSiguiente ?? false,
   };
 };
 

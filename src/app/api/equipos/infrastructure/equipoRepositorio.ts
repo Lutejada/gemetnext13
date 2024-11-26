@@ -12,7 +12,7 @@ import { CrearProgramacionEquipoDto } from "../application/dtos/crearProgramatio
 import { EditarDatosMetrologicosDto } from "../application/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "../application/dtos/editarDatosComplementarios.dto";
 import { format } from "date-fns";
-import { ObtenerDatosDto } from "../../common/types";
+import { queryValuesDTO } from "../../common/types";
 import { calcularPagina } from "@/lib/pagination";
 import { ObtenerEquiposDtoOutput } from "../application/dtos/obtenerEquipos.dto.output";
 import { Prisma } from "@prisma/client";
@@ -273,7 +273,7 @@ export const equipoRepositorio: EquipoRepositorio = {
 
   listarEquiposProgramados: async (
     clienteId: string,
-    dto?: ObtenerDatosDto
+    dto?: queryValuesDTO
   ) => {
     const { skip, porPagina } = calcularPagina(dto?.page ?? 1);
 

@@ -52,3 +52,12 @@ export class ProgramacionYaCompletada extends Error{
         this.status = 400;
     }
 }
+export class TerminoDeBusquedaNoExiste extends Error{
+    status:number
+    constructor() {
+        super();
+        this.message="El termino de busqueda con ese termino no existe"
+        this.cause="negocio"
+        this.status = 404;
+    }
+}

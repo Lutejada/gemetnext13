@@ -1,5 +1,5 @@
 import { CrearProgramacionPatronDto } from "../dtos/crearProgramation.dto";
-import { PatronNoExiste } from "../errors";
+import { PatronNoExiste } from "../dominio/errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { validarPatronExiste } from "./validarPatronExiste";
 

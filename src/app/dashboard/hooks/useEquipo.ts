@@ -11,25 +11,30 @@ import { EditarEquipoDto } from "../../api/equipos/application/dtos/editarEquipo
 import { EditarDatosMetrologicosDto } from "@/app/api/equipos/application/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/equipos/application/dtos/editarDatosComplementarios.dto";
 
-import { ObtenerEquiposDtoOutput } from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
-import { ObtenerDatosDto } from "@/app/api/common/types";
+import {
+  EquipoInformacionBasicaDTO,
+  ObtenerEquiposDtoOutput,
+} from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { EquipoProgramacionDto } from "@/app/api/programacion-equipos/application/dto/listadoPatronesProgramados.dto";
+import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
 
-export const obtenerEquiposPorTermino = () => {
-  const fetcher = (url: string, { arg }: { arg?: ObtenerDatosDto }) =>
+export const listarEquipos = () => {
+  const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
-  const { data, error, isMutating, trigger } =
-    useSWRMutation<ObtenerEquiposDtoOutput>("/equipos", fetcher);
+  const { data, error, isMutating, trigger } = useSWRMutation<
+    ResponseListadoPaginado<EquipoInformacionBasicaDTO>
+  >("/equipos", fetcher);
 
   return {
-    equipos: data?.equipos ?? [],
-    existeSiguientePagina: data?.existeSiguientePagina ?? false,
+    equipos: data?.data ?? [],
+    page: data?.pagina ?? 1,
+    existeSiguientePagina: data?.existePaginaSiguiente ?? false,
     isLoading: isMutating,
     isError: error,
-    obtenerEquipos: (args?: ObtenerDatosDto) => trigger(args as undefined),
+    obtenerEquipos: (args?: queryValuesDTO) => trigger(args as undefined),
   };
 };
-
 
 export const obtenerEquipoPorCodigo = (codigo: string) => {
   const fetcher = (url: string) =>

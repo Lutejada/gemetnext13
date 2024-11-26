@@ -1,26 +1,27 @@
-'use client'
-import { ObtenerDatosDto } from "@/app/api/common/types";
+"use client";
+import { queryValuesDTO } from "@/app/api/common/types";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 interface Props {
-  obtenervalores: (args?: ObtenerDatosDto) => Promise<any>;
+  obtenervalores: (args?: queryValuesDTO) => Promise<any>;
   existeSiguientePagina: boolean;
+  currentPage: number;
 }
-const Paginador = ({
-  obtenervalores,
-  existeSiguientePagina,
-}: Props) => {
-  const [currentPage, setCurrentPage] = useState(1);
+const Paginador = ({ obtenervalores, existeSiguientePagina, currentPage }: Props) => {
+  
+  const [isLoading, setIsLoading] = useState(false);
   const siguientePagina = async () => {
-    setCurrentPage(currentPage + 1);
+    setIsLoading(true);
     await obtenervalores({ page: currentPage + 1 });
+    setIsLoading(false);
   };
 
   const paginaAnterior = async () => {
+    setIsLoading(true);
     const page = Math.max(currentPage - 1, 1);
-    setCurrentPage(page);
     await obtenervalores({ page });
+    setIsLoading(false);
   };
   return (
     <div className="flex items-center justify-end space-x-2 py-4">
@@ -28,7 +29,7 @@ const Paginador = ({
         variant="outline"
         size="sm"
         onClick={paginaAnterior}
-        disabled={currentPage === 1}
+        disabled={currentPage === 1 || isLoading}
       >
         Anterior
       </Button>
@@ -39,7 +40,7 @@ const Paginador = ({
         variant="outline"
         size="sm"
         onClick={siguientePagina}
-        disabled={!existeSiguientePagina}
+        disabled={!existeSiguientePagina || isLoading}
       >
         Siguiente
       </Button>
