@@ -1,6 +1,6 @@
 import { object, string } from "zod";
 
-export interface CrearEquipoDto {
+export class CrearEquipoDto {
   codigo: string;
   descripcion: string;
   modelo: string;

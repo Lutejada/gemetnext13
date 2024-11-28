@@ -1,10 +1,6 @@
 import { responsableRepositorio } from "../../responsables/repositorio/responsableRepositorio";
 import { crearUbicacionDto } from "../dtos/crearUbicacion.dto";
-import {
-  ResponsableNoExiste,
-  ResponsableYaTieneUbicacion,
-  UbicacionExiste,
-} from "../errors";
+import { ResponsableNoExiste, UbicacionExiste } from "../dominio/errors";
 import { ubicacionRepositorio } from "../repostorio/ubicacionRepositorio";
 
 export const crearUbicacion = async (

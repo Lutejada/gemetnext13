@@ -1,5 +1,5 @@
 import { Cliente } from "../../cliente/dominio";
-import { Ubicacion } from "../../ubicaciones/types";
+import { Ubicacion } from "../../ubicaciones/dominio/entity";
 
 export class Patron {
   id: string;

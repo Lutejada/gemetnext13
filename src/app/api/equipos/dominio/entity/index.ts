@@ -1,5 +1,5 @@
 import { Marca } from "@/app/api/marca/dominio";
-import { Ubicacion } from "@/app/api/ubicaciones/types";
+import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 import { DatosComplementariosEquipo, DatosMetrologicosEquipos } from "..";
 import { Cliente } from "@/app/api/cliente/dominio";
 
@@ -11,7 +11,6 @@ export class EquipoEntity {
   serie: string;
   marca: Marca;
   ubicacion: Ubicacion;
-  clienteId: string;
   fechaCreacion: Date | string;
   fechaActualizacion: Date | string;
   fechaInactivacion?: Date | string | null;
@@ -27,7 +26,6 @@ export class EquipoEntity {
     this.serie = attributes.serie ?? "Desconocido";
     this.marca = attributes.marca ?? new Marca();
     this.ubicacion = attributes.ubicacion ?? new Ubicacion();
-    this.clienteId = attributes.clienteId ?? "Desconocido";
     this.fechaCreacion = attributes.fechaCreacion ?? new Date().toISOString();
     this.fechaActualizacion =
       attributes.fechaActualizacion ?? new Date().toISOString();

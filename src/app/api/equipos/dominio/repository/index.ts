@@ -71,6 +71,7 @@ export interface EquipoReadRepository {
     clienteId: string
   ): Promise<ProgramacionEquipos | null>;
   obtenerPorID(ID: string, clienteID: string): Promise<Equipo | null>;
+  obtenerPorCodigo(codigo: string, clienteID: string): Promise<EquipoEntity | null>;
   listarEquipos(
     clienteId: string,
     page: number,
@@ -95,4 +96,5 @@ export interface EquipoWriteRepository {
     clienteId: string,
     estado: EstadoProgramacion
   ): Promise<void>;
+  crearDatosBasicos(clienteId: string, Equipos: EquipoEntity): Promise<void>;
 }

@@ -8,18 +8,31 @@ import { auth } from "@/lib/getSession";
 import { ListarEquiposUseCaseImp } from "../application/use-cases/reader/listarEquipos";
 import { EquipoReadRepositoryImp } from "../infrastructure/reader/equipoReadRepository";
 import { ListarEquipoTerminoUseCaseImp } from "../application/use-cases/reader/listarEquiposPorTermino";
-const EquipoReadRepository = new EquipoReadRepositoryImp();
-const listarEquiposUseCase = new ListarEquiposUseCaseImp(EquipoReadRepository);
+import { CrearDatosBasicosUseCaseImp } from "../application/use-cases/writer/crearDatosBasicos";
+import { EquipoWriteRepositoryImp } from "../infrastructure/writer/equipoWriteRepository";
+import { MarcaReadRepositoryImp } from "../../marca/infrastructure/reader/marcaReadRepositoryImp";
+import { UbicacionRepositoryReadImp } from "../../ubicaciones/infrastructure/read/ubicacionRepositoryReadImp";
+const equipoReadRepository = new EquipoReadRepositoryImp();
+const equipoWriteRepository = new EquipoWriteRepositoryImp();
+const marcaReadRepository = new MarcaReadRepositoryImp();
+const ubicacionReadRepository = new UbicacionRepositoryReadImp();
+const listarEquiposUseCase = new ListarEquiposUseCaseImp(equipoReadRepository);
+const crearDatosBasicosUseCase = new CrearDatosBasicosUseCaseImp(
+  equipoWriteRepository,
+  equipoReadRepository,
+  marcaReadRepository,
+  ubicacionReadRepository
+);
 const listarEquipoTerminoUseCase = new ListarEquipoTerminoUseCaseImp(
-  EquipoReadRepository
+  equipoReadRepository
 );
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     validarCrearEquipo(body);
     const session = await auth();
-    const equipo = await crearEquipo(body, session.user.cliente_id);
-    return NextResponse.json({ msg: "equipo creado", equipo });
+    await crearDatosBasicosUseCase.execute(session.user.cliente_id, body);
+    return NextResponse.json({ msg: "equipo creado" });
   } catch (error: any) {
     return errorHandler(error);
   }

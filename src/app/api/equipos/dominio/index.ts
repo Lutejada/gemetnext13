@@ -1,6 +1,6 @@
 import { Cliente } from "../../cliente/dominio";
 import { Marca } from "../../marca/dominio";
-import { Ubicacion } from "../../ubicaciones/types";
+import { Ubicacion } from "../../ubicaciones/dominio/entity";
 import { Frecuencia } from "../../frecuencia/dominio";
 import { Actividad } from "../../actividad/dominio";
 

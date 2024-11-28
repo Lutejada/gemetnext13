@@ -60,7 +60,7 @@ export default function Programar() {
   const { crear, isLoading, error, errorMsg } = crearProgramacionPatron();
   useEffect(() => {
     obtener();
-  }, []);
+  }, [obtener]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,7 +69,7 @@ export default function Programar() {
   useEffect(() => {
     form.setValue("codigo", patron?.codigo!);
     form.setValue("descripcion", patron?.descripcion!);
-  }, [patron]);
+  }, [form, patron]);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     await crear({
       actividadId: values.actividad,

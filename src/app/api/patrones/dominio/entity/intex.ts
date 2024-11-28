@@ -1,6 +1,6 @@
 import { Cliente } from "@/app/api/cliente/dominio";
 import { Marca } from "@/app/api/marca/dominio";
-import { Ubicacion } from "@/app/api/ubicaciones/types";
+import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 import { DatosComplementariosPatrones, DatosMetrologicosPatrones } from "..";
 
 export class PatronEntity {

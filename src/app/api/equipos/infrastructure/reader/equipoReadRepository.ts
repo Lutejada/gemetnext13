@@ -4,6 +4,31 @@ import { EquipoReadRepository } from "../../dominio/repository/index";
 import { EquipoEntity } from "../../dominio/entity";
 import { PaginationOptions } from "@/app/api/common/types";
 export class EquipoReadRepositoryImp implements EquipoReadRepository {
+  async obtenerPorCodigo(
+    codigo: string,
+    clienteID: string
+  ): Promise<EquipoEntity | null> {
+    const equipo = await prisma.equipo.findUnique({
+      where: {
+        cliente_id: clienteID,
+        codigo: codigo,
+      },
+    });
+    if (!equipo) {
+      return null;
+    }
+
+    return new EquipoEntity({
+      id: equipo.codigo,
+      codigo: equipo.codigo,
+      modelo: equipo.modelo,
+      serie: equipo.serie,
+      fechaInactivacion: equipo.fecha_inactivacion,
+      fechaActualizacion: equipo.fecha_actualizacion,
+      descripcion: equipo.descripcion,
+      fechaCreacion: equipo.fecha_creacion,
+    });
+  }
   async totalEquiposPorTermino(
     clienteId: string,
     termino: string,
