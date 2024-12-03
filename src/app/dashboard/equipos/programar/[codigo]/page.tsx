@@ -3,7 +3,7 @@ import { useRouter, useParams } from "next/navigation";
 import React, { useEffect } from "react";
 import {
   crearProgramacionEquipo,
-  obtenerEquipoPorCodigo,
+  useObtenerEquipoPorCodigo,
 } from "../../../hooks/useEquipo";
 import {
   Form,
@@ -53,7 +53,7 @@ export default function Programar() {
   const router = useRouter();
 
   const { toast } = useToast();
-  const { obtener, equipo } = obtenerEquipoPorCodigo(params.codigo);
+  const { obtener, equipo } = useObtenerEquipoPorCodigo(params.codigo);
   const { actividades } = obtenerActividades();
   const { frecuencias } = obtenerFrecuencias();
   const { crear, isLoading, error, errorMsg } = crearProgramacionEquipo();

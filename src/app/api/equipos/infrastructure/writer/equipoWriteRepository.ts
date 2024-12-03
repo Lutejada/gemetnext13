@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { EquipoWriteRepository } from "../../dominio/repository";
-import { EstadoProgramacion } from "@prisma/client";
+import { EstadoProgramacion, Prisma } from "@prisma/client";
 import { EquipoEntity } from "../../dominio/entity";
 
 export class EquipoWriteRepositoryImp implements EquipoWriteRepository {
@@ -10,6 +10,7 @@ export class EquipoWriteRepositoryImp implements EquipoWriteRepository {
   ): Promise<void> {
     await prisma.equipo.create({
       data: {
+        id: equipo.id,
         cliente_id: clienteId,
         codigo: equipo.codigo,
         descripcion: equipo.descripcion,
@@ -17,6 +18,7 @@ export class EquipoWriteRepositoryImp implements EquipoWriteRepository {
         serie: equipo.serie,
         marca_id: equipo.marca.id,
         ubicacion_id: equipo.ubicacion.id,
+        documentos: equipo.documentos as Prisma.JsonArray,
       },
     });
   }

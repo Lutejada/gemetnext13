@@ -2,6 +2,7 @@ import { Marca } from "@/app/api/marca/dominio";
 import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 import { DatosComplementariosEquipo, DatosMetrologicosEquipos } from "..";
 import { Cliente } from "@/app/api/cliente/dominio";
+import { Documentos } from "@/app/api/common/types";
 
 export class EquipoEntity {
   id: string;
@@ -17,6 +18,7 @@ export class EquipoEntity {
   datosMetrologicos?: DatosMetrologicosEquipos | null;
   datosComplementarios?: DatosComplementariosEquipo | null;
   cliente?: Cliente | null;
+  documentos?: Documentos[];
 
   constructor(attributes: Partial<EquipoEntity> = {}) {
     this.id = attributes.id ?? "Desconocido";
@@ -33,5 +35,6 @@ export class EquipoEntity {
     this.datosMetrologicos = attributes.datosMetrologicos ?? null;
     this.datosComplementarios = attributes.datosComplementarios ?? null;
     this.cliente = attributes.cliente ?? null;
+    this.documentos = attributes.documentos ?? [];
   }
 }

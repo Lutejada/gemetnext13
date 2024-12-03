@@ -34,6 +34,7 @@ model equipo {
   ubicacion_id          String
   cliente_id            String
   cliente               cliente                       @relation(fields: [cliente_id], references: [id])
+  documentos            Json                          @default("[]")
 
   @@index([cliente_id])
 }
@@ -373,7 +374,7 @@ model EjecucionPatrones {
   responsable          responsable          @relation(fields: [ejecutorId], references: [id])
   programacionPatron   ProgramacionPatrones @relation(fields: [programacionPatronId], references: [id])
   programacionPatronId String               @unique @map("programacion_patron_id")
-  documentos           Json                @default("[]")
+  documentos           Json                 @default("[]")
 
   @@index([clienteId, programacionPatronId])
   @@map("ejecucion_patrones")

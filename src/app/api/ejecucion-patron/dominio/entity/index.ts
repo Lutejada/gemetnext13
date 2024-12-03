@@ -1,10 +1,8 @@
 import { Responsable } from "@/app/api/responsables/domain/entity";
 import { Cliente } from "../../../cliente/dominio";
 import { ProgramacionPatrones } from "@/app/api/programacion-patrones/domain/entity";
-export interface Documentos {
-  name?: string;
-  url?: string;
-}
+import { Documentos } from "@/app/api/common/types";
+
 
 export class EjecucionPatron {
   id: string;

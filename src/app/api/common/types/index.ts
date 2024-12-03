@@ -17,3 +17,8 @@ export interface PaginationOptions {
   page: number;
   limit: number;
 }
+
+export interface Documentos {
+  name?: string;
+  url?: string;
+}

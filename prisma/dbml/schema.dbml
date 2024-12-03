@@ -14,6 +14,7 @@ Table equipo {
   fecha_inactivacion DateTime
   ubicacion_id String [not null]
   cliente_id String [not null]
+  documentos Json [not null, default: '[]']
 }
 
 Table responsable {

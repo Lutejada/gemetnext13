@@ -19,7 +19,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearDatosMetrologicos, crearEquipo } from "../../hooks/useEquipo";
+import { crearDatosMetrologicos, useCrearEquipo } from "../../hooks/useEquipo";
 
 const formSchema = z.object({
   codigo: z.string({ description: "codigo requerido" }),
