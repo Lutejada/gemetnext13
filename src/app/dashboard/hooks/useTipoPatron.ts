@@ -2,7 +2,7 @@ import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import { TipoPatron } from "../../api/tipoPatron/dominio";
-import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
+import { CrearPatronDto } from "../../api/patrones/application/dto/crearPatrones";
 import useSWR from "swr";
 import { CrearTipoPatronDto } from "../../api/tipoPatron/dtos/crear";
 

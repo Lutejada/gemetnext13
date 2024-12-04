@@ -1,26 +1,47 @@
 import { NextResponse } from "next/server";
 import { crearPatron } from "../servicios/crearPatron";
 import { errorHandler } from "../../common/errors/error.handler";
-import { validarCrearPatron } from "../dtos/crearPatrones";
-import { queryValuesDTO } from "../../common/types";
-import { obtenerPatrones } from "../servicios/obtenerPatrones";
-import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
+import {
+  CrearPatronDto,
+  validarCrearPatron,
+} from "../application/dto/crearPatrones";
 import { validarEditarBasicos } from "../dtos/editarBasicos.dto";
 import { editarDatosBasicos } from "../servicios/editarDatosBasicos";
 import { auth } from "@/lib/getSession";
-import { PatronRepositoryReadImp } from "../infraestructure/repository/read";
 import { ListarPatronesUseCaseImp } from "../application/use-cases/listarPatrones";
+import { PatronRepositoryReadImp } from "../infraestructure/repository/read/index";
+import { MarcaReadRepositoryImp } from "../../marca/infrastructure/reader/marcaReadRepositoryImp";
+import { UbicacionRepositoryReadImp } from "../../ubicaciones/infrastructure/read/ubicacionRepositoryReadImp";
+import { CrearDatosBasicosUseCaseImp } from "../application/use-cases/write/crearDatosBasicos";
+import { PatronWriteRepositoryImp } from "../infraestructure/repository/write/PatronRepositoryWriteImpl";
 
-const PatronReadRepository = new PatronRepositoryReadImp();
-const listarPatronsUseCase = new ListarPatronesUseCaseImp(PatronReadRepository);
+import { SaveFilesVercel } from "../../common/files/saveFiles";
+import { PatronService } from "../dominio/service";
+import { formDataToDto } from "@/lib/helpers/formData";
 
+const marcaReadRepository = new MarcaReadRepositoryImp();
+const ubicacionReadRepository = new UbicacionRepositoryReadImp();
+const patronReadRepository = new PatronRepositoryReadImp();
+const patronWriteRepositoryImp = new PatronWriteRepositoryImp();
+const patronService = new PatronService(patronReadRepository);
+const listarPatronsUseCase = new ListarPatronesUseCaseImp(patronReadRepository);
+const fileService = new SaveFilesVercel();
+const crearDatosBasicosUseCaseImp = new CrearDatosBasicosUseCaseImp(
+  patronWriteRepositoryImp,
+  patronService,
+  marcaReadRepository,
+  ubicacionReadRepository,
+  fileService
+);
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    validarCrearPatron(body);
+    const formData = await request.formData();
+
+    const dto = formDataToDto<CrearPatronDto>(formData);
+    validarCrearPatron(dto);
     const session = await auth();
-    const patron = await crearPatron(body, session.user.cliente_id);
-    return NextResponse.json({ msg: "patron creado creado", patron });
+    await crearDatosBasicosUseCaseImp.execute(session.user.cliente_id, dto);
+    return NextResponse.json({ msg: "patron creado creado" });
   } catch (error: any) {
     return errorHandler(error);
   }

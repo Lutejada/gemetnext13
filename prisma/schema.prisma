@@ -184,6 +184,7 @@ model patrones {
   cliente                       cliente                         @relation(fields: [cliente_id], references: [id])
   tipo_patron                   tipo_patron                     @relation(fields: [tipo_patron_id], references: [id])
   tipo_patron_id                String
+  documentos                    Json                            @default("[]")
 
   @@index([cliente_id])
 }

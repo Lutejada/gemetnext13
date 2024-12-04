@@ -6,3 +6,7 @@ export interface PatronRepositoryRead {
   totalPatrones(clienteId: string): Promise<number>;
   listarPatrones(clienteId: string, page: number, limit: number): Promise<PatronEntity[]>;
 }
+
+export interface PatronWriteRepository {
+  crearDatosBasicos(clienteId: string, Equipos: PatronEntity): Promise<void>;
+}

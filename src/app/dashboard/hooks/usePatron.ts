@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
-import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
+import { CrearPatronDto } from "../../api/patrones/application/dto/crearPatrones";
 import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";

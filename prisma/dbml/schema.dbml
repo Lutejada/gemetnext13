@@ -117,6 +117,7 @@ Table patrones {
   datos_metrologicos_patronesId String
   cliente_id String [not null]
   tipo_patron_id String [not null]
+  documentos Json [not null, default: '[]']
 }
 
 Table datos_metrologicos_equipos {
