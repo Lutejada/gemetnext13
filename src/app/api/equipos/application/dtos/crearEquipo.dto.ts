@@ -1,4 +1,5 @@
 import { validateFileListSize } from "@/app/api/common/files/filesSize";
+import { transformFileToFiles } from "@/app/api/common/files/transformFiles";
 import { any, object, string } from "zod";
 
 export class CrearEquipoDto {
@@ -22,8 +23,9 @@ export const equipoSchema = object({
     .refine(validateFileListSize, {
       message: "Los archivos no deben pensar mas de 4 MB",
     })
+    .transform(transformFileToFiles)
     .optional(),
 });
 export const validarCrearEquipo = (equipo: CrearEquipoDto) => {
-  equipoSchema.parse(equipo);
+  return equipoSchema.parse(equipo);
 };

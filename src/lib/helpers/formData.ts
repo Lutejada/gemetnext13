@@ -4,7 +4,7 @@ export const createFormData = <T extends Record<string, any>>(
   const formData = new FormData();
 
   for (const [key, value] of Object.entries(data)) {
-    if (key === "archivos") {
+    if (value && key === "archivos") {
       for (const archivo of value) {
         formData.append("archivos", archivo);
       }

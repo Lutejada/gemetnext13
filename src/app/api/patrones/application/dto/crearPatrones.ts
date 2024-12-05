@@ -1,4 +1,5 @@
 import { validateFileListSize } from "@/app/api/common/files/filesSize";
+import { transformFileToFiles } from "@/app/api/common/files/transformFiles";
 import { any, object, string } from "zod";
 
 export interface CrearPatronDto {
@@ -13,7 +14,7 @@ export interface CrearPatronDto {
 }
 
 export const validarCrearPatron = (value: CrearPatronDto) => {
-  object({
+  return object({
     codigo: string({ description: "codigo requerido" }),
     descripcion: string({ description: "descripcion requerido" }),
     modelo: string({ description: "modelo requerido" }),
@@ -25,6 +26,7 @@ export const validarCrearPatron = (value: CrearPatronDto) => {
       .refine(validateFileListSize, {
         message: "Los archivos no deben pensar mas de 4 MB",
       })
+      .transform(transformFileToFiles)
       .optional(),
   }).parse(value);
 };

@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,8 +26,9 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearPatron } from "../../hooks/usePatron";
+import { useCrearPatron } from "../../hooks/usePatron";
 import { ObtenerTipoPatrones } from "../../hooks/useTipoPatron";
+import { validateFileListSize } from "@/app/api/common/files/filesSize";
 
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),
@@ -36,12 +38,18 @@ const formSchema = z.object({
   marcaId: z.string().min(2, { message: "marcaId requerido" }),
   ubicacionId: z.string().min(2, { message: "ubicacionId requerido" }),
   tipoPatronId: z.string().min(2, { message: "tipoPatron requerido" }),
+  archivos: z
+    .any()
+    .refine(validateFileListSize, {
+      message: "Cada archivo no debe pesar mas de 4.5 MB",
+    })
+    .optional(),
 });
 
 export default function CrearPatronesBasicos() {
   const { marcas } = obtenerMarcas();
   const { ubicaciones } = obtenerUbicaciones();
-  const { crear, error, errorMsg, isLoading } = crearPatron();
+  const { crear, error, errorMsg, isLoading } = useCrearPatron();
   const { tipoPatrones } = ObtenerTipoPatrones();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,10 +74,9 @@ export default function CrearPatronesBasicos() {
       marcaId: values.marcaId,
       ubicacionId: values.ubicacionId,
       tipoPatronId: values.tipoPatronId,
+      archivos: values.archivos,
     });
-    form.reset({
-      tipoPatronId: "",
-    });
+    form.reset();
 
     toast({
       title: "Patron se guardo correctamente",
@@ -227,6 +234,31 @@ export default function CrearPatronesBasicos() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="archivos"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel>Archivos</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      multiple
+                      accept=".pdf,.png,.jpg"
+                      className="cursor-pointer"
+                      onChange={(event) => {
+                        onChange(event.target.files);
+                      }}
+                      {...fieldProps}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Seleccione uno o más archivos PDF,JPG,PNG
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

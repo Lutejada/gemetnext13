@@ -75,7 +75,7 @@ function CrearEquiposBasicos() {
       ubicacionId: values.ubicacionId,
       archivos: values.archivos,
     });
-    //form.reset();
+    form.reset();
 
     toast({
       title: "Equipo se guardo correctamente",

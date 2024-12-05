@@ -40,9 +40,12 @@ export async function POST(request: Request) {
     const formData = await request.formData();
 
     const dto = formDataToDto<CrearEquipoDto>(formData);
-    validarCrearEquipo(dto);
+    const dtoTransform = validarCrearEquipo(dto);
     const session = await auth();
-    await crearDatosBasicosUseCase.execute(session.user.cliente_id, dto);
+    await crearDatosBasicosUseCase.execute(
+      session.user.cliente_id,
+      dtoTransform
+    );
     return NextResponse.json({ msg: "equipo creado" });
   } catch (error: any) {
     return errorHandler(error);

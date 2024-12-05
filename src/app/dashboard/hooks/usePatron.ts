@@ -13,10 +13,19 @@ import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDat
 import { CrearProgramacionPatronDto } from "../../api/patrones/dtos/crearProgramation.dto";
 import { PatronInformacionBasicaDTO } from "@/app/api/patrones/application/dto/obtenerPatrones";
 import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
+import { createFormData } from "@/lib/helpers/formData";
 
-export const crearPatron = () => {
-  const fetcher = (url: string, { arg }: { arg: CrearPatronDto }) =>
-    httpBase.post(url, arg).then((res) => res.data);
+export const useCrearPatron = () => {
+  const fetcher = async (url: string, { arg }: { arg: CrearPatronDto }) => {
+    const formData = createFormData(arg);
+    const response = await httpBase.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  };
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/patrones",

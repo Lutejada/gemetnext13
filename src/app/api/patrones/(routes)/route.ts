@@ -38,9 +38,9 @@ export async function POST(request: Request) {
     const formData = await request.formData();
 
     const dto = formDataToDto<CrearPatronDto>(formData);
-    validarCrearPatron(dto);
+    const dtoTransform = validarCrearPatron(dto);
     const session = await auth();
-    await crearDatosBasicosUseCaseImp.execute(session.user.cliente_id, dto);
+    await crearDatosBasicosUseCaseImp.execute(session.user.cliente_id, dtoTransform);
     return NextResponse.json({ msg: "patron creado creado" });
   } catch (error: any) {
     return errorHandler(error);

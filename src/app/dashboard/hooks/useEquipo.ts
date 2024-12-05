@@ -52,7 +52,6 @@ export const useObtenerEquipoPorCodigo = (codigo: string) => {
 export const useCrearEquipo = () => {
   const fetcher = async (url: string, { arg }: { arg: CrearEquipoDto }) => {
     const formData = createFormData(arg);
-    console.log({ formData });
     const response = await httpBase.post(url, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
