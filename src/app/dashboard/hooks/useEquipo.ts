@@ -17,7 +17,7 @@ import { EquipoProgramacionDto } from "@/app/api/programacion-equipos/applicatio
 import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
 import { createFormData } from "@/lib/helpers/formData";
 
-export const listarEquipos = () => {
+export const useListarEquipos = () => {
   const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<

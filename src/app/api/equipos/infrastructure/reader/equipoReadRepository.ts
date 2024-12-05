@@ -87,6 +87,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
               apellido: e.ubicacion.responsable.apellido,
             },
           },
+          documentos: e.documentos as Documentos[],
         })
     );
   }

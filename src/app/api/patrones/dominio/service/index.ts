@@ -1,8 +1,8 @@
 import { PatronYaExiste } from "../errors";
-import { PatronRepositoryRead } from "../repository";
+import { PatronReadRepository } from "../repository";
 
 export class PatronService {
-  constructor(private equipoReadRepository: PatronRepositoryRead) {}
+  constructor(private equipoReadRepository: PatronReadRepository) {}
 
   async obtenerPatronCodigo(clienteId: string, equipoId: string) {
     const equipo = await this.equipoReadRepository.obtenerPorID(

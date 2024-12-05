@@ -7,7 +7,7 @@ import {
 import { CrearProgramacionPatronDto } from "../dto/crearProgramation.dto";
 import { ActividadNoExiste } from "@/app/api/actividad/dominio/errors";
 import { addDays, getYear } from "date-fns";
-import { PatronRepositoryRead } from "../../../patrones/dominio/repository/index";
+import { PatronReadRepository } from "../../../patrones/dominio/repository/index";
 import { PatronNoExiste } from "../../../patrones/dominio/errors";
 import { FrecuenciaRepositoryRead } from "@/app/api/frecuencia/dominio/repository";
 import { FrecuenciaNoExiste } from "@/app/api/frecuencia/dominio/errors";
@@ -16,7 +16,7 @@ export class CrearProgramacionPatrones {
   constructor(
     private programacionRepoWrite: ProgramacionPatronesRepositoryWrite,
     private actividadRepo: ActividadRepositoryRead,
-    private patronRepo: PatronRepositoryRead,
+    private patronRepo: PatronReadRepository,
     private frecuenciaRepo: FrecuenciaRepositoryRead,
     private programacionRepoRead: ProgramacionPatronesRepositoryRead
   ) {}

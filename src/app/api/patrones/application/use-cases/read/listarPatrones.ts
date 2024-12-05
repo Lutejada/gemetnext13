@@ -2,7 +2,7 @@ import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
 import { queryValuesDTO } from "@/app/api/common/types";
 import { PatronInformacionBasicaDTO } from "../../dto/obtenerPatrones";
 import { PatronEntity } from "../../../dominio/entity/intex";
-import { PatronRepositoryRead } from "../../../dominio/repository/index";
+import { PatronReadRepository } from "../../../dominio/repository/index";
 import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 
 interface ListarPatronesUseCase {
@@ -13,7 +13,7 @@ interface ListarPatronesUseCase {
 }
 
 export class ListarPatronesUseCaseImp implements ListarPatronesUseCase {
-  constructor(private patronRepositoryRead: PatronRepositoryRead) {}
+  constructor(private patronRepositoryRead: PatronReadRepository) {}
   async execute(
     clienteId: string,
     queryOpstions: queryValuesDTO

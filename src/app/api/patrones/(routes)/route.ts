@@ -18,6 +18,8 @@ import { PatronWriteRepositoryImp } from "../infraestructure/repository/write/Pa
 import { SaveFilesVercel } from "../../common/files/saveFiles";
 import { PatronService } from "../dominio/service";
 import { formDataToDto } from "@/lib/helpers/formData";
+import { ListarEquipoTerminoUseCaseImp } from "../../equipos/application/use-cases/reader/listarEquiposPorTermino";
+import { ListarPatronTerminoUseCaseImp } from "../application/use-cases/read/listarPatronesPorTermino";
 
 const marcaReadRepository = new MarcaReadRepositoryImp();
 const ubicacionReadRepository = new UbicacionRepositoryReadImp();
@@ -33,6 +35,10 @@ const crearDatosBasicosUseCaseImp = new CrearDatosBasicosUseCaseImp(
   ubicacionReadRepository,
   fileService
 );
+
+const listarPatroneTerminoUseCase = new ListarPatronTerminoUseCaseImp(
+  patronReadRepository
+);
 export async function POST(request: Request) {
   try {
     const formData = await request.formData();
@@ -40,7 +46,10 @@ export async function POST(request: Request) {
     const dto = formDataToDto<CrearPatronDto>(formData);
     const dtoTransform = validarCrearPatron(dto);
     const session = await auth();
-    await crearDatosBasicosUseCaseImp.execute(session.user.cliente_id, dtoTransform);
+    await crearDatosBasicosUseCaseImp.execute(
+      session.user.cliente_id,
+      dtoTransform
+    );
     return NextResponse.json({ msg: "patron creado creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -67,6 +76,19 @@ export async function GET(request: Request) {
     const page = Number(searchParams.get("page") ?? 1);
     const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
+    //validar terminos de busqueda
+    if (termino && valor) {
+      const patronesTermino = await listarPatroneTerminoUseCase.execute(
+        session.user.cliente_id,
+        {
+          limit,
+          page,
+          valor,
+          termino,
+        }
+      );
+      return NextResponse.json(patronesTermino);
+    }
     const patrones = await listarPatronsUseCase.execute(
       session.user.cliente_id,
       {

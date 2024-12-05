@@ -1,5 +1,5 @@
 "use client";
-import { listarEquipos } from "../../hooks/useEquipo";
+import { useListarEquipos } from "../../hooks/useEquipo";
 import { columns } from "./columns";
 import { DataTable } from "@/components/data-table";
 import SearchForm from "@/components/serch-form";
@@ -9,7 +9,7 @@ import { SelectContent, SelectItem } from "@/components/ui/select";
 import { queryValuesDTO } from "@/app/api/common/types";
 export default function ConstultarEquipos() {
   const { obtenerEquipos, equipos, existeSiguientePagina, isLoading, page } =
-    listarEquipos();
+    useListarEquipos();
   useEffect(() => {
     obtenerEquipos();
   }, []);
