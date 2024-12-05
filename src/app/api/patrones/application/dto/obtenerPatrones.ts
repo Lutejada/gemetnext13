@@ -1,3 +1,4 @@
+import { Documentos } from "@/app/api/common/types";
 
 export class PatronInformacionBasicaDTO {
   codigo: string;
@@ -5,4 +6,5 @@ export class PatronInformacionBasicaDTO {
   descripcion: string;
   marca: string;
   responsable: string;
+  documentos?: Documentos[];
 }

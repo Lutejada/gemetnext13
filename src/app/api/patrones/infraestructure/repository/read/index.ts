@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Patron } from "../../../dominio";
 import { PatronRepositoryRead } from "../../../dominio/repository";
 import { PatronEntity } from "../../../dominio/entity/intex";
+import { Documentos } from "@/app/api/common/types";
 
 export class PatronRepositoryReadImp implements PatronRepositoryRead {
   totalPatrones(clienteId: string): Promise<number> {
@@ -51,6 +52,7 @@ export class PatronRepositoryReadImp implements PatronRepositoryRead {
               apellido: e.ubicacion.responsable.apellido,
             },
           },
+          documentos: e.documentos as Documentos[],
         })
     );
   }

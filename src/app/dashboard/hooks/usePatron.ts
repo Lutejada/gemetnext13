@@ -78,7 +78,7 @@ export const crearDatosComplementarios = () => {
   };
 };
 
-export const listarPatrones = () => {
+export const useListarPatrones = () => {
   const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<
@@ -90,6 +90,7 @@ export const listarPatrones = () => {
     isError: error,
     obtenerPatrones: (args?: queryValuesDTO) => trigger(args as undefined),
     existeSiguientePagina: data?.existePaginaSiguiente ?? false,
+    currenPage: data?.pagina ?? 1,
   };
 };
 
