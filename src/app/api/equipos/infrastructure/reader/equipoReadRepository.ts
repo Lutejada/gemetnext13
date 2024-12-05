@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { Equipo, EstadoProgramacion, ProgramacionEquipos } from "../../dominio";
 import { EquipoReadRepository } from "../../dominio/repository/index";
 import { EquipoEntity } from "../../dominio/entity";
-import { PaginationOptions } from "@/app/api/common/types";
+import { Documentos, PaginationOptions } from "@/app/api/common/types";
 export class EquipoReadRepositoryImp implements EquipoReadRepository {
   async obtenerPorCodigo(
     codigo: string,
@@ -140,6 +140,7 @@ export class EquipoReadRepositoryImp implements EquipoReadRepository {
               apellido: e.ubicacion.responsable.apellido,
             },
           },
+          documentos: e.documentos as Documentos[],
         })
     );
   }
