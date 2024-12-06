@@ -46,10 +46,10 @@ const FormSchema = z.object({
   observaciones: z
     .string()
     .min(10, {
-      message: "Bio must be at least 10 characters.",
+      message: "observaciones must be at least 10 characters.",
     })
     .max(160, {
-      message: "Bio must not be longer than 30 characters.",
+      message: "observaciones must not be longer than 30 characters.",
     }),
   archivos: z
     .any()

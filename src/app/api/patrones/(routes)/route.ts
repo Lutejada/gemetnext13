@@ -1,26 +1,56 @@
 import { NextResponse } from "next/server";
 import { crearPatron } from "../servicios/crearPatron";
 import { errorHandler } from "../../common/errors/error.handler";
-import { validarCrearPatron } from "../dtos/crearPatrones";
-import { queryValuesDTO } from "../../common/types";
-import { obtenerPatrones } from "../servicios/obtenerPatrones";
-import { ObtenerPatronesDtoOutput } from "../dtos/obtenerPatrones.dto.output";
+import {
+  CrearPatronDto,
+  validarCrearPatron,
+} from "../application/dto/crearPatrones";
 import { validarEditarBasicos } from "../dtos/editarBasicos.dto";
 import { editarDatosBasicos } from "../servicios/editarDatosBasicos";
 import { auth } from "@/lib/getSession";
-import { PatronRepositoryReadImp } from "../infraestructure/repository/read";
-import { ListarPatronesUseCaseImp } from "../application/use-cases/listarPatrones";
+import { ListarPatronesUseCaseImp } from "../application/use-cases/read/listarPatrones";
+import { PatronRepositoryReadImp } from "../infraestructure/repository/read/index";
+import { MarcaReadRepositoryImp } from "../../marca/infrastructure/reader/marcaReadRepositoryImp";
+import { UbicacionRepositoryReadImp } from "../../ubicaciones/infrastructure/read/ubicacionRepositoryReadImp";
+import { CrearDatosBasicosUseCaseImp } from "../application/use-cases/write/crearDatosBasicos";
+import { PatronWriteRepositoryImp } from "../infraestructure/repository/write/PatronRepositoryWriteImpl";
 
-const PatronReadRepository = new PatronRepositoryReadImp();
-const listarPatronsUseCase = new ListarPatronesUseCaseImp(PatronReadRepository);
+import { SaveFilesVercel } from "../../common/files/saveFiles";
+import { PatronService } from "../dominio/service";
+import { formDataToDto } from "@/lib/helpers/formData";
+import { ListarEquipoTerminoUseCaseImp } from "../../equipos/application/use-cases/reader/listarEquiposPorTermino";
+import { ListarPatronTerminoUseCaseImp } from "../application/use-cases/read/listarPatronesPorTermino";
 
+const marcaReadRepository = new MarcaReadRepositoryImp();
+const ubicacionReadRepository = new UbicacionRepositoryReadImp();
+const patronReadRepository = new PatronRepositoryReadImp();
+const patronWriteRepositoryImp = new PatronWriteRepositoryImp();
+const patronService = new PatronService(patronReadRepository);
+const listarPatronsUseCase = new ListarPatronesUseCaseImp(patronReadRepository);
+const fileService = new SaveFilesVercel();
+const crearDatosBasicosUseCaseImp = new CrearDatosBasicosUseCaseImp(
+  patronWriteRepositoryImp,
+  patronService,
+  marcaReadRepository,
+  ubicacionReadRepository,
+  fileService
+);
+
+const listarPatroneTerminoUseCase = new ListarPatronTerminoUseCaseImp(
+  patronReadRepository
+);
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    validarCrearPatron(body);
+    const formData = await request.formData();
+
+    const dto = formDataToDto<CrearPatronDto>(formData);
+    const dtoTransform = validarCrearPatron(dto);
     const session = await auth();
-    const patron = await crearPatron(body, session.user.cliente_id);
-    return NextResponse.json({ msg: "patron creado creado", patron });
+    await crearDatosBasicosUseCaseImp.execute(
+      session.user.cliente_id,
+      dtoTransform
+    );
+    return NextResponse.json({ msg: "patron creado creado" });
   } catch (error: any) {
     return errorHandler(error);
   }
@@ -46,6 +76,19 @@ export async function GET(request: Request) {
     const page = Number(searchParams.get("page") ?? 1);
     const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
+    //validar terminos de busqueda
+    if (termino && valor) {
+      const patronesTermino = await listarPatroneTerminoUseCase.execute(
+        session.user.cliente_id,
+        {
+          limit,
+          page,
+          valor,
+          termino,
+        }
+      );
+      return NextResponse.json(patronesTermino);
+    }
     const patrones = await listarPatronsUseCase.execute(
       session.user.cliente_id,
       {

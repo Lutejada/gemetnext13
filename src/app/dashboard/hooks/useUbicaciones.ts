@@ -3,7 +3,7 @@ import { crearUbicacionDto } from "../../api/ubicaciones/dtos/crearUbicacion.dto
 import { httpBase } from "../../config/api-base";
 import { AxiosError } from "axios";
 import useSWR from "swr";
-import { Ubicacion } from "../../api/ubicaciones/types";
+import { Ubicacion } from "../../api/ubicaciones/dominio/entity";
 export const crearUbicacion = () => {
   const fetcher = (url: string, { arg }: { arg: crearUbicacionDto }) =>
     httpBase.post(url, arg).then((res) => res.data);

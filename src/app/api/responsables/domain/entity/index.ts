@@ -1,5 +1,5 @@
 import { Cliente } from "@/app/api/cliente/dominio";
-import { Ubicacion } from "@/app/api/ubicaciones/types";
+import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 
 export class Responsable {
   id: string;

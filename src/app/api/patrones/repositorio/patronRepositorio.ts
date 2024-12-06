@@ -5,7 +5,7 @@ import {
   Patron,
   ProgramacionPatrones,
 } from "../dominio";
-import { CrearPatronDto } from "../dtos/crearPatrones";
+import { CrearPatronDto } from "../application/dto/crearPatrones";
 import { PatronRepositorio } from "./index";
 import { CrearDatosMetrologicosDto } from "../dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../dtos/crearDatosComplementarios.dto";

@@ -1,4 +1,4 @@
-import { Ubicacion } from "../types";
+import { Ubicacion } from "../dominio/entity";
 import { crearUbicacionDto } from "../dtos/crearUbicacion.dto";
 
 export interface UbicacionRepositorio {

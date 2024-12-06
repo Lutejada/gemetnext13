@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../../common/errors/error.handler";
-import { validarCrearEquipo } from "../application/dtos/crearEquipo.dto";
+import {
+  CrearEquipoDto,
+  validarCrearEquipo,
+} from "../application/dtos/crearEquipo.dto";
 import { crearEquipo } from "../application/servicios/crearEquipo";
 import { validarEditarEquipo } from "../application/dtos/editarEquipo.dto";
 import { editarEquipo } from "../application/servicios/editarEquipo";
@@ -8,18 +11,42 @@ import { auth } from "@/lib/getSession";
 import { ListarEquiposUseCaseImp } from "../application/use-cases/reader/listarEquipos";
 import { EquipoReadRepositoryImp } from "../infrastructure/reader/equipoReadRepository";
 import { ListarEquipoTerminoUseCaseImp } from "../application/use-cases/reader/listarEquiposPorTermino";
-const EquipoReadRepository = new EquipoReadRepositoryImp();
-const listarEquiposUseCase = new ListarEquiposUseCaseImp(EquipoReadRepository);
+import { CrearDatosBasicosUseCaseImp } from "../application/use-cases/writer/crearDatosBasicos";
+import { EquipoWriteRepositoryImp } from "../infrastructure/writer/equipoWriteRepository";
+import { MarcaReadRepositoryImp } from "../../marca/infrastructure/reader/marcaReadRepositoryImp";
+import { UbicacionRepositoryReadImp } from "../../ubicaciones/infrastructure/read/ubicacionRepositoryReadImp";
+import { EquipoService } from "../dominio/service";
+import { formDataToDto } from "@/lib/helpers/formData";
+import { SaveFilesVercel } from "../../common/files/saveFiles";
+const equipoReadRepository = new EquipoReadRepositoryImp();
+const equipoWriteRepository = new EquipoWriteRepositoryImp();
+const marcaReadRepository = new MarcaReadRepositoryImp();
+const ubicacionReadRepository = new UbicacionRepositoryReadImp();
+const listarEquiposUseCase = new ListarEquiposUseCaseImp(equipoReadRepository);
+const equipoService = new EquipoService(equipoReadRepository);
+const fileService = new SaveFilesVercel();
+const crearDatosBasicosUseCase = new CrearDatosBasicosUseCaseImp(
+  equipoWriteRepository,
+  equipoService,
+  marcaReadRepository,
+  ubicacionReadRepository,
+  fileService
+);
 const listarEquipoTerminoUseCase = new ListarEquipoTerminoUseCaseImp(
-  EquipoReadRepository
+  equipoReadRepository
 );
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
-    validarCrearEquipo(body);
+    const formData = await request.formData();
+
+    const dto = formDataToDto<CrearEquipoDto>(formData);
+    const dtoTransform = validarCrearEquipo(dto);
     const session = await auth();
-    const equipo = await crearEquipo(body, session.user.cliente_id);
-    return NextResponse.json({ msg: "equipo creado", equipo });
+    await crearDatosBasicosUseCase.execute(
+      session.user.cliente_id,
+      dtoTransform
+    );
+    return NextResponse.json({ msg: "equipo creado" });
   } catch (error: any) {
     return errorHandler(error);
   }

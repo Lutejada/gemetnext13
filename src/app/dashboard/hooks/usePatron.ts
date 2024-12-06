@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
-import { CrearPatronDto } from "../../api/patrones/dtos/crearPatrones";
+import { CrearPatronDto } from "../../api/patrones/application/dto/crearPatrones";
 import { Patron } from "../../api/patrones/dominio";
 import { CrearDatosMetrologicosDto } from "../../api/patrones/dtos/crearDatosMetrologicos";
 import { CrearDatosComplementariosDto } from "../../api/patrones/dtos/crearDatosComplementarios.dto";
@@ -13,10 +13,19 @@ import { EditarDatosComplementariosDto } from "@/app/api/patrones/dtos/editarDat
 import { CrearProgramacionPatronDto } from "../../api/patrones/dtos/crearProgramation.dto";
 import { PatronInformacionBasicaDTO } from "@/app/api/patrones/application/dto/obtenerPatrones";
 import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
+import { createFormData } from "@/lib/helpers/formData";
 
-export const crearPatron = () => {
-  const fetcher = (url: string, { arg }: { arg: CrearPatronDto }) =>
-    httpBase.post(url, arg).then((res) => res.data);
+export const useCrearPatron = () => {
+  const fetcher = async (url: string, { arg }: { arg: CrearPatronDto }) => {
+    const formData = createFormData(arg);
+    const response = await httpBase.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  };
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/patrones",
@@ -69,7 +78,7 @@ export const crearDatosComplementarios = () => {
   };
 };
 
-export const listarPatrones = () => {
+export const useListarPatrones = () => {
   const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<
@@ -81,6 +90,7 @@ export const listarPatrones = () => {
     isError: error,
     obtenerPatrones: (args?: queryValuesDTO) => trigger(args as undefined),
     existeSiguientePagina: data?.existePaginaSiguiente ?? false,
+    currenPage: data?.pagina ?? 1,
   };
 };
 

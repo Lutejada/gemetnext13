@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +26,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
 import { obtenerMarcas } from "../../hooks/useMarca";
-import { crearEquipo } from "../../hooks/useEquipo";
+import { useCrearEquipo } from "../../hooks/useEquipo";
+import { validateFileListSize } from "@/app/api/common/files/filesSize";
 
 const formSchema = z.object({
   codigo: z.string().min(2, { message: "codigo requerido" }),
@@ -34,29 +36,36 @@ const formSchema = z.object({
   serie: z.string().min(2, { message: "serie requerido" }),
   marcaId: z.string().min(2, { message: "marcaId requerido" }),
   ubicacionId: z.string().min(2, { message: "ubicacionId requerido" }),
+  archivos: z
+    .any()
+    .refine(validateFileListSize, {
+      message: "Cada archivo no debe pesar mas de 4.5 MB",
+    })
+    .optional(),
 });
 
 function CrearEquiposBasicos() {
   const { marcas } = obtenerMarcas();
   const { ubicaciones } = obtenerUbicaciones();
-  const { crear, error, errorMsg, isLoading } = crearEquipo();
+  const { crear, error, errorMsg, isLoading } = useCrearEquipo();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      codigo:'',
-      descripcion:'',
-      marcaId:'',
-      modelo:'',
-      serie:'',
-      ubicacionId:'',
+      codigo: "",
+      descripcion: "",
+      marcaId: "",
+      modelo: "",
+      serie: "",
+      ubicacionId: "",
+      archivos: undefined,
     },
   });
-
 
   const { toast } = useToast();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log({ values });
     await crear({
       codigo: values.codigo,
       descripcion: values.descripcion,
@@ -64,8 +73,10 @@ function CrearEquiposBasicos() {
       serie: values.serie,
       marcaId: values.marcaId,
       ubicacionId: values.ubicacionId,
+      archivos: values.archivos,
     });
     form.reset();
+
     toast({
       title: "Equipo se guardo correctamente",
       variant: "success",
@@ -83,10 +94,7 @@ function CrearEquiposBasicos() {
                 <FormItem>
                   <FormLabel>Codigo</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Ingrese nombre del Codigo"
-                      {...field}
-                    />
+                    <Input placeholder="Ingrese nombre del Codigo" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -144,10 +152,7 @@ function CrearEquiposBasicos() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Marca</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione un Descripcion" />
@@ -173,10 +178,7 @@ function CrearEquiposBasicos() {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Ubicacion</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    value={field.value}
-                  >
+                  <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Seleccione una Ubicacion" />
@@ -192,6 +194,32 @@ function CrearEquiposBasicos() {
                       ))}
                     </SelectContent>
                   </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="archivos"
+              render={({ field: { value, onChange, ...fieldProps } }) => (
+                <FormItem>
+                  <FormLabel>Archivos</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="file"
+                      multiple
+                      accept=".pdf,.png,.jpg"
+                      className="cursor-pointer"
+                      onChange={(event) => {
+                        onChange(event.target.files);
+                      }}
+                      {...fieldProps}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Seleccione uno o más archivos PDF,JPG,PNG
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

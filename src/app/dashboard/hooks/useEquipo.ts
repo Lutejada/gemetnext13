@@ -11,15 +11,13 @@ import { EditarEquipoDto } from "../../api/equipos/application/dtos/editarEquipo
 import { EditarDatosMetrologicosDto } from "@/app/api/equipos/application/dtos/editarDatosMetrologicos.dto";
 import { EditarDatosComplementariosDto } from "@/app/api/equipos/application/dtos/editarDatosComplementarios.dto";
 
-import {
-  EquipoInformacionBasicaDTO,
-  ObtenerEquiposDtoOutput,
-} from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
+import { EquipoInformacionBasicaDTO } from "../../api/equipos/application/dtos/obtenerEquipos.dto.output";
 import { queryValuesDTO } from "@/app/api/common/types";
 import { EquipoProgramacionDto } from "@/app/api/programacion-equipos/application/dto/listadoPatronesProgramados.dto";
 import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
+import { createFormData } from "@/lib/helpers/formData";
 
-export const listarEquipos = () => {
+export const useListarEquipos = () => {
   const fetcher = (url: string, { arg }: { arg?: queryValuesDTO }) =>
     httpBase.get(url, { params: arg }).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<
@@ -36,7 +34,7 @@ export const listarEquipos = () => {
   };
 };
 
-export const obtenerEquipoPorCodigo = (codigo: string) => {
+export const useObtenerEquipoPorCodigo = (codigo: string) => {
   const fetcher = (url: string) =>
     httpBase.get<Equipo>(url).then((res) => res.data);
   const { data, error, isMutating, trigger } = useSWRMutation<Equipo>(
@@ -51,14 +49,23 @@ export const obtenerEquipoPorCodigo = (codigo: string) => {
   };
 };
 
-export const crearEquipo = () => {
-  const fetcher = (url: string, { arg }: { arg: CrearEquipoDto }) =>
-    httpBase.post(url, arg).then((res) => res.data);
+export const useCrearEquipo = () => {
+  const fetcher = async (url: string, { arg }: { arg: CrearEquipoDto }) => {
+    const formData = createFormData(arg);
+    const response = await httpBase.post(url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    return response.data;
+  };
 
   const { data, error, trigger, isMutating } = useSWRMutation(
     "/equipos",
     fetcher
   );
+
   return {
     isLoading: isMutating,
     equipo: data,
@@ -67,6 +74,7 @@ export const crearEquipo = () => {
     errorMsg: error?.response?.data?.error,
   };
 };
+
 export const editarEquipo = () => {
   const fetcher = (url: string, { arg }: { arg: EditarEquipoDto }) =>
     httpBase.put(url, arg).then((res) => res.data);

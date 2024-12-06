@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { UbicacionRepositorio } from ".";
 import { crearUbicacionDto } from "../dtos/crearUbicacion.dto";
-import { Ubicacion } from "../types";
+import { Ubicacion } from "../dominio/entity";
 import { prisma } from "@/src/lib/prisma";
 
 const crearUbicacion = async (

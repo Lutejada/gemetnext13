@@ -1,7 +1,8 @@
 import { Marca } from "@/app/api/marca/dominio";
-import { Ubicacion } from "@/app/api/ubicaciones/types";
+import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 import { DatosComplementariosEquipo, DatosMetrologicosEquipos } from "..";
 import { Cliente } from "@/app/api/cliente/dominio";
+import { Documentos } from "@/app/api/common/types";
 
 export class EquipoEntity {
   id: string;
@@ -11,13 +12,13 @@ export class EquipoEntity {
   serie: string;
   marca: Marca;
   ubicacion: Ubicacion;
-  clienteId: string;
   fechaCreacion: Date | string;
   fechaActualizacion: Date | string;
   fechaInactivacion?: Date | string | null;
   datosMetrologicos?: DatosMetrologicosEquipos | null;
   datosComplementarios?: DatosComplementariosEquipo | null;
   cliente?: Cliente | null;
+  documentos?: Documentos[];
 
   constructor(attributes: Partial<EquipoEntity> = {}) {
     this.id = attributes.id ?? "Desconocido";
@@ -27,7 +28,6 @@ export class EquipoEntity {
     this.serie = attributes.serie ?? "Desconocido";
     this.marca = attributes.marca ?? new Marca();
     this.ubicacion = attributes.ubicacion ?? new Ubicacion();
-    this.clienteId = attributes.clienteId ?? "Desconocido";
     this.fechaCreacion = attributes.fechaCreacion ?? new Date().toISOString();
     this.fechaActualizacion =
       attributes.fechaActualizacion ?? new Date().toISOString();
@@ -35,5 +35,6 @@ export class EquipoEntity {
     this.datosMetrologicos = attributes.datosMetrologicos ?? null;
     this.datosComplementarios = attributes.datosComplementarios ?? null;
     this.cliente = attributes.cliente ?? null;
+    this.documentos = attributes.documentos ?? [];
   }
 }

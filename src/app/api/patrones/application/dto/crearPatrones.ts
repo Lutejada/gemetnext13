@@ -1,4 +1,6 @@
-import { object, string } from "zod";
+import { validateFileListSize } from "@/app/api/common/files/filesSize";
+import { transformFileToFiles } from "@/app/api/common/files/transformFiles";
+import { any, object, string } from "zod";
 
 export interface CrearPatronDto {
   codigo: string;
@@ -8,10 +10,11 @@ export interface CrearPatronDto {
   marcaId: string;
   ubicacionId: string;
   tipoPatronId: string;
+  archivos?: File[];
 }
 
 export const validarCrearPatron = (value: CrearPatronDto) => {
-  object({
+  return object({
     codigo: string({ description: "codigo requerido" }),
     descripcion: string({ description: "descripcion requerido" }),
     modelo: string({ description: "modelo requerido" }),
@@ -19,5 +22,11 @@ export const validarCrearPatron = (value: CrearPatronDto) => {
     marcaId: string({ description: "marca_id requerido" }),
     ubicacionId: string({ description: "ubicacionId requerido" }),
     tipoPatronId: string({ description: "tipoPatronId requerido" }),
+    archivos: any()
+      .refine(validateFileListSize, {
+        message: "Los archivos no deben pensar mas de 4 MB",
+      })
+      .transform(transformFileToFiles)
+      .optional(),
   }).parse(value);
 };

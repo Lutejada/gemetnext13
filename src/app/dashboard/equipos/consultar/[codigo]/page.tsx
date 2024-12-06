@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { obtenerEquipoPorCodigo } from "../../../hooks/useEquipo";
+import { useObtenerEquipoPorCodigo } from "../../../hooks/useEquipo";
 import { useParams } from "next/navigation";
 import EditarEquiposBasicos from "./basicos";
 import { useEffect } from "react";
@@ -10,7 +10,7 @@ import EditarDatosmetrologicos from "./metrologicos";
 import EditarDatosComplementarios from "./complementarios";
 export default function Equipo() {
   const params = useParams<{ codigo: string }>();
-  const { obtener, equipo, isLoading } = obtenerEquipoPorCodigo(params.codigo);
+  const { obtener, equipo, isLoading } = useObtenerEquipoPorCodigo(params.codigo);
   useEffect(() => {
     obtener();
   }, []);

@@ -3,7 +3,7 @@ import { queryValuesDTO, SearchValuesDTO } from "@/app/api/common/types";
 import { EquipoInformacionBasicaDTO } from "../../dtos/obtenerEquipos.dto.output";
 import { EquipoReadRepository } from "../../../dominio/repository/index";
 import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
-import { TerminoDeBusquedaNoExiste } from "../../../dominio/errors";
+import { TerminoDeBusquedaNoExiste } from "@/app/api/common/errors/search";
 
 interface ListarEquipoTerminoUseCase {
   execute(

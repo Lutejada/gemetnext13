@@ -1,8 +1,8 @@
 import { ResponseListadoPaginado } from "@/app/api/common/dto/listadoPaginado";
 import { queryValuesDTO } from "@/app/api/common/types";
-import { PatronInformacionBasicaDTO } from "../dto/obtenerPatrones";
-import { PatronEntity } from "../../dominio/entity/intex";
-import { PatronRepositoryRead } from "../../dominio/repository/index";
+import { PatronInformacionBasicaDTO } from "../../dto/obtenerPatrones";
+import { PatronEntity } from "../../../dominio/entity/intex";
+import { PatronReadRepository } from "../../../dominio/repository/index";
 import { calcularPagina, paginaSiguienteExiste } from "@/lib/pagination";
 
 interface ListarPatronesUseCase {
@@ -13,12 +13,12 @@ interface ListarPatronesUseCase {
 }
 
 export class ListarPatronesUseCaseImp implements ListarPatronesUseCase {
-  constructor(private patronRepositoryRead: PatronRepositoryRead) {}
+  constructor(private patronRepositoryRead: PatronReadRepository) {}
   async execute(
     clienteId: string,
     queryOpstions: queryValuesDTO
   ): Promise<ResponseListadoPaginado<PatronInformacionBasicaDTO>> {
-    const { limit = 5, page, termino, valor } = queryOpstions;
+    const { limit = 5, page } = queryOpstions;
     const { porPagina, skip } = calcularPagina(page, limit);
 
     const total = await this.patronRepositoryRead.totalPatrones(clienteId);
@@ -48,6 +48,7 @@ export class ListarPatronesUseCaseImp implements ListarPatronesUseCase {
       marca: e.marca.descripcion,
       responsable:
         e.ubicacion.responsable.nombre + " " + e.ubicacion.responsable.apellido,
+      documentos: e.documentos,
     }));
   }
 }

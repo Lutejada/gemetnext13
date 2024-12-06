@@ -1,3 +1,4 @@
+import { Documentos } from "@/app/api/common/types";
 import { EquipoEntity } from "../../dominio/entity/index";
 export interface ObtenerEquiposDtoOutput {
   equipos: EquipoInformacionBasicaDTO[];
@@ -10,6 +11,7 @@ export class EquipoInformacionBasicaDTO {
   descripcion: string;
   marca: string;
   responsable: string;
+  documentos?: Documentos[];
 
   static converToDTO(equipos: EquipoEntity[]): EquipoInformacionBasicaDTO[] {
     return equipos.map((e) => ({
@@ -19,6 +21,7 @@ export class EquipoInformacionBasicaDTO {
       marca: e.marca.descripcion,
       responsable:
         e.ubicacion.responsable.nombre + " " + e.ubicacion.responsable.apellido,
+      documentos:e.documentos,  
     }));
   }
 }

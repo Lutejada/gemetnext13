@@ -1,4 +1,4 @@
-import { CrearPatronDto } from "../dtos/crearPatrones";
+import { CrearPatronDto } from "../application/dto/crearPatrones";
 import { PatronYaExiste } from "../dominio/errors";
 import { patronRepositorio } from "../repositorio/patronRepositorio";
 import { obtenerPorCodigo } from "./ObtenerPorCodigo";

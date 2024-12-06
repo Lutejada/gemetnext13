@@ -1,7 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { obtenerEquipoPorCodigo } from "../../../hooks/useEquipo";
+import { useObtenerEquipoPorCodigo } from "../../../hooks/useEquipo";
 import { useParams } from "next/navigation";
 import EditarPatronesBasicos from "./basicos";
 import { useEffect } from "react";

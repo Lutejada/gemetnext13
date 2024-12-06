@@ -1,9 +1,72 @@
 import { prisma } from "@/lib/prisma";
 import { Patron } from "../../../dominio";
-import { PatronRepositoryRead } from "../../../dominio/repository";
+import { PatronReadRepository } from "../../../dominio/repository";
 import { PatronEntity } from "../../../dominio/entity/intex";
+import { Documentos, PaginationOptions } from "@/app/api/common/types";
 
-export class PatronRepositoryReadImp implements PatronRepositoryRead {
+export class PatronRepositoryReadImp implements PatronReadRepository {
+  async obtenerPatronesPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string,
+    paginationOptions: PaginationOptions
+  ): Promise<PatronEntity[]> {
+    const res = await prisma.patrones.findMany({
+      skip: paginationOptions.page,
+      take: paginationOptions.limit,
+      where: {
+        [termino]: {
+          contains: valor,
+        },
+        cliente_id: clienteId,
+      },
+      include: {
+        marca: true,
+        ubicacion: {
+          include: {
+            responsable: true,
+          },
+        },
+      },
+    });
+
+    return res.map(
+      (e) =>
+        new PatronEntity({
+          id: e.id,
+          codigo: e.codigo,
+          descripcion: e.descripcion,
+          modelo: e.modelo,
+          fechaCreacion: e.fecha_creacion,
+          serie: e.serie,
+          marca: e.marca,
+          ubicacion: {
+            ...e.ubicacion,
+            responsable: {
+              ...e.ubicacion.responsable,
+              identificacion: e.ubicacion.responsable.identificacion,
+              nombre: e.ubicacion.responsable.nombre,
+              apellido: e.ubicacion.responsable.apellido,
+            },
+          },
+          documentos: e.documentos as Documentos[],
+        })
+    );
+  }
+  async totalPatronesPorTermino(
+    clienteId: string,
+    termino: string,
+    valor: string
+  ): Promise<number> {
+    return prisma.patrones.count({
+      where: {
+        cliente_id: clienteId,
+        [termino]: {
+          contains: valor,
+        },
+      },
+    });
+  }
   totalPatrones(clienteId: string): Promise<number> {
     return prisma.patrones.count({
       where: {
@@ -51,6 +114,7 @@ export class PatronRepositoryReadImp implements PatronRepositoryRead {
               apellido: e.ubicacion.responsable.apellido,
             },
           },
+          documentos: e.documentos as Documentos[],
         })
     );
   }

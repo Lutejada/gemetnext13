@@ -10,18 +10,16 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Equipo } from "@/src/app/api/equipos/dominio";
 import Link from "next/link";
-import { EquipoInformacionBasicaDTO } from "@/app/api/equipos/application/dtos/obtenerEquipos.dto.output";
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
+import { SubMenuDocuments } from "../../components/SubMenuDocuments";
+import { PatronInformacionBasicaDTO } from "@/app/api/patrones/application/dto/obtenerPatrones";
 
-export const columns: ColumnDef<EquipoInformacionBasicaDTO>[] = [
+export const columns: ColumnDef<PatronInformacionBasicaDTO>[] = [
   {
     accessorKey: "codigo",
     header: "codigo",
   },
-  { 
+  {
     accessorKey: "descripcion",
     header: "descripcion",
   },
@@ -36,6 +34,7 @@ export const columns: ColumnDef<EquipoInformacionBasicaDTO>[] = [
   {
     id: "actions",
     cell: ({ row }) => {
+      const documentos = row.original?.documentos;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -49,9 +48,12 @@ export const columns: ColumnDef<EquipoInformacionBasicaDTO>[] = [
             >
               <DropdownMenuItem>Programar</DropdownMenuItem>
             </Link>
-            <Link href={`/dashboard/patrones/consultar/${row.getValue("codigo")}`}>
+            <Link
+              href={`/dashboard/patrones/consultar/${row.getValue("codigo")}`}
+            >
               <DropdownMenuItem>Ver Patron</DropdownMenuItem>
             </Link>
+            <SubMenuDocuments documentos={documentos ?? []} />
           </DropdownMenuContent>
         </DropdownMenu>
       );
