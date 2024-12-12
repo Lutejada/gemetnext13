@@ -323,6 +323,25 @@ model ProgramacionPatrones {
   @@map("programacion_patrones")
 }
 
+enum TipoIdentificacion {
+  NIT
+}
+
+model Proveedor {
+  id                   String             @id @default(uuid())
+  nombre               String
+  tipoIdetificacion    TipoIdentificacion @default(NIT)
+  numeroIdentificacion String             @unique
+  direccion            String
+  telefono             Int
+  email                String
+  cliente              cliente            @relation(fields: [clienteId], references: [id])
+  clienteId            String
+
+  @@index([clienteId, numeroIdentificacion])
+  @@map("proveedor")
+}
+
 model cliente {
   id                             String                           @id @default(uuid())
   nombre                         String                           @unique
@@ -345,6 +364,7 @@ model cliente {
   programacion_patrones          ProgramacionPatrones[]
   EjecucionEquipos               EjecucionEquipos[]
   EjecucionPatrones              EjecucionPatrones[]
+  Proveedor                      Proveedor[]
 }
 
 model EjecucionEquipos {
