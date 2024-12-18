@@ -1,4 +1,3 @@
-import { validateFileListSize } from "@/app/api/common/files/filesSize";
 import * as z from "zod";
 import { Identificacion } from "../../dominio/entity";
 
@@ -7,7 +6,7 @@ export interface CrearProveedorDTO {
   tipoIdetificacion: Identificacion;
   numeroIdentificacion: string;
   direccion: string;
-  telefono: number;
+  telefono: string;
   email: string;
 }
 
@@ -16,7 +15,7 @@ export const schema = z.object({
   tipoIdetificacion: z.enum(["NIT"]),
   numeroIdentificacion: z.string(),
   direccion: z.string(),
-  telefono: z.number(),
+  telefono: z.string(),
   email: z.string().email(),
 });
 export const validarCrearProveedor = (proveedor: CrearProveedorDTO) => {

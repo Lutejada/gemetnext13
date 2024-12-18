@@ -4,7 +4,7 @@ export class ListarProveedoresDTO {
   nombre: string;
   tipoIdentificacion: Identificacion;
   numeroIdentificacion: string;
-  telefono: number;
+  telefono: string;
   email: string;
 
   static entityToDto(proveedor: Proveedor): ListarProveedoresDTO {

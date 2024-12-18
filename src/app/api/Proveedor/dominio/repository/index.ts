@@ -1,4 +1,4 @@
-import { Proveedor } from "../../dominio/entity";
+import { Proveedor } from "../entity";
 
 export interface ProveedorReadRepository {
   listarProveedores(clienteId: string): Promise<Proveedor[]>;

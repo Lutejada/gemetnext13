@@ -18,7 +18,6 @@ import { AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
 import { crearMarca, editarMarca } from "../../hooks/useMarca";
 import { Marca } from "@/app/api/marca/dominio";
-import { useState } from "react";
 
 const formSchema = z.object({
   descripcion: z

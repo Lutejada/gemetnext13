@@ -13,9 +13,9 @@ export class ProveedorReadRepositoryImp implements ProveedorReadRepository {
       nombre: proveedorPrisma.nombre,
       tipoIdetificacion: proveedorPrisma.tipoIdetificacion as Identificacion,
       numeroIdentificacion: proveedorPrisma.numeroIdentificacion,
-      direccion: proveedorPrisma.direccion,
-      telefono: proveedorPrisma.telefono,
-      email: proveedorPrisma.email,
+      direccion: proveedorPrisma.direccion ?? undefined,
+      telefono: proveedorPrisma.telefono ?? undefined,
+      email: proveedorPrisma.email ?? undefined,
       cliente: { id: clienteId, nombre: "" },
     });
   }

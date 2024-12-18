@@ -104,6 +104,10 @@ export const routes: Route[] = [
         title: "Tipo Patron",
         url: "/tipoPatron",
       },
+      {
+        title: "Proveedores",
+        url: "/proveedor",
+      },
     ],
   },
 ];

@@ -4,7 +4,7 @@ import { ProveedorWriteRepository } from "../../dominio/repository";
 
 export class ProveedorWriteRepositoryImp implements ProveedorWriteRepository {
   async crear(proveedor: Proveedor): Promise<void> {
-    prisma.proveedor.create({
+    await prisma.proveedor.create({
       data: {
         nombre: proveedor.nombre,
         direccion: proveedor.direccion,
