@@ -3,6 +3,22 @@ import { Proveedor } from "../../dominio/entity";
 import { ProveedorWriteRepository } from "../../dominio/repository";
 
 export class ProveedorWriteRepositoryImp implements ProveedorWriteRepository {
+  async editar(proveedor: Proveedor): Promise<void> {
+    await prisma.proveedor.update({
+      where: {
+        clienteId: proveedor.cliente.id,
+        id: proveedor.id,
+      },
+      data: {
+        direccion: proveedor.direccion,
+        email: proveedor.email,
+        nombre: proveedor.nombre,
+        numeroIdentificacion: proveedor.numeroIdentificacion,
+        telefono: proveedor.telefono,
+        tipoIdetificacion: proveedor.tipoIdetificacion,
+      },
+    });
+  }
   async crear(proveedor: Proveedor): Promise<void> {
     await prisma.proveedor.create({
       data: {

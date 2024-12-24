@@ -6,6 +6,8 @@ import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
 import { EditarMarcaDto } from "@/app/api/marca/dtos/editarMarcadto";
 import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
 import { CrearProveedorDTO } from "@/app/api/proveedor/application/dto/crearProveedorDto";
+import { EditarProveedorDTO } from "../../api/proveedor/application/dto/editarProveedorDTO";
+import Proveedor from "../configuracion/proveedor/page";
 
 export const useListadoProvedores = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
@@ -54,6 +56,23 @@ export const useCrearProveedor = () => {
     isLoading: isMutating,
     marca: data,
     crear: trigger,
+    error: error as AxiosError,
+    errorMsg: error?.response?.data?.error,
+  };
+};
+export const useEditarProveedor = () => {
+  const fetcher = (url: string, { arg }: { arg: EditarProveedorDTO }) =>
+    httpBase.put(url, arg).then((res) => res.data);
+
+  const { data, error, trigger, isMutating } = useSWRMutation(
+    "/proveedor",
+    fetcher
+  );
+
+  return {
+    isLoading: isMutating,
+    proveedor: data,
+    editar: trigger,
     error: error as AxiosError,
     errorMsg: error?.response?.data?.error,
   };

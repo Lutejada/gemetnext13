@@ -9,8 +9,14 @@ import { DialogWrapper } from "@/components/dialogWrapper";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { ProveedorForm } from "./form";
+import { useEditarProveedor } from "../../hooks/useProveedor";
+import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
-export const DropDownMenuProveedor = () => {
+interface Props {
+  proveedorDto: EditarProveedorDTO;
+}
+
+export const DropDownMenuProveedor = ({ proveedorDto }: Props) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isClickOpenModal, setIsClickOpenModal] = useState(false);
   const clickOpenModal = () => {
@@ -46,7 +52,11 @@ export const DropDownMenuProveedor = () => {
         title="Crear Proveedor"
         description="Ingresa la informacion solicitada"
       >
-        <ProveedorForm closeModal={closeModal} />
+        <ProveedorForm
+          closeModal={closeModal}
+          isEditing
+          proveedorDto={proveedorDto}
+        />
       </DialogWrapper>
     </>
   );

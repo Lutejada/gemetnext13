@@ -1,5 +1,5 @@
 import { Proveedor } from "../entity/index";
-import { ProveedorExiste } from "../errors";
+import { ProveedorExiste, ProveedorNoExiste } from "../errors";
 import {
   ProveedorWriteRepository,
   ProveedorReadRepository,
@@ -35,5 +35,17 @@ export class ProveedorService {
     }
 
     await this.proveedorWriteRepository.crear(proveedor);
+  }
+
+  async editar(proveedor: Proveedor) {
+    const proveedorEncontrado = await this.obtenerPorId(
+      proveedor.id,
+      proveedor.cliente.id
+    );
+
+    if (!proveedorEncontrado) {
+      throw new ProveedorNoExiste();
+    }
+    await this.proveedorWriteRepository.editar(proveedor);
   }
 }

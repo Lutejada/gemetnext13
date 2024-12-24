@@ -11,4 +11,5 @@ export interface ProveedorReadRepository {
 }
 export interface ProveedorWriteRepository {
   crear(proveedor: Proveedor): Promise<void>;
+  editar(proveedor: Proveedor): Promise<void>;
 }

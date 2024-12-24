@@ -23,9 +23,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCrearProveedor } from "../../hooks/useProveedor";
+import {
+  useCrearProveedor,
+  useEditarProveedor,
+} from "../../hooks/useProveedor";
 import { Identificacion } from "@/app/api/proveedor/dominio/entity";
 import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
+import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
 const formSchema = z.object({
   nombre: z.string(),
@@ -38,7 +42,7 @@ const formSchema = z.object({
 
 interface Props {
   isEditing?: boolean;
-  proveedorDto?: ListarProveedoresDTO;
+  proveedorDto?: EditarProveedorDTO;
   closeModal?: () => void;
 }
 
@@ -47,16 +51,17 @@ export function ProveedorForm({
   proveedorDto,
   closeModal,
 }: Props) {
+  console.log({ proveedorDto });
   const labelform = isEditing ? "Editar Proveedor" : "Crear Proveedor";
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      direccion: "",
-      email: "",
-      nombre: "",
-      numeroIdentificacion: "",
-      telefono: "",
-      tipoIdetificacion: "" as Identificacion,
+      direccion: proveedorDto?.direccion ?? "",
+      email: proveedorDto?.email ?? "",
+      nombre: proveedorDto?.nombre ?? "",
+      numeroIdentificacion: proveedorDto?.numeroIdentificacion ?? "",
+      telefono: proveedorDto?.telefono ?? "",
+      tipoIdetificacion: proveedorDto?.tipoIdetificacion as Identificacion ?? "",
     },
   });
 
@@ -64,16 +69,26 @@ export function ProveedorForm({
   const {
     crear,
     error,
-    errorMsg,
+    errorMsg: errorMsgCreated,
     isLoading: isLoadingCreated,
   } = useCrearProveedor();
-  // const { editar, isLoading: isLoadingEdit } = editarMarca();
-  const isLoadingEdit = false;
+  const {
+    editar,
+    isLoading: isLoadingEdit,
+    errorMsg: erroMsgEdit,
+  } = useEditarProveedor();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (isEditing) {
-      //await editar();
+      await editar({
+        id: proveedorDto?.id ?? "",
+        direccion: values.direccion,
+        email: values.email,
+        nombre: values.nombre,
+        numeroIdentificacion: values.numeroIdentificacion,
+        telefono: values.telefono,
+        tipoIdetificacion: values.tipoIdetificacion as Identificacion,
+      });
     } else {
-      console.log({ values });
       await crear({
         direccion: values.direccion,
         email: values.email,
@@ -213,7 +228,9 @@ export function ProveedorForm({
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
             <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{errorMsg}</AlertDescription>
+            <AlertDescription>
+              {erroMsgEdit || errorMsgCreated}
+            </AlertDescription>
           </Alert>
         )}
       </form>
