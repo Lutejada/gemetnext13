@@ -6,6 +6,7 @@ import { UsuarioReadRepositoryImp } from "./infrastructure/read/usuarioReadRepos
 import { UsuarioWriteRepositoryImp } from "./infrastructure/write/usuarioWriteRepositoryImp";
 import { validarCrearUsuarioDto } from "./use-cases/dto/crearUsurio.DTO";
 import { auth } from "../../../lib/getSession";
+import { ListarUsuariosImp } from "./use-cases/read/listarUsurios";
 
 const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
 const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
@@ -14,6 +15,7 @@ const usuarioService = new UsuarioService(
   usuarioWriteRepositoryImp
 );
 const crearUsuarioImp = new CrearUsuarioImp(usuarioService);
+const listarUsuariosImp = new ListarUsuariosImp(usuarioService);
 
 export async function POST(request: Request) {
   try {
@@ -30,9 +32,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const usuarios = await usuarioService.listarUsuarios(
-      session.user.cliente_id
-    );
+    const usuarios = await listarUsuariosImp.execute(session.user.cliente_id);
     return NextResponse.json(usuarios);
   } catch (error: any) {
     return errorHandler(error);

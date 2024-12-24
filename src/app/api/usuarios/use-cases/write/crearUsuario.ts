@@ -1,6 +1,8 @@
+import { encodePassword } from "@/lib/password-hash";
 import { Usuario } from "../../dominio/entity";
 import { UsuarioService } from "../../dominio/service";
 import { CrearUsuarioDTO } from "../dto/crearUsurio.DTO";
+import { generateRandomPassword } from "../../../../../lib/password-hash";
 
 interface CrearUsuario {
   execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void>;
@@ -16,9 +18,11 @@ export class CrearUsuarioImp implements CrearUsuario {
       cargo: dto.cargo,
       rol: dto.rol,
       correo: dto.correo,
-      password: dto.password,
       cliente: { id: clienteId, nombre: clienteId },
     });
+    const ramdonpassword = generateRandomPassword();
+    const encodedPassword = await encodePassword(ramdonpassword);
+    usuarioToCreate.password = encodedPassword;
     return this.usuarioService.crearUsuario(usuarioToCreate);
   }
 }

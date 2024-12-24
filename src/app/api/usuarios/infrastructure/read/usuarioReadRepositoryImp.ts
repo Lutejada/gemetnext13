@@ -30,7 +30,7 @@ export class UsuarioReadRepositoryImp implements UsuarioReadRepository {
     });
   }
 
-  async obtenerCorreo(
+  async obtenerPorCorreo(
     correo: string,
     clienteId: string
   ): Promise<Usuario | null> {

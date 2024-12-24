@@ -23,7 +23,7 @@ export class UsuarioService {
   }
 
   async obtenerUsuarioPorCorreo(correo: string, clienteId: string) {
-    return await this.usuarioReadRepository.obtenerCorreo(correo, clienteId);
+    return await this.usuarioReadRepository.obtenerPorCorreo(correo, clienteId);
   }
 
   async listarUsuarios(clienteId: string) {

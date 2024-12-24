@@ -1,11 +1,12 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
 import { UsuarioNoExiste } from "@/app/api/usuarios/dominio/errors";
 import { isValidPassword } from "./password-hash";
 import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
 import { User } from "@/types/next-auth";
-
+import { UsuarioReadRepositoryImp } from "../app/api/usuarios/infrastructure/read/usuarioReadRepositoryImp";
+import { th } from "date-fns/locale";
+const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -24,7 +25,8 @@ export const authOptions: NextAuthOptions = {
       async authorize(credentials: any) {
         try {
           const cliente = await obtenerClientePorNombre(credentials.cliente);
-          const usuario = await obtenerUsuarioCorreo(
+
+          const usuario = await usuarioReadRepositoryImp.obtenerPorCorreo(
             credentials.correo,
             cliente.id
           );
@@ -60,7 +62,12 @@ export const authOptions: NextAuthOptions = {
     },
     session(params) {
       const { session, token } = params;
-      session.user = token.user as User;
+      const user = token.user as User;
+      session.user = user;
+      if (!user.cliente.id) {
+        throw new Error("no autorizado");
+      }
+      session.user.cliente_id = user.cliente.id;
       return session;
     },
   },

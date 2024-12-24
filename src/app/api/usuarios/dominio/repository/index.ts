@@ -2,7 +2,7 @@ import { Usuario } from "../entity";
 
 export interface UsuarioReadRepository {
   listarUsuarios(clienteId: string): Promise<Usuario[]>;
-  obtenerCorreo(correo: string, clienteId: string): Promise<Usuario | null>;
+  obtenerPorCorreo(correo: string, clienteId: string): Promise<Usuario | null>;
 }
 
 export interface UsuarioWriteRepository {
