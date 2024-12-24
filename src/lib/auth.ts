@@ -1,7 +1,7 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
-import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
+import { UsuarioNoExiste } from "@/app/api/usuarios/dominio/errors";
 import { isValidPassword } from "./password-hash";
 import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
 import { User } from "@/types/next-auth";
