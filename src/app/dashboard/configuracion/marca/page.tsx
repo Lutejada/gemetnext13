@@ -15,7 +15,7 @@ import { DialogDescription } from "@radix-ui/react-dialog";
 import { useState } from "react";
 
 export default function Marca() {
-  const { marcas } = obtenerMarcas();
+  const { marcas, isLoading } = obtenerMarcas();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const closeModal = () => {
     setIsOpenModal(false);
@@ -30,7 +30,7 @@ export default function Marca() {
         <div className="flex justify-end mb-3">
           <Button onClick={() => setIsOpenModal(true)}>Crear Marca</Button>
         </div>
-        <DataTable columns={columns} data={marcas} />
+        <DataTable columns={columns} data={marcas} isLoading={isLoading} />
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Crear Marca</DialogTitle>
