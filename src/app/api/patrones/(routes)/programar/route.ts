@@ -32,7 +32,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearProgramacion(body);
     const session = await auth();
-    await crearProgramacionUseCase.execute(session.user.cliente_id, body);
+    await crearProgramacionUseCase.execute(session.user.clienteId, body);
     return NextResponse.json({ msg: "patron creado creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -46,7 +46,7 @@ export async function GET(request: Request) {
     const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
     const programacion = await listarProgramacionPatronesUseCase.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       page,
       limit
     );

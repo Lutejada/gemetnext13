@@ -31,7 +31,7 @@ export async function POST(request: Request) {
     validarCrearProgramacion(body);
     const session = await auth();
     await crearProgramacionEquiposUseCase.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       body
     );
     return NextResponse.json({ msg: "equipo programado" });
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
     const limit = Number(searchParams.get("limit") ?? 5);
     const session = await auth();
     const programacion = await listarEquiposProgramados.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       page,
       limit
     );

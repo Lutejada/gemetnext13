@@ -108,6 +108,10 @@ export const routes: Route[] = [
         title: "Proveedores",
         url: "/proveedor",
       },
+      {
+        title: "Usuarios",
+        url: "/usuario",
+      },
     ],
   },
 ];

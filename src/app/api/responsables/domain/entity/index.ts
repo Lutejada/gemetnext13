@@ -1,4 +1,4 @@
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 
 export class Responsable {

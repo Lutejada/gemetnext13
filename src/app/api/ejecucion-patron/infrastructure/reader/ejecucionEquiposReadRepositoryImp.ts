@@ -6,7 +6,7 @@ import { Responsable } from "@/app/api/responsables/domain/entity";
 import { EstadoProgramacion } from "../../../equipos/dominio/index";
 import { ProgramacionPatrones } from "@/app/api/programacion-patrones/domain/entity";
 import { Patron } from "@/app/api/patrones/dominio";
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 import { Frecuencia } from "@/app/api/frecuencia/dominio";
 import { Actividad } from "@/app/api/actividad/dominio";
 

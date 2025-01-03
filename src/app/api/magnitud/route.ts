@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearMagnitud(body);
     const session = await auth();
-    const magnitud = await crearMagnitud(body, session.user.cliente_id);
+    const magnitud = await crearMagnitud(body, session.user.clienteId);
     return NextResponse.json({ msg: "magnitud creada", magnitud });
   } catch (error: any) {
     return errorHandler(error);
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const magnitudes = await obtenerMagnitudes(session.user.cliente_id);
+    const magnitudes = await obtenerMagnitudes(session.user.clienteId);
     return NextResponse.json(magnitudes);
   } catch (error: any) {
     return errorHandler(error);

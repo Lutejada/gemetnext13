@@ -1,7 +1,7 @@
 import { Marca } from "@/app/api/marca/dominio";
 import { Ubicacion } from "@/app/api/ubicaciones/dominio/entity";
 import { DatosComplementariosEquipo, DatosMetrologicosEquipos } from "..";
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 import { Documentos } from "@/app/api/common/types";
 
 export class EquipoEntity {

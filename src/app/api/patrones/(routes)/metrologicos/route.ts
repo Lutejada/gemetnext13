@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const session = await auth();
     const metrologicos = await crearDatosMetrologicos(
       body,
-      session.user.cliente_id
+      session.user.clienteId
     );
     return NextResponse.json({ msg: "patron creado creado", metrologicos });
   } catch (error: any) {
@@ -26,7 +26,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
     validarEditarMetrologicos(body);
     const session = await auth();
-    await editarDatosMetrologicos(body, session.user.cliente_id);
+    await editarDatosMetrologicos(body, session.user.clienteId);
     return NextResponse.json({ msg: "Datos editados" });
   } catch (error: any) {
     return errorHandler(error);

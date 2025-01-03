@@ -1,4 +1,4 @@
-import { Cliente } from "../../../cliente/dominio";
+import { Cliente } from "../../../cliente/dominio/entity";
 
 export enum Identificacion {
   NIT = "NIT",

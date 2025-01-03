@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     validarCrearResponsable(body);
     const session = await auth();
 
-    await crearResponsable(body, session.user.cliente_id);
+    await crearResponsable(body, session.user.clienteId);
     return NextResponse.json({ msg: "responsable creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const responsables = await obtenerResponsables(session.user.cliente_id);
+    const responsables = await obtenerResponsables(session.user.clienteId);
     return NextResponse.json(responsables);
   } catch (error: any) {
     return errorHandler(error);

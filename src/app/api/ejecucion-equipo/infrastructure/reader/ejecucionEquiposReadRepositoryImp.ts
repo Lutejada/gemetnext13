@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { Documentos, EjecucionEquipo } from "../../dominio/entity";
 import { EjecucionEquipoReadRepository } from "../../dominio/repository";
-import { Cliente } from "../../../cliente/dominio/index";
+import { Cliente } from "../../../cliente/dominio/entity/index";
 import {
   EstadoProgramacion,
   ProgramacionEquipos,

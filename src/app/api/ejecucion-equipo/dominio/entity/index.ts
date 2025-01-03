@@ -1,5 +1,5 @@
 import { Responsable } from "@/app/api/responsables/domain/entity";
-import { Cliente } from "../../../cliente/dominio";
+import { Cliente } from "../../../cliente/dominio/entity";
 import { ProgramacionEquipos } from "@/app/api/equipos/dominio";
 
 export interface Documentos {

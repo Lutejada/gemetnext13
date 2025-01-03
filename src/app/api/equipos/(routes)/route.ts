@@ -43,7 +43,7 @@ export async function POST(request: Request) {
     const dtoTransform = validarCrearEquipo(dto);
     const session = await auth();
     await crearDatosBasicosUseCase.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       dtoTransform
     );
     return NextResponse.json({ msg: "equipo creado" });
@@ -57,7 +57,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
     validarEditarEquipo(body);
     const session = await auth();
-    await editarEquipo(body, session.user.cliente_id);
+    await editarEquipo(body, session.user.clienteId);
     return NextResponse.json({ msg: "equipo editado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -77,7 +77,7 @@ export async function GET(request: Request) {
     const session = await auth();
     if (termino && valor) {
       const equiposTermino = await listarEquipoTerminoUseCase.execute(
-        session.user.cliente_id,
+        session.user.clienteId,
         {
           limit,
           page,
@@ -89,7 +89,7 @@ export async function GET(request: Request) {
       return NextResponse.json(equiposTermino);
     }
     const equipos = await listarEquiposUseCase.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       {
         limit,
         page,

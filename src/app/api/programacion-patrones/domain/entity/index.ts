@@ -1,5 +1,5 @@
 import { Actividad } from "@/app/api/actividad/dominio";
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 import { Frecuencia } from "@/app/api/frecuencia/dominio";
 import { Patron } from "@/app/api/patrones/dominio";
 import { EstadoProgramacion } from "@prisma/client";

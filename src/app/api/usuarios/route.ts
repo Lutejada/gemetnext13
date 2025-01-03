@@ -1,14 +1,41 @@
 import { NextResponse } from "next/server";
 import { errorHandler } from "../common/errors/error.handler";
-import { validarCrearUsuarioDto } from "./dtos/crearUsuario.dto";
-import { crearUsuario } from "./servicios/crearUsuario";
+import { CrearUsuarioImp } from "./use-cases/write/crearUsuario";
+import { UsuarioService } from "./dominio/service/index";
+import { UsuarioReadRepositoryImp } from "./infrastructure/read/usuarioReadRepositoryImp";
+import { UsuarioWriteRepositoryImp } from "./infrastructure/write/usuarioWriteRepositoryImp";
+import { validarCambiarPasswordDto } from "./use-cases/dto/crearUsuario.DTO";
+import { auth } from "../../../lib/getSession";
+import { ListarUsuariosImp } from "./use-cases/read/listarUsurios";
+import { EmailService } from "../common/email/index";
+
+const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
+const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
+const usuarioService = new UsuarioService(
+  usuarioReadRepositoryImp,
+  usuarioWriteRepositoryImp
+);
+const emailService = new EmailService();
+const crearUsuarioImp = new CrearUsuarioImp(usuarioService, emailService);
+const listarUsuariosImp = new ListarUsuariosImp(usuarioService);
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    validarCrearUsuarioDto(body);
-    await crearUsuario(body);
+    const dto = validarCambiarPasswordDto(body);
+    const session = await auth();
+    await crearUsuarioImp.execute(session.user.clienteId, dto);
     return NextResponse.json({ msg: "usuario creado" });
+  } catch (error: any) {
+    return errorHandler(error);
+  }
+}
+
+export async function GET(_request: Request) {
+  try {
+    const session = await auth();
+    const usuarios = await listarUsuariosImp.execute(session.user.clienteId);
+    return NextResponse.json(usuarios);
   } catch (error: any) {
     return errorHandler(error);
   }

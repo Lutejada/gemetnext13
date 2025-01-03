@@ -18,21 +18,13 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { getSubdomain } from "@/lib/helpers/getSubDoimain";
 
-const getSubdomain = () => {
-  // Asegúrate de estar en el lado del cliente antes de acceder a window
-  if (typeof window !== "undefined") {
-    const hostname = window.location.hostname;
-    return hostname.split(".")[0];
-  }
-  return null;
-};
+
 
 const formSchema = z.object({
-  correo: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
-  contraseña: z.string(),
+  correo: z.string().email(),
+  password: z.string().min(8),
 });
 
 export default function ProfileForm() {
@@ -43,7 +35,7 @@ export default function ProfileForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       correo: "",
-      contraseña: "",
+      password: "",
     },
   });
 
@@ -53,11 +45,18 @@ export default function ProfileForm() {
     // ✅ This will be type-safe and validated.
     const res = await signIn("credentials", {
       correo: values.correo,
-      contraseña: values.contraseña,
+      password: values.password,
       cliente: getSubdomain(),
       redirect: false,
     });
-    if (res?.error) return;
+    if (res?.error === "Correo no verificado") {
+      router.push(`/change-password/${values.correo}`);
+      return;
+    }
+    if (res?.error) {
+      //pendiente por agregar el mensaje de error
+      return;
+    }
     router.push("/dashboard");
   }
 
@@ -90,7 +89,7 @@ export default function ProfileForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="contraseña"
+                  name="password"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Contraseña</FormLabel>

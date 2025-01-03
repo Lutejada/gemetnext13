@@ -1,11 +1,24 @@
 import type { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { obtenerUsuarioCorreo } from "../app/api/usuarios/servicios/obtenerUsuarioCorreo";
-import { UsuarioNoExiste } from "@/app/api/usuarios/errors";
+import { UsuarioNoExiste } from "@/app/api/usuarios/dominio/errors";
 import { isValidPassword } from "./password-hash";
 import { obtenerClientePorNombre } from "@/app/api/cliente/servicios/obtenerClientePorNombre";
-import { User } from "@/types/next-auth";
-
+import { UsuarioReadRepositoryImp } from "../app/api/usuarios/infrastructure/read/usuarioReadRepositoryImp";
+import { UserAuth } from "@/app/api/auth/service";
+import { AuthService } from "../app/api/auth/service/index";
+import { ClienteService } from "../app/api/cliente/dominio/service/index";
+import { UsuarioService } from "@/app/api/usuarios/dominio/service";
+import { UsuarioWriteRepositoryImp } from "../app/api/usuarios/infrastructure/write/usuarioWriteRepositoryImp";
+import { ClienteReadRepositoryImp } from "../app/api/cliente/infrastructure/read/clienteReadRepositoryImp";
+const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
+const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
+const clienteReadRepositoryImp = new ClienteReadRepositoryImp();
+const usuarioService = new UsuarioService(
+  usuarioReadRepositoryImp,
+  usuarioWriteRepositoryImp
+);
+const clienteService = new ClienteService(clienteReadRepositoryImp);
+const authService = new AuthService(usuarioService, clienteService);
 export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
@@ -22,29 +35,12 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
-        try {
-          const cliente = await obtenerClientePorNombre(credentials.cliente);
-          const usuario = await obtenerUsuarioCorreo(
-            credentials.correo,
-            cliente.id
-          );
-          if (!usuario) {
-            throw new UsuarioNoExiste();
-          }
-          const valido = await isValidPassword(
-            credentials.contraseña,
-            usuario.password
-          );
-          if (!valido) {
-            throw new Error("no autorizado");
-          }
-          const { password, ...rest } = usuario;
-
-          return { ...rest, cliente };
-        } catch (error: any) {
-          console.error(error.message, error.stack);
-          throw new Error("no autorizado");
-        }
+        const authUser = await authService.autenticar({
+          correo: credentials.correo,
+          password: credentials.password,
+          cliente: credentials.cliente,
+        });
+        return authUser;
       },
     }),
   ],
@@ -60,7 +56,8 @@ export const authOptions: NextAuthOptions = {
     },
     session(params) {
       const { session, token } = params;
-      session.user = token.user as User;
+      const user = token.user as UserAuth;
+      session.user = user;
       return session;
     },
   },

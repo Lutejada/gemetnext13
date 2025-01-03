@@ -76,10 +76,11 @@ Table usuario {
   rol Role [not null, default: 'Consulta']
   correo String [unique, not null]
   password String [not null]
-  fecha_creacion DateTime [default: `now()`, not null]
-  fecha_actualizacion DateTime [not null]
-  fecha_inactivacion DateTime
-  cliente_id String [not null]
+  correoVerificado Boolean [not null, default: false]
+  fechaCreacion DateTime [default: `now()`, not null]
+  fechaActualizacion DateTime [not null]
+  fechaInactivacion DateTime
+  clienteId String [not null]
 }
 
 Table magnitud {
@@ -295,7 +296,7 @@ Ref: tipo_actividad.cliente_id > cliente.id
 
 Ref: frecuencia.cliente_id > cliente.id
 
-Ref: usuario.cliente_id > cliente.id
+Ref: usuario.clienteId > cliente.id
 
 Ref: magnitud.cliente_id > cliente.id
 

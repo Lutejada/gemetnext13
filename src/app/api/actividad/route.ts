@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearActividad(body);
     const session = await auth();
-    const actividad = await crearActividad(body, session.user.cliente_id);
+    const actividad = await crearActividad(body, session.user.clienteId);
     return NextResponse.json({ msg: "equipo creado", actividad });
   } catch (error: any) {
     return errorHandler(error);
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const actividades = await obtenerActividades(session.user.cliente_id);
+    const actividades = await obtenerActividades(session.user.clienteId);
     return NextResponse.json(actividades);
   } catch (error: any) {
     return errorHandler(error);

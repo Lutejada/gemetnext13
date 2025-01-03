@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearUbicacion(body);
     const session = await auth();
-    const ubicacion = await crearUbicacion(body, session.user.cliente_id);
+    const ubicacion = await crearUbicacion(body, session.user.clienteId);
     return NextResponse.json({ msg: "Ubicacion creada", ubicacion });
   } catch (error: any) {
     return errorHandler(error);
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     const session = await auth();
-    const ubicaciones = await obtenerUbicaciones(session.user.cliente_id);
+    const ubicaciones = await obtenerUbicaciones(session.user.clienteId);
     return NextResponse.json(ubicaciones);
   } catch (error) {
     return errorHandler(error);

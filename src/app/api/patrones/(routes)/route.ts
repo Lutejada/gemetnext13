@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     const dtoTransform = validarCrearPatron(dto);
     const session = await auth();
     await crearDatosBasicosUseCaseImp.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       dtoTransform
     );
     return NextResponse.json({ msg: "patron creado creado" });
@@ -61,7 +61,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
     validarEditarBasicos(body);
     const session = await auth();
-    await editarDatosBasicos(body, session.user.cliente_id);
+    await editarDatosBasicos(body, session.user.clienteId);
     return NextResponse.json({ msg: "patron editado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -79,7 +79,7 @@ export async function GET(request: Request) {
     //validar terminos de busqueda
     if (termino && valor) {
       const patronesTermino = await listarPatroneTerminoUseCase.execute(
-        session.user.cliente_id,
+        session.user.clienteId,
         {
           limit,
           page,
@@ -90,7 +90,7 @@ export async function GET(request: Request) {
       return NextResponse.json(patronesTermino);
     }
     const patrones = await listarPatronsUseCase.execute(
-      session.user.cliente_id,
+      session.user.clienteId,
       {
         limit,
         page,
