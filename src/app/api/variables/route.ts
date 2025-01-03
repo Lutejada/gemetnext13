@@ -9,7 +9,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearVariable(body);
     const session = await auth();
-    const variable = await crearVariable(body, session.user.cliente_id);
+    const variable = await crearVariable(body, session.user.clienteId);
     return NextResponse.json({ msg: "variable creada", variable });
   } catch (error: any) {
     return errorHandler(error);

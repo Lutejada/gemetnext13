@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     validarCrearEjecucionEquipo(body);
     const session = await auth();
 
-    await crearEjecucionEquipos.execute(session.user.cliente_id, body);
+    await crearEjecucionEquipos.execute(session.user.clienteId, body);
     return NextResponse.json({ msg: "ejecucion creada" });
   } catch (error: any) {
     return errorHandler(error);
@@ -54,7 +54,7 @@ export async function GET(request: Request) {
     const session = await auth();
 
     const listado = await listarEjecucionEquipos.execute(
-      session.user.cliente_id
+      session.user.clienteId
     );
     return NextResponse.json(listado);
   } catch (error: any) {

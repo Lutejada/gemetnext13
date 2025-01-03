@@ -27,7 +27,7 @@ import {
   useCrearProveedor,
   useEditarProveedor,
 } from "../../hooks/useProveedor";
-import { crearUsuarioDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsurio.DTO";
+import { cambiarPasswordDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
 import { Role } from "@/app/api/usuarios/dominio/entity";
 import { useCrearUsuario } from "../../hooks/useUsuario";
 
@@ -37,7 +37,7 @@ interface Props {
   closeModal?: () => void;
 }
 
-type FormValues = z.infer<typeof crearUsuarioDTOschema>;
+type FormValues = z.infer<typeof cambiarPasswordDTOschema>;
 
 export function ProveedorForm({
   isEditing = false,
@@ -46,7 +46,7 @@ export function ProveedorForm({
 }: Props) {
   const labelform = isEditing ? "Editar Usuario" : "Crear Usuario";
   const form = useForm<FormValues>({
-    resolver: zodResolver(crearUsuarioDTOschema),
+    resolver: zodResolver(cambiarPasswordDTOschema),
     defaultValues: {},
   });
 

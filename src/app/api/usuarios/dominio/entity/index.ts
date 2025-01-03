@@ -1,4 +1,4 @@
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 export class Usuario {
   id: string;
   usuario: string;
@@ -11,6 +11,7 @@ export class Usuario {
   fechaCreacion: string | Date;
   fechaActualizacion: string | Date;
   fechaInactivacion?: string | Date | null;
+  correoVerificado: boolean;
   cliente: Cliente;
 
   constructor(attributtes: Partial<Usuario> = {}) {
@@ -26,6 +27,7 @@ export class Usuario {
     this.fechaActualizacion = attributtes.fechaActualizacion ?? "";
     this.fechaInactivacion = attributtes.fechaInactivacion ?? "";
     this.cliente = attributtes.cliente ?? new Cliente();
+    this.correoVerificado = attributtes.correoVerificado ?? false;
   }
 }
 export enum Role {

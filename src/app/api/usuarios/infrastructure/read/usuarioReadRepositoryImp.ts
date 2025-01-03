@@ -27,6 +27,11 @@ export class UsuarioReadRepositoryImp implements UsuarioReadRepository {
       fechaCreacion: usuarioPrisma.fechaCreacion,
       fechaActualizacion: usuarioPrisma.fechaActualizacion,
       fechaInactivacion: usuarioPrisma.fechaInactivacion,
+      correoVerificado: usuarioPrisma.correoVerificado,
+      cliente: {
+        id: usuarioPrisma.clienteId,
+        nombre: usuarioPrisma.clienteId,
+      },
     });
   }
 

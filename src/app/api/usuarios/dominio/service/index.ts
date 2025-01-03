@@ -1,5 +1,5 @@
 import { Role, Usuario } from "../entity";
-import { InvalidUserRole, UsuarioExiste } from "../errors";
+import { InvalidUserRole, UsuarioExiste, UsuarioNoExiste } from "../errors";
 import {
   UsuarioReadRepository,
   UsuarioWriteRepository,
@@ -16,8 +16,8 @@ export class UsuarioService {
       throw new UsuarioExiste();
     }
 
-    if(usuario.rol === Role.Admin){
-        throw new InvalidUserRole()
+    if (usuario.rol === Role.Admin) {
+      throw new InvalidUserRole();
     }
     await this.usuarioWriteRepository.crearUsuarios(usuario);
   }
@@ -28,5 +28,18 @@ export class UsuarioService {
 
   async listarUsuarios(clienteId: string) {
     return await this.usuarioReadRepository.listarUsuarios(clienteId);
+  }
+
+  async validarUsuarioExiste(correo: string, clienteId: string) {
+    const user = await this.obtenerUsuarioPorCorreo(correo, clienteId);
+    if (!user) {
+      throw new UsuarioNoExiste();
+    }
+
+    return user;
+  }
+
+  async actualizarUsuario(usuario: Usuario) {
+    await this.usuarioWriteRepository.actualizarUsuario(usuario);
   }
 }

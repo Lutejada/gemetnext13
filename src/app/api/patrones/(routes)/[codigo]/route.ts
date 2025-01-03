@@ -11,7 +11,7 @@ export async function GET(
     const session = await auth();
     const equipo = await obtenerPatronPorCodigo(
       params.codigo,
-      session.user.cliente_id
+      session.user.clienteId
     );
     return NextResponse.json(equipo);
   } catch (error: any) {

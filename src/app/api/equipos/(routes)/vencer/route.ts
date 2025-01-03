@@ -11,7 +11,7 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     //poner paginacion
     const session = await auth();
-    const response = await useCase.execute(session.user.cliente_id);
+    const response = await useCase.execute(session.user.clienteId);
     return NextResponse.json(response);
   } catch (error: any) {
     return errorHandler(error);

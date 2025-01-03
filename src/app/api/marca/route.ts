@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearMarca(body);
     const session = await auth();
-    const marca = await crearMarca(body, session.user.cliente_id);
+    const marca = await crearMarca(body, session.user.clienteId);
     return NextResponse.json({ msg: "equipo creado", marca });
   } catch (error: any) {
     return errorHandler(error);
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const todasMarcas = await obtenerTodosMarca(session.user.cliente_id);
+    const todasMarcas = await obtenerTodosMarca(session.user.clienteId);
     return NextResponse.json(todasMarcas);
   } catch (error: any) {
     return errorHandler(error);
@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
 
     validarEditarMarca(body)
-    await editarMarca(body,session.user.cliente_id)
+    await editarMarca(body,session.user.clienteId)
     return NextResponse.json({ msg: "marca editada editado" });
   } catch (error: any) {
     return errorHandler(error);

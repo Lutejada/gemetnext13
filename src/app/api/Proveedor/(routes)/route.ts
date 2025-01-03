@@ -25,7 +25,7 @@ export async function POST(request: Request) {
     const dto = validarCrearProveedor(body);
     const session = await auth();
 
-    await crearProvedor.execute(session.user.cliente_id, dto);
+    await crearProvedor.execute(session.user.clienteId, dto);
     return NextResponse.json({ msg: "proveedor creado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -36,7 +36,7 @@ export async function PUT(request: Request) {
     const body = await request.json();
     const dto = validarEditarProveedor(body);
     const session = await auth();
-    await editarProveedor.execute(session.user.cliente_id, dto);
+    await editarProveedor.execute(session.user.clienteId, dto);
     return NextResponse.json({ msg: "proveedor editado" });
   } catch (error: any) {
     return errorHandler(error);
@@ -46,7 +46,7 @@ export async function PUT(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const listado = await listarProveedores.execute(session.user.cliente_id);
+    const listado = await listarProveedores.execute(session.user.clienteId);
     return NextResponse.json(listado);
   } catch (error: any) {
     return errorHandler(error);

@@ -1,4 +1,4 @@
-import { ClienteNoExiste } from "../errors";
+import { ClienteNoExiste } from "../dominio/errors";
 import { clienteRepositorio } from "../repositorio/clienteRepositorio";
 
 export const obtenerClientePorNombre = async (nombre: string) => {

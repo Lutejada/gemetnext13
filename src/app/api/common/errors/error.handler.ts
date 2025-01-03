@@ -3,7 +3,7 @@ import { ZodError } from "zod";
 export const errorHandler = (error: any) => {
   console.error('entro al error handler',error);
   if (error.cause === "negocio") {
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    return NextResponse.json({ error: error.message }, { status: error.status });
   }
 
   if (error instanceof ZodError) {

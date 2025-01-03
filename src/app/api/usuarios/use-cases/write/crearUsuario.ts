@@ -1,16 +1,21 @@
 import { encodePassword } from "@/lib/password-hash";
 import { Usuario } from "../../dominio/entity";
 import { UsuarioService } from "../../dominio/service";
-import { CrearUsuarioDTO } from "../dto/crearUsurio.DTO";
+import { CambiarPasswordDTO } from "../dto/crearUsuario.DTO";
 import { generateRandomPassword } from "../../../../../lib/password-hash";
+import { EmailService } from "../../../common/email/index";
+import { sendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
 
 interface CrearUsuario {
-  execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void>;
+  execute(clienteId: string, dto: CambiarPasswordDTO): Promise<void>;
 }
 
 export class CrearUsuarioImp implements CrearUsuario {
-  constructor(private usuarioService: UsuarioService) {}
-  async execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void> {
+  constructor(
+    private usuarioService: UsuarioService,
+    private emailService: EmailService
+  ) {}
+  async execute(clienteId: string, dto: CambiarPasswordDTO): Promise<void> {
     const usuarioToCreate = new Usuario({
       usuario: dto.usuario,
       nombre: dto.nombre,
@@ -23,6 +28,12 @@ export class CrearUsuarioImp implements CrearUsuario {
     const ramdonpassword = generateRandomPassword();
     const encodedPassword = await encodePassword(ramdonpassword);
     usuarioToCreate.password = encodedPassword;
-    return this.usuarioService.crearUsuario(usuarioToCreate);
+    await this.usuarioService.crearUsuario(usuarioToCreate);
+    await this.emailService.sendEmail({
+      from: "Acme <onboarding@resend.dev>",
+      subject: "Credenciales de ingreso",
+      to: [dto.correo],
+      template: sendPasswordcreate({ password: ramdonpassword }),
+    });
   }
 }

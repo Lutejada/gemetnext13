@@ -6,7 +6,7 @@ import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listar
 import { CrearProveedorDTO } from "@/app/api/proveedor/application/dto/crearProveedorDto";
 import { EditarProveedorDTO } from "../../api/proveedor/application/dto/editarProveedorDTO";
 import { ListarUsuriosDTO } from "@/app/api/usuarios/use-cases/dto/listarUsuarios.DTO";
-import { CrearUsuarioDTO } from "@/app/api/usuarios/use-cases/dto/crearUsurio.DTO";
+import { CambiarPasswordDTO } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
 
 export const useListadoUsuarios = () => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
@@ -43,7 +43,7 @@ export const useObtenerUsuarios = () => {
   };
 };
 export const useCrearUsuario = () => {
-  const fetcher = (url: string, { arg }: { arg: CrearUsuarioDTO }) =>
+  const fetcher = (url: string, { arg }: { arg: CambiarPasswordDTO }) =>
     httpBase.post(url, arg).then((res) => res.data);
 
   const { data, error, trigger, isMutating } = useSWRMutation(

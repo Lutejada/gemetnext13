@@ -1,4 +1,4 @@
-import { Cliente } from "../../cliente/dominio";
+import { Cliente } from "../../cliente/dominio/entity";
 import { Marca } from "../../marca/dominio";
 import { Ubicacion } from "../../ubicaciones/dominio/entity";
 import { Frecuencia } from "../../frecuencia/dominio";

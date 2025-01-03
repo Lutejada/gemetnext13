@@ -1,4 +1,4 @@
-import { Cliente } from "../dominio";
+import { Cliente } from "../dominio/entity";
 
 export interface ClienteRepositorio {
   obtenerClientePorNombre: (nombre: string) => Promise<Cliente | null>;

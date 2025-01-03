@@ -10,7 +10,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     validarCrearFrecuencia(body);
     const session = await auth();
-    const frecuencia = await crearFrecuencia(body, session.user.cliente_id);
+    const frecuencia = await crearFrecuencia(body, session.user.clienteId);
     return NextResponse.json({ msg: "frecuencia creada", frecuencia });
   } catch (error: any) {
     return errorHandler(error);
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 export async function GET(_request: Request) {
   try {
     const session = await auth();
-    const frecuencias = await obtenerfrecuencias(session.user.cliente_id);
+    const frecuencias = await obtenerfrecuencias(session.user.clienteId);
     return NextResponse.json(frecuencias);
   } catch (error: any) {
     return errorHandler(error);

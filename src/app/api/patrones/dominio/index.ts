@@ -1,4 +1,4 @@
-import { Cliente } from "../../cliente/dominio";
+import { Cliente } from "../../cliente/dominio/entity";
 import { Ubicacion } from "../../ubicaciones/dominio/entity";
 
 export class Patron {

@@ -13,7 +13,7 @@ export async function POST(request: Request) {
     const session = await auth();
     const complementarios = await crearDatosComplementarios(
       body,
-      session.user.cliente_id
+      session.user.clienteId
     );
     return NextResponse.json({ msg: "patron creado creado", complementarios });
   } catch (error: any) {
@@ -35,7 +35,7 @@ export async function PUT(request: Request) {
     const session = await auth();
     const complementarios = await editarDatosComplementarios(
       body,
-      session.user.cliente_id
+      session.user.clienteId
     );
     return NextResponse.json({ msg: "Datos editados", complementarios });
   } catch (error: any) {

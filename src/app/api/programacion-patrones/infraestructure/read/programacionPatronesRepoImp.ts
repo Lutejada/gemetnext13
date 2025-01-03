@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { ProgramacionPatrones } from "../../domain/entity";
 import { ProgramacionPatronesRepositoryRead } from "../../domain/repository";
 import { Actividad } from "../../../actividad/dominio/index";
-import { Cliente } from "@/app/api/cliente/dominio";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
 import { Patron } from "../../../patrones/dominio";
 import { Frecuencia } from "@/app/api/frecuencia/dominio";
 

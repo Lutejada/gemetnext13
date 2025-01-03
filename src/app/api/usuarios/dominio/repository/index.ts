@@ -7,4 +7,5 @@ export interface UsuarioReadRepository {
 
 export interface UsuarioWriteRepository {
   crearUsuarios(usuario: Usuario): Promise<void>;
+  actualizarUsuario(usuario: Usuario): Promise<void>;
 }
