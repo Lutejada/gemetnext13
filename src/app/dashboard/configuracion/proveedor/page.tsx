@@ -5,10 +5,7 @@ import { DataTable } from "@/components/data-table";
 import { columns } from "./columns";
 
 import { useState } from "react";
-import {
-  useListadoProvedores,
-  useCrearProveedor,
-} from "../../hooks/useProveedor";
+import { useListadoProvedores } from "../../hooks/useProveedor";
 import { DialogWrapper } from "@/components/dialogWrapper";
 import { ProveedorForm } from "./form";
 
