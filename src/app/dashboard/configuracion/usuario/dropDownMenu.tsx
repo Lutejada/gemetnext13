@@ -8,7 +8,7 @@ import {
 import { DialogWrapper } from "@/components/dialogWrapper";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
-import { ProveedorForm } from "./form";
+import { UsuarioForm } from "./form";
 import { useEditarProveedor } from "../../hooks/useProveedor";
 import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
@@ -52,7 +52,7 @@ export const DropDownMenuProveedor = ({ proveedorDto }: Props) => {
         title="Crear Proveedor"
         description="Ingresa la informacion solicitada"
       >
-        <ProveedorForm
+        <UsuarioForm
           closeModal={closeModal}
           isEditing
           proveedorDto={proveedorDto}

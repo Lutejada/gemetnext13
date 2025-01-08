@@ -1,4 +1,4 @@
-import { CambiarPasswordDTO } from "../dto/crearUsuario.DTO";
+import { CambiarPasswordDTO } from "../dto/cambiarPasswordDTO";
 import { UsuarioService } from "../../dominio/service/index";
 import { UsuarioNoExiste } from "../../dominio/errors";
 

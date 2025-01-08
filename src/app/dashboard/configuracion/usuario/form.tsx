@@ -24,12 +24,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
-  useCrearProveedor,
   useEditarProveedor,
 } from "../../hooks/useProveedor";
-import { cambiarPasswordDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
+import { cambiarPasswordDTOschema } from "@/app/api/usuarios/use-cases/dto/cambiarPasswordDTO";
 import { Role } from "@/app/api/usuarios/dominio/entity";
 import { useCrearUsuario } from "../../hooks/useUsuario";
+import { crearUsuarioDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
 
 interface Props {
   isEditing?: boolean;
@@ -37,16 +37,16 @@ interface Props {
   closeModal?: () => void;
 }
 
-type FormValues = z.infer<typeof cambiarPasswordDTOschema>;
+type FormValues = z.infer<typeof crearUsuarioDTOschema>;
 
-export function ProveedorForm({
+export function UsuarioForm({
   isEditing = false,
   //proveedorDto,
   closeModal,
 }: Props) {
   const labelform = isEditing ? "Editar Usuario" : "Crear Usuario";
   const form = useForm<FormValues>({
-    resolver: zodResolver(cambiarPasswordDTOschema),
+    resolver: zodResolver(crearUsuarioDTOschema),
     defaultValues: {},
   });
 
@@ -74,6 +74,8 @@ export function ProveedorForm({
       //   tipoIdetificacion: values.tipoIdetificacion as Identificacion,
       // });
     } else {
+      console.log(form.formState)
+      console.log(form.setError)
       await crear({
         usuario: values.usuario,
         nombre: values.nombre,
