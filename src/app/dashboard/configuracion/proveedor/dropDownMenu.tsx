@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { MoreHorizontal } from "lucide-react";
 import { ProveedorForm } from "./form";
 import { useEditarProveedor } from "../../hooks/useProveedor";
-import { EditarProveedorDTO } from "@/app/api/proveedor_temp/application/dto/editarProveedorDTO";
+import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
 interface Props {
   proveedorDto: EditarProveedorDTO;

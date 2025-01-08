@@ -27,9 +27,9 @@ import {
   useCrearProveedor,
   useEditarProveedor,
 } from "../../hooks/useProveedor";
-import { Identificacion } from "@/app/api/proveedor_temp/dominio/entity";
-import { ListarProveedoresDTO } from "@/app/api/proveedor_temp/application/dto/listarProveedore.DTO";
-import { EditarProveedorDTO } from "@/app/api/proveedor_temp/application/dto/editarProveedorDTO";
+import { Identificacion } from "@/app/api/proveedor/dominio/entity";
+import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
+import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
 const formSchema = z.object({
   nombre: z.string(),

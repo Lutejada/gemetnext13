@@ -1,9 +1,9 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { ListarProveedoresDTO } from "@/app/api/proveedor_temp/application/dto/listarProveedore.DTO";
+import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
 import { DropDownMenuProveedor } from "./dropDownMenu";
-import { EditarProveedorDTO } from "@/app/api/proveedor_temp/application/dto/editarProveedorDTO";
+import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 import { ListarUsuriosDTO } from "@/app/api/usuarios/use-cases/dto/listarUsuarios.DTO";
 
 export const columns: ColumnDef<ListarUsuriosDTO>[] = [
