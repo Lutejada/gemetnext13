@@ -4,9 +4,9 @@ import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
 import { CrearMarcaDto } from "../../api/marca/dtos/crearMarca.dto";
 import { EditarMarcaDto } from "@/app/api/marca/dtos/editarMarcadto";
-import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
-import { CrearProveedorDTO } from "@/app/api/proveedor/application/dto/crearProveedorDto";
-import { EditarProveedorDTO } from "../../api/proveedor/application/dto/editarProveedorDTO";
+import { ListarProveedoresDTO } from "@/app/api/proveedor_temp/application/dto/listarProveedore.DTO";
+import { CrearProveedorDTO } from "@/app/api/proveedor_temp/application/dto/crearProveedorDto";
+import { EditarProveedorDTO } from "../../api/proveedor_temp/application/dto/editarProveedorDTO";
 import Proveedor from "../configuracion/proveedor/page";
 
 export const useListadoProvedores = () => {
