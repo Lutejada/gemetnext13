@@ -4,10 +4,10 @@ import { CrearUsuarioImp } from "./use-cases/write/crearUsuario";
 import { UsuarioService } from "./dominio/service/index";
 import { UsuarioReadRepositoryImp } from "./infrastructure/read/usuarioReadRepositoryImp";
 import { UsuarioWriteRepositoryImp } from "./infrastructure/write/usuarioWriteRepositoryImp";
-import { validarCambiarPasswordDto } from "./use-cases/dto/crearUsuario.DTO";
 import { auth } from "../../../lib/getSession";
 import { ListarUsuariosImp } from "./use-cases/read/listarUsurios";
 import { EmailService } from "../common/email/index";
+import { validarCrearUsuarioDto } from "./use-cases/dto/crearUsuario.DTO";
 
 const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
 const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
@@ -22,7 +22,7 @@ const listarUsuariosImp = new ListarUsuariosImp(usuarioService);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const dto = validarCambiarPasswordDto(body);
+    const dto = validarCrearUsuarioDto(body);
     const session = await auth();
     await crearUsuarioImp.execute(session.user.clienteId, dto);
     return NextResponse.json({ msg: "usuario creado" });

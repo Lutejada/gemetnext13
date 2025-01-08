@@ -7,7 +7,7 @@ import { columns } from "./columns";
 import { useState } from "react";
 
 import { DialogWrapper } from "@/components/dialogWrapper";
-import { ProveedorForm } from "./form";
+import { UsuarioForm } from "./form";
 import { useListadoUsuarios } from "../../hooks/useUsuario";
 
 export default function Proveedor() {
@@ -29,7 +29,7 @@ export default function Proveedor() {
         title="Crear Usuario"
         description="Ingresa la informacion solicitada"
       >
-        <ProveedorForm closeModal={closeModal} />
+        <UsuarioForm closeModal={closeModal} />
       </DialogWrapper>
     </>
   );

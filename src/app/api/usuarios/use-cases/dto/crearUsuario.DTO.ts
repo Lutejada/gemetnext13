@@ -1,17 +1,23 @@
 import { z } from "zod";
+import { Role } from "../../dominio/entity";
 
-export interface CambiarPasswordDTO {
-  passwordTemporal: string;
-  nuevoPassword: string;
+export interface CrearUsuarioDTO {
+  usuario: string;
+  nombre: string;
+  apellido: string;
+  cargo: string;
+  rol: Role;
   correo: string;
 }
 
-export const cambiarPasswordDTOschema = z.object({
-  passwordTemporal: z.string(),
-  nuevoPassword: z.string(),
+export const crearUsuarioDTOschema = z.object({
+  usuario: z.string(),
+  nombre: z.string(),
+  apellido: z.string(),
+  cargo: z.string(),
+  rol: z.enum([Role.Metrologo, Role.Auxiliar, Role.Consulta, Role.Cordinador]),
   correo: z.string().email(),
 });
-
-export const validarCambiarPasswordDto = (usuario: CambiarPasswordDTO) => {
-  return cambiarPasswordDTOschema.parse(usuario) as CambiarPasswordDTO;
+export const validarCrearUsuarioDto = (usuario: CrearUsuarioDTO) => {
+  return crearUsuarioDTOschema.parse(usuario) as CrearUsuarioDTO;
 };

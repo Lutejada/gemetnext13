@@ -1,13 +1,13 @@
 import { encodePassword } from "@/lib/password-hash";
 import { Usuario } from "../../dominio/entity";
 import { UsuarioService } from "../../dominio/service";
-import { CambiarPasswordDTO } from "../dto/crearUsuario.DTO";
 import { generateRandomPassword } from "../../../../../lib/password-hash";
 import { EmailService } from "../../../common/email/index";
 import { sendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
+import { CrearUsuarioDTO } from "../dto/crearUsuario.DTO";
 
 interface CrearUsuario {
-  execute(clienteId: string, dto: CambiarPasswordDTO): Promise<void>;
+  execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void>;
 }
 
 export class CrearUsuarioImp implements CrearUsuario {
@@ -15,7 +15,7 @@ export class CrearUsuarioImp implements CrearUsuario {
     private usuarioService: UsuarioService,
     private emailService: EmailService
   ) {}
-  async execute(clienteId: string, dto: CambiarPasswordDTO): Promise<void> {
+  async execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void> {
     const usuarioToCreate = new Usuario({
       usuario: dto.usuario,
       nombre: dto.nombre,

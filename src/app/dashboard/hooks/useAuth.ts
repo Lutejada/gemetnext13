@@ -6,7 +6,7 @@ import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listar
 import { CrearProveedorDTO } from "@/app/api/proveedor/application/dto/crearProveedorDto";
 import { EditarProveedorDTO } from "../../api/proveedor/application/dto/editarProveedorDTO";
 import { ListarUsuriosDTO } from "@/app/api/usuarios/use-cases/dto/listarUsuarios.DTO";
-import { CambiarPasswordDTO } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
+import { CambiarPasswordDTO } from "@/app/api/usuarios/use-cases/dto/cambiarPasswordDTO";
 import { VerifyNewUserDTO } from "@/app/api/auth/dto/verifyEmailDTO";
 
 export const useVerifyNewUser = () => {
