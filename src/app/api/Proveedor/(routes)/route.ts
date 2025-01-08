@@ -9,6 +9,7 @@ import { errorHandler } from "../../common/errors/error.handler";
 import { ListarProvedoresUseCaseImp } from "../application/use-cases/reader/listarProveedores";
 import { validarEditarProveedor } from "../application/dto/editarProveedorDTO";
 import { EditarProveedorImp } from "../application/use-cases/writer/editarProveedor";
+import { tr } from "date-fns/locale";
 const proveedorReadRepo = new ProveedorReadRepositoryImp();
 const proveedorWriteRepo = new ProveedorWriteRepositoryImp();
 const proveedorService = new ProveedorService(

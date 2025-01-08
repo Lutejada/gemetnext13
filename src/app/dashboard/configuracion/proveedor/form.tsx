@@ -28,6 +28,7 @@ import {
   useEditarProveedor,
 } from "../../hooks/useProveedor";
 import { Identificacion } from "@/app/api/proveedor/dominio/entity";
+import { ListarProveedoresDTO } from "@/app/api/proveedor/application/dto/listarProveedore.DTO";
 import { EditarProveedorDTO } from "@/app/api/proveedor/application/dto/editarProveedorDTO";
 
 const formSchema = z.object({
@@ -50,6 +51,7 @@ export function ProveedorForm({
   proveedorDto,
   closeModal,
 }: Props) {
+  console.log({ proveedorDto });
   const labelform = isEditing ? "Editar Proveedor" : "Crear Proveedor";
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
