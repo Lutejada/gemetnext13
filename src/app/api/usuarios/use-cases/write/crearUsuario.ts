@@ -5,6 +5,7 @@ import { generateRandomPassword } from "../../../../../lib/password-hash";
 import { EmailService } from "../../../common/email/index";
 import { sendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
 import { CrearUsuarioDTO } from "../dto/crearUsuario.DTO";
+import { UsuarioExiste } from "../../dominio/errors";
 
 interface CrearUsuario {
   execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void>;
@@ -16,6 +17,10 @@ export class CrearUsuarioImp implements CrearUsuario {
     private emailService: EmailService
   ) {}
   async execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void> {
+    const user = await this.usuarioService.obtenerUsuarioPorCorreo(dto.correo, clienteId);
+    if (user) {
+      throw new UsuarioExiste();
+    }
     const usuarioToCreate = new Usuario({
       usuario: dto.usuario,
       nombre: dto.nombre,
@@ -30,7 +35,7 @@ export class CrearUsuarioImp implements CrearUsuario {
     usuarioToCreate.password = encodedPassword;
     await this.usuarioService.crearUsuario(usuarioToCreate);
     await this.emailService.sendEmail({
-      from: "Acme <onboarding@resend.dev>",
+      from: "noreply@gemet.cloud>",
       subject: "Credenciales de ingreso",
       to: [dto.correo],
       template: sendPasswordcreate({ password: ramdonpassword }),

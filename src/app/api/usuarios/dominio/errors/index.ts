@@ -11,7 +11,7 @@ export class UsuarioExiste extends Error {
   status: number;
   constructor() {
     super();
-    this.message = "El Usuario existe";
+    this.message = "El Usuario ya existe";
     this.cause = "negocio";
     this.status = 400;
   }
