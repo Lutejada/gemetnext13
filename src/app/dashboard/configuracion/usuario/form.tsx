@@ -26,7 +26,6 @@ import {
 import {
   useEditarProveedor,
 } from "../../hooks/useProveedor";
-import { cambiarPasswordDTOschema } from "@/app/api/usuarios/use-cases/dto/cambiarPasswordDTO";
 import { Role } from "@/app/api/usuarios/dominio/entity";
 import { useCrearUsuario } from "../../hooks/useUsuario";
 import { crearUsuarioDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
