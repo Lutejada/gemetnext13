@@ -3,7 +3,7 @@ import { Usuario } from "../../dominio/entity";
 import { UsuarioService } from "../../dominio/service";
 import { generateRandomPassword } from "../../../../../lib/password-hash";
 import { EmailService } from "../../../common/email/index";
-import { sendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
+import { SendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
 import { CrearUsuarioDTO } from "../dto/crearUsuario.DTO";
 import { UsuarioExiste } from "../../dominio/errors";
 
@@ -35,10 +35,10 @@ export class CrearUsuarioImp implements CrearUsuario {
     usuarioToCreate.password = encodedPassword;
     await this.usuarioService.crearUsuario(usuarioToCreate);
     await this.emailService.sendEmail({
-      from: "noreply@gemet.cloud>",
+      from: "Gmet <noreply@gemet.cloud>",
       subject: "Credenciales de ingreso",
       to: [dto.correo],
-      template: sendPasswordcreate({ password: ramdonpassword }),
+      template: SendPasswordcreate({ password: ramdonpassword }),
     });
   }
 }

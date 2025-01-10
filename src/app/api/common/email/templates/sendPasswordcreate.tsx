@@ -3,7 +3,7 @@ import React from "react";
 interface Props {
   password: string;
 }
-export const sendPasswordcreate = ({ password }: Props) => {
+export const SendPasswordcreate = ({ password }: Props) => {
   return (
     <div>
       <h1>Bienvenido a gmet</h1>
