@@ -402,6 +402,16 @@ model EjecucionPatrones {
   @@map("ejecucion_patrones")
 }
 
+model PasswordResetToken {
+  id      String   @id @default(cuid())
+  email   String   @unique
+  token   String   @unique
+  expires DateTime @default(now())
+
+  @@index([email, token])
+  @@map("password_reset_token")
+}
+
 enum Role {
   Admin
   Metrologo

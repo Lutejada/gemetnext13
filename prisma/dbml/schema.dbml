@@ -256,6 +256,13 @@ Table ejecucion_patrones {
   documentos Json [not null, default: '[]']
 }
 
+Table password_reset_token {
+  id String [pk]
+  email String [unique, not null]
+  token String [unique, not null]
+  expires DateTime [default: `now()`, not null]
+}
+
 Enum TipoIdentificacion {
   NIT
 }

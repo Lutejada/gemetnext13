@@ -63,7 +63,7 @@ export default function PasswordChangeForm() {
     },
   });
   const params = useParams();
-
+  console.log(params)
   const { verify, error, errorMsg, isLoading } = useVerifyNewUser();
   async function onSubmit(values: PasswordChangeSchema) {
     // Aquí iría la lógica para cambiar la contraseña

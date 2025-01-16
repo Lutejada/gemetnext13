@@ -11,7 +11,6 @@ interface Credentials {
   password: string;
 }
 
-
 export interface UserAuth {
   id: string;
   nombre: string;
@@ -67,7 +66,10 @@ export class AuthService {
       cliente.id
     );
 
-    const valido = await this.isValidPassword(input.verifiedCode, usuario.password);
+    const valido = await this.isValidPassword(
+      input.verifiedCode,
+      usuario.password
+    );
     if (!valido) {
       console.error("Password incorrecto");
       throw new PasswordOrEmailIncorrect();
