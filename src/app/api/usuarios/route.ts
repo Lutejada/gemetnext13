@@ -29,7 +29,11 @@ const passwordResetTokenRepository = new PasswordResetTokenRepositoryImp();
 const passwordResetTokenService = new PasswordResetTokenService(
   passwordResetTokenRepository
 );
-const authService = new AuthService(usuarioService, clienteService);
+const authService = new AuthService(
+  usuarioService,
+  clienteService,
+  passwordResetTokenService
+);
 const crearUsuarioImp = new CrearUsuarioImp(
   usuarioService,
   emailService,

@@ -7,26 +7,37 @@ interface Props {
 
 export const SendPasswordcreate = ({ link, name }: Props) => {
   return (
-    <div className="font-sans text-gray-800">
-      <h1 className="text-2xl font-bold text-green-600">Bienvenido a GMet</h1>
-      <p className="mt-4">
+    <div style={{ fontFamily: "sans-serif", color: "#2d3748" }}>
+      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#38a169" }}>
+        Bienvenido a GMet
+      </h1>
+      <p style={{ marginTop: "1rem" }}>
         Hola <b>{name}</b>,
       </p>
-      <p className="mt-2">
+      <p style={{ marginTop: "0.5rem" }}>
         Nos complace darte la bienvenida a nuestra plataforma de gestión
         metrológica. Por favor, haz clic en el siguiente enlace para validar tu
         cuenta y completar el proceso de registro.
       </p>
       <a
         href={link}
-        className="inline-block mt-4 px-6 py-2 text-lg text-white bg-orange-600 rounded hover:bg-orange-700"
+        style={{
+          display: "inline-block",
+          marginTop: "1rem",
+          padding: "0.75rem 1.5rem",
+          fontSize: "1.125rem",
+          color: "#fff",
+          backgroundColor: "#ed8936",
+          borderRadius: "0.375rem",
+          textDecoration: "none",
+        }}
       >
         Validar Nuevo Usuario
       </a>
-      <p className="mt-4">
+      <p style={{ marginTop: "1rem" }}>
         Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.
       </p>
-      <p className="mt-2">¡Gracias por unirte a nosotros!</p>
+      <p style={{ marginTop: "0.5rem" }}>¡Gracias por unirte a nosotros!</p>
     </div>
   );
 };

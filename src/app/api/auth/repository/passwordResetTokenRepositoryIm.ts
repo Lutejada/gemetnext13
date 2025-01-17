@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { PasswordResetTokenRepository } from ".";
-import { PasswordResetToken } from "@prisma/client";
+import { PasswordResetToken } from "../entity";
+import { Cliente } from "../../cliente/dominio/entity";
 
 export class PasswordResetTokenRepositoryImp
   implements PasswordResetTokenRepository
@@ -20,6 +21,7 @@ export class PasswordResetTokenRepositoryImp
         token: token.token,
         email: token.email,
         expires: token.expires,
+        clienteId: token.cliente.id,
       },
     });
     return {
@@ -27,16 +29,23 @@ export class PasswordResetTokenRepositoryImp
       token: res.token,
       email: res.email,
       expires: res.expires,
+      cliente: { id: res.clienteId, nombre: res.clienteId },
     };
   }
-  async getByToken(token: string) {
+  async getByToken(token: string): Promise<PasswordResetToken | null> {
     const res = await prisma.passwordResetToken.findFirst({
       where: {
         token: token,
       },
     });
     if (!res) return null;
-    return res;
+    return {
+      id: res.id,
+      email: res.email,
+      expires: res.expires,
+      token: res.token,
+      cliente: new Cliente(),
+    };
   }
 
   async getByEmail(email: string) {
@@ -46,6 +55,12 @@ export class PasswordResetTokenRepositoryImp
       },
     });
     if (!res) return null;
-    return res;
+    return {
+      id: res.id,
+      email: res.email,
+      expires: res.expires,
+      token: res.token,
+      cliente: new Cliente(),
+    };
   }
 }

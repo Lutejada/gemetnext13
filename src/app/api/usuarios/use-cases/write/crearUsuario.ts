@@ -39,6 +39,7 @@ export class CrearUsuarioImp implements CrearUsuario {
     });
 
     const token = await this.passwordResetTokenService.generateNewToken(
+      cliente.id,
       dto.correo
     );
     const newPassword = await this.authService.encodePassword(token.token);

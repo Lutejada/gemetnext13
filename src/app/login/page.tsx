@@ -20,8 +20,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getSubdomain } from "@/lib/helpers/getSubDoimain";
 
-
-
 const formSchema = z.object({
   correo: z.string().email(),
   password: z.string().min(8),
@@ -50,7 +48,7 @@ export default function ProfileForm() {
       redirect: false,
     });
     if (res?.error === "Correo no verificado") {
-      router.push(`/change-password/${values.correo}`);
+      // mostrar error
       return;
     }
     if (res?.error) {
