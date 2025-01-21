@@ -20,7 +20,8 @@ export class TokenNotExist extends Error {
   status: number;
   constructor() {
     super();
-    this.message = "Token no existe";
+    this.message =
+      "No se encontro un usuario asociado para cambio de contraseña";
     this.status = 404;
     this.cause = "negocio";
   }

@@ -8,7 +8,7 @@ interface Props {
 export const SendPasswordcreate = ({ link, name }: Props) => {
   return (
     <div style={{ fontFamily: "sans-serif", color: "#2d3748" }}>
-      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#38a169" }}>
+      <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#ed8936" }}>
         Bienvenido a GMet
       </h1>
       <p style={{ marginTop: "1rem" }}>

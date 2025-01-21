@@ -139,15 +139,15 @@ export default function PasswordChangeForm() {
                 Cambiar Contraseña
               </Button>
             </CardFooter>
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{errorMsg}</AlertDescription>
-              </Alert>
-            )}
           </form>
         </Form>
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errorMsg}</AlertDescription>
+          </Alert>
+        )}
       </Card>
     </div>
   );
