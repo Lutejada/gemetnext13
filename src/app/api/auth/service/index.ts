@@ -7,9 +7,12 @@ import {
   PasswordOrEmailIncorrect,
   TokenExpired,
 } from "../errors";
-import { changePasswordDTO } from "../dto/changePasswordDTO";
+import { ChangePasswordDTO } from "../dto/changePasswordDTO";
 import { PasswordResetTokenService } from "./passwordResetTokenService";
-import { isAfter } from "date-fns";
+import { EmailService } from "../../common/email/index";
+import { getBaseDomain } from "@/lib/helpers/getBaseDomain";
+import { ForgotPasswordTemplate } from "../../common/email/templates/forgotPassword";
+import { ForgotPasswordDTO } from "../dto/forgotPasswordDTO";
 
 interface Credentials {
   cliente: string;
@@ -29,7 +32,8 @@ export class AuthService {
   constructor(
     private usuarioService: UsuarioService,
     private clienteService: ClienteService,
-    private passwordResetTokenService: PasswordResetTokenService
+    private passwordResetTokenService: PasswordResetTokenService,
+    private emailService: EmailService
   ) {}
 
   async autenticar(credentials: Credentials): Promise<UserAuth> {
@@ -63,7 +67,7 @@ export class AuthService {
     };
   }
 
-  async changePassword(input: changePasswordDTO) {
+  async changePassword(input: ChangePasswordDTO) {
     const token = await this.passwordResetTokenService.getToken(input.token);
 
     const hasExpired = token.expires < new Date();
@@ -90,6 +94,31 @@ export class AuthService {
     await this.usuarioService.actualizarUsuario(usuario);
     //borrar token
     await this.passwordResetTokenService.deleteToken(token.id);
+  }
+
+  async forgotPassword(input: ForgotPasswordDTO) {
+    const cliente = await this.clienteService.validarClienteExiste(
+      input.clienteNombre
+    );
+    const usuario = await this.usuarioService.validarUsuarioExiste(
+      input.email,
+      cliente.id
+    );
+
+    const token = await this.passwordResetTokenService.generateNewToken(
+      cliente.id,
+      input.email
+    );
+
+    const nombreCompleto = `${usuario.nombre} ${usuario.apellido}`;
+    const baseUrl = getBaseDomain(cliente);
+    const link = `${baseUrl}/change-password/${token.token}`;
+    await this.emailService.sendEmail({
+      from: "Gmet <noreply@gemet.cloud>",
+      subject: "Cambio de contraseña",
+      to: [usuario.correo],
+      template: ForgotPasswordTemplate({ link, name: nombreCompleto }),
+    });
   }
 
   public encodePassword = (password: string) => {

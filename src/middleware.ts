@@ -3,12 +3,12 @@ export { default } from "next-auth/middleware";
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = ["/login", "/change-password/*"];
+const publicRoutes = ["/login", "/change-password/*", "/forgot-password"];
 
 // Función para verificar si la ruta es pública
 const isPublicRoute = (path: string) => {
-  return publicRoutes.some(route => {
-    const regex = new RegExp(`^${route.replace(/\*/g, '.*')}$`);
+  return publicRoutes.some((route) => {
+    const regex = new RegExp(`^${route.replace(/\*/g, ".*")}$`);
     return regex.test(path);
   });
 };
@@ -30,7 +30,6 @@ export async function middleware(request: NextRequest) {
 
   return NextResponse.next();
 }
-
 
 // export const config = { matcher: "/dashboard/:path*" };
 export const config = {

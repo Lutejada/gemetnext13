@@ -1,12 +1,12 @@
 import { object, string } from "zod";
 
-export class changePasswordDTO {
+export class ChangePasswordDTO {
   password: string;
   token: string;
   clienteNombre: string;
 }
 
-export const validarChangePasswordDTO = (value: changePasswordDTO) => {
+export const validarChangePasswordDTO = (value: ChangePasswordDTO) => {
   return object({
     password: string()
       .min(8, {
@@ -20,6 +20,6 @@ export const validarChangePasswordDTO = (value: changePasswordDTO) => {
         }
       ),
     token: string({ description: "token es requerido" }).uuid(),
-    clienteNombre: string({ description: "el nmbre del requerido" }),
+    clienteNombre: string({ description: "el nombre del requerido" }),
   }).parse(value);
 };

@@ -11,7 +11,6 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -22,7 +21,9 @@ import Image from "next/image";
 import { getSubdomain } from "@/lib/helpers/getSubDoimain";
 import { useState } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { AlertCircle } from "lucide-react";
+import { AlertCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { set } from "date-fns";
 
 const formSchema = z.object({
   correo: z.string().email(),
@@ -44,9 +45,11 @@ export default function ProfileForm() {
     isError: false,
     errorMsg: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     setError({
       errorMsg: "",
       isError: false,
@@ -62,6 +65,7 @@ export default function ProfileForm() {
         errorMsg: res.error,
         isError: true,
       }); // mostrar error
+      setIsLoading(false);
       return;
     }
     if (res?.error) {
@@ -70,10 +74,11 @@ export default function ProfileForm() {
         errorMsg: res.error,
         isError: true,
       });
+      setIsLoading(false);
       return;
     }
-
     router.push("/dashboard");
+    setIsLoading(false);
   }
 
   return (
@@ -120,7 +125,25 @@ export default function ProfileForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Ingresar</Button>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                >
+                  Olvide mi contraseña
+                </Link>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex mx-auto"
+                >
+                  <Loader2
+                    className={
+                      "mr-2 h-4 w-4 animate-spin " +
+                      (!isLoading ? "hidden" : "")
+                    }
+                  />
+                  Solicitar cambio
+                </Button>
                 {error.isError && (
                   <Alert variant="destructive">
                     <AlertCircle className="h-4 w-4" />
