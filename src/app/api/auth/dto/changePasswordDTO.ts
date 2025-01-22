@@ -1,15 +1,13 @@
 import { object, string } from "zod";
 
-export class VerifyNewUserDTO {
-  correo: string;
+export class ChangePasswordDTO {
   password: string;
-  verifiedCode: string;
+  token: string;
   clienteNombre: string;
 }
 
-export const validarVerifyNewUser = (value: VerifyNewUserDTO) => {
+export const validarChangePasswordDTO = (value: ChangePasswordDTO) => {
   return object({
-    correo: string({ description: "correo es requerido" }).email(),
     password: string()
       .min(8, {
         message: "La contraseña debe tener al menos 8 caracteres",
@@ -21,7 +19,7 @@ export const validarVerifyNewUser = (value: VerifyNewUserDTO) => {
             "La contraseña debe contener al menos una mayúscula, una minúscula, un número y un carácter especial",
         }
       ),
-    verifiedCode: string({ description: "verifiedCode es requerido" }).min(8),
-    clienteNombre: string({ description: "el nmbre del requerido" }),
+    token: string({ description: "token es requerido" }).uuid(),
+    clienteNombre: string({ description: "el nombre del requerido" }),
   }).parse(value);
 };

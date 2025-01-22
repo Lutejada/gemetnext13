@@ -19,8 +19,11 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { getSubdomain } from "@/lib/helpers/getSubDoimain";
-
-
+import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertCircle, Loader2 } from "lucide-react";
+import Link from "next/link";
+import { set } from "date-fns";
 
 const formSchema = z.object({
   correo: z.string().email(),
@@ -38,11 +41,19 @@ export default function ProfileForm() {
       password: "",
     },
   });
+  const [error, setError] = useState({
+    isError: false,
+    errorMsg: "",
+  });
+  const [isLoading, setIsLoading] = useState(false);
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
+    setIsLoading(true);
+    setError({
+      errorMsg: "",
+      isError: false,
+    });
     const res = await signIn("credentials", {
       correo: values.correo,
       password: values.password,
@@ -50,14 +61,24 @@ export default function ProfileForm() {
       redirect: false,
     });
     if (res?.error === "Correo no verificado") {
-      router.push(`/change-password/${values.correo}`);
+      setError({
+        errorMsg: res.error,
+        isError: true,
+      }); // mostrar error
+      setIsLoading(false);
       return;
     }
     if (res?.error) {
       //pendiente por agregar el mensaje de error
+      setError({
+        errorMsg: res.error,
+        isError: true,
+      });
+      setIsLoading(false);
       return;
     }
     router.push("/dashboard");
+    setIsLoading(false);
   }
 
   return (
@@ -104,7 +125,32 @@ export default function ProfileForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit">Ingresar</Button>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
+                >
+                  Olvide mi contraseña
+                </Link>
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="flex mx-auto"
+                >
+                  <Loader2
+                    className={
+                      "mr-2 h-4 w-4 animate-spin " +
+                      (!isLoading ? "hidden" : "")
+                    }
+                  />
+                  Solicitar cambio
+                </Button>
+                {error.isError && (
+                  <Alert variant="destructive">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertTitle>Error</AlertTitle>
+                    <AlertDescription>{error.errorMsg}</AlertDescription>
+                  </Alert>
+                )}
               </form>
             </Form>
           </div>

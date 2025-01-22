@@ -22,16 +22,15 @@ import {
 } from "@/components/ui/form";
 import * as z from "zod";
 import { useParams } from "next/navigation";
-import { useVerifyNewUser } from "@/app/dashboard/hooks/useAuth";
+import { useChangePassword } from "@/app/dashboard/hooks/useAuth";
 import { getSubdomain } from "@/lib/helpers/getSubDoimain";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 const passwordChangeSchema = z
   .object({
-    verificationCode: z.string().min(8, {
-      message: "El código de verificación debe tener al menos 8 caracteres",
-    }),
     newPassword: z
       .string()
       .min(8, {
@@ -54,56 +53,47 @@ const passwordChangeSchema = z
 export type PasswordChangeSchema = z.infer<typeof passwordChangeSchema>;
 
 export default function PasswordChangeForm() {
+  const router = useRouter();
   const form = useForm<PasswordChangeSchema>({
     resolver: zodResolver(passwordChangeSchema),
     defaultValues: {
-      verificationCode: "",
       newPassword: "",
       confirmPassword: "",
     },
   });
   const params = useParams();
-
-  const { verify, error, errorMsg, isLoading } = useVerifyNewUser();
+  const { toast } = useToast();
+  const { change, error, errorMsg, isLoading } = useChangePassword();
   async function onSubmit(values: PasswordChangeSchema) {
-    // Aquí iría la lógica para cambiar la contraseña
-    const decodeEmail = decodeURIComponent(params?.email as string);
     const clienteNombre = getSubdomain() ?? "";
-    await verify({
+
+    const token: string = params?.token.toString() ?? "";
+    if (!token) {
+      console.error("Token is missing");
+      return;
+    }
+
+    await change({
       password: values.newPassword,
-      verifiedCode: values.verificationCode,
-      clienteNombre: clienteNombre,
-      correo: decodeEmail,
+      clienteNombre,
+      token: token,
     });
+    toast({
+      title: "La contraseña se cambio correctamente ingresa session",
+      variant: "success",
+    });
+    await router.push("/login");
   }
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-md">
         <CardHeader>
           <CardTitle>Cambiar Contraseña</CardTitle>
-          <CardDescription>
-            Ingresa tu código de verificación y nueva contraseña
-          </CardDescription>
+          <CardDescription>Ingresa una una contraseña</CardDescription>
         </CardHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <CardContent className="space-y-4">
-              <FormField
-                control={form.control}
-                name="verificationCode"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Código de Verificación</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Ingresa el código de verificación"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
               <FormField
                 control={form.control}
                 name="newPassword"
@@ -149,15 +139,15 @@ export default function PasswordChangeForm() {
                 Cambiar Contraseña
               </Button>
             </CardFooter>
-            {error && (
-              <Alert variant="destructive">
-                <AlertCircle className="h-4 w-4" />
-                <AlertTitle>Error</AlertTitle>
-                <AlertDescription>{errorMsg}</AlertDescription>
-              </Alert>
-            )}
           </form>
         </Form>
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription>{errorMsg}</AlertDescription>
+          </Alert>
+        )}
       </Card>
     </div>
   );

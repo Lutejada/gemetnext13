@@ -366,6 +366,7 @@ model cliente {
   EjecucionEquipos               EjecucionEquipos[]
   EjecucionPatrones              EjecucionPatrones[]
   Proveedor                      Proveedor[]
+  PasswordResetToken             PasswordResetToken[]
 }
 
 model EjecucionEquipos {
@@ -390,9 +391,9 @@ model EjecucionPatrones {
   fechaEjecucion       DateTime             @map("fecha_ejecucion")
   fechaCreacion        DateTime             @default(now()) @map("fecha_creacion")
   clienteId            String               @map("cliente_id")
+  cliente              cliente              @relation(fields: [clienteId], references: [id])
   observaciones        String
   ejecutorId           String               @map("ejecutor_id")
-  cliente              cliente              @relation(fields: [clienteId], references: [id])
   responsable          responsable          @relation(fields: [ejecutorId], references: [id])
   programacionPatron   ProgramacionPatrones @relation(fields: [programacionPatronId], references: [id])
   programacionPatronId String               @unique @map("programacion_patron_id")
@@ -400,6 +401,18 @@ model EjecucionPatrones {
 
   @@index([clienteId, programacionPatronId])
   @@map("ejecucion_patrones")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  token     String   @unique
+  expires   DateTime @default(now())
+  clienteId String   @map("cliente_id")
+  cliente   cliente  @relation(fields: [clienteId], references: [id])
+
+  @@index([email, token])
+  @@map("password_reset_token")
 }
 
 enum Role {

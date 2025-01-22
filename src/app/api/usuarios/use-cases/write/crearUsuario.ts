@@ -1,23 +1,30 @@
-import { encodePassword } from "@/lib/password-hash";
 import { Usuario } from "../../dominio/entity";
 import { UsuarioService } from "../../dominio/service";
-import { generateRandomPassword } from "../../../../../lib/password-hash";
 import { EmailService } from "../../../common/email/index";
 import { SendPasswordcreate } from "@/app/api/common/email/templates/sendPasswordcreate";
 import { CrearUsuarioDTO } from "../dto/crearUsuario.DTO";
 import { UsuarioExiste } from "../../dominio/errors";
+import { PasswordResetTokenService } from "../../../auth/service/passwordResetTokenService";
+import { Cliente } from "@/app/api/cliente/dominio/entity";
+import { AuthService } from "../../../auth/service/index";
+import { getBaseDomain } from "../../../../../lib/helpers/getBaseDomain";
 
 interface CrearUsuario {
-  execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void>;
+  execute(cliente: Cliente, dto: CrearUsuarioDTO): Promise<void>;
 }
 
 export class CrearUsuarioImp implements CrearUsuario {
   constructor(
     private usuarioService: UsuarioService,
-    private emailService: EmailService
+    private emailService: EmailService,
+    private authService: AuthService,
+    private passwordResetTokenService: PasswordResetTokenService
   ) {}
-  async execute(clienteId: string, dto: CrearUsuarioDTO): Promise<void> {
-    const user = await this.usuarioService.obtenerUsuarioPorCorreo(dto.correo, clienteId);
+  async execute(cliente: Cliente, dto: CrearUsuarioDTO): Promise<void> {
+    const user = await this.usuarioService.obtenerUsuarioPorCorreo(
+      dto.correo,
+      cliente.id
+    );
     if (user) {
       throw new UsuarioExiste();
     }
@@ -28,17 +35,24 @@ export class CrearUsuarioImp implements CrearUsuario {
       cargo: dto.cargo,
       rol: dto.rol,
       correo: dto.correo,
-      cliente: { id: clienteId, nombre: clienteId },
+      cliente: cliente,
     });
-    const ramdonpassword = generateRandomPassword();
-    const encodedPassword = await encodePassword(ramdonpassword);
-    usuarioToCreate.password = encodedPassword;
+
+    const token = await this.passwordResetTokenService.generateNewToken(
+      cliente.id,
+      dto.correo
+    );
+    const newPassword = await this.authService.encodePassword(token.token);
+    usuarioToCreate.password = newPassword;
     await this.usuarioService.crearUsuario(usuarioToCreate);
+    const baseUrl = getBaseDomain(cliente);
+    const link = `${baseUrl}/change-password/${token.token}`;
+    const nombreCompleto = `${dto.nombre} ${dto.apellido}`;
     await this.emailService.sendEmail({
       from: "Gmet <noreply@gemet.cloud>",
       subject: "Credenciales de ingreso",
       to: [dto.correo],
-      template: SendPasswordcreate({ password: ramdonpassword }),
+      template: SendPasswordcreate({ link, name: nombreCompleto }),
     });
   }
 }

@@ -256,6 +256,14 @@ Table ejecucion_patrones {
   documentos Json [not null, default: '[]']
 }
 
+Table password_reset_token {
+  id String [pk]
+  email String [unique, not null]
+  token String [unique, not null]
+  expires DateTime [default: `now()`, not null]
+  clienteId String [not null]
+}
+
 Enum TipoIdentificacion {
   NIT
 }
@@ -359,3 +367,5 @@ Ref: ejecucion_patrones.clienteId > cliente.id
 Ref: ejecucion_patrones.ejecutorId > responsable.id
 
 Ref: ejecucion_patrones.programacionPatronId > programacion_patrones.id
+
+Ref: password_reset_token.clienteId > cliente.id

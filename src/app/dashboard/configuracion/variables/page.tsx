@@ -20,12 +20,9 @@ import {
 } from '@/components/ui/select'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
-import { obtenerResponsables } from '../../hooks/useResponsables'
-import { crearUbicacion } from '../../hooks/useUbicaciones'
 import { useToast } from '@/components/ui/use-toast'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { AlertCircle, Loader2 } from 'lucide-react'
-import { CrearVariableDto } from '@/src/app/api/variables/dtos/crear'
 import { useCrearVariable } from '../../hooks/useVariables'
 import { obtenerMagnitudes } from '../../hooks/useMagnitud'
 

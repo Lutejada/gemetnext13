@@ -5,19 +5,23 @@ interface Props {
   name: string;
 }
 
-export const SendPasswordcreate = ({ link, name }: Props) => {
+export const ForgotPasswordTemplate = ({ link, name }: Props) => {
   return (
-    <div style={{ fontFamily: "sans-serif", color: "#2d3748" }}>
+    <div
+      style={{ fontFamily: "sans-serif", color: "#2d3748", lineHeight: "1.6" }}
+    >
       <h1 style={{ fontSize: "1.5rem", fontWeight: "bold", color: "#ed8936" }}>
-        Bienvenido a GMet
+        Restablecimiento de Contraseña
       </h1>
       <p style={{ marginTop: "1rem" }}>
         Hola <b>{name}</b>,
       </p>
       <p style={{ marginTop: "0.5rem" }}>
-        Nos complace darte la bienvenida a nuestra plataforma de gestión
-        metrológica. Por favor, haz clic en el siguiente enlace para validar tu
-        cuenta y completar el proceso de registro.
+        Hemos recibido una solicitud para restablecer tu contraseña. Si no
+        realizaste esta solicitud, puedes ignorar este correo electrónico.
+      </p>
+      <p style={{ marginTop: "0.5rem" }}>
+        Para restablecer tu contraseña, haz clic en el siguiente enlace:
       </p>
       <a
         href={link}
@@ -32,12 +36,16 @@ export const SendPasswordcreate = ({ link, name }: Props) => {
           textDecoration: "none",
         }}
       >
-        Validar Nuevo Usuario
+        Restablecer Contraseña
       </a>
+      <p style={{ marginTop: "1rem" }}>
+        Este enlance tiene un tiempo de expiracion de 24 horas. Pasado el tiempo
+        deberas solicitar un nuevo enlace.
+      </p>
       <p style={{ marginTop: "1rem" }}>
         Si tienes alguna pregunta o necesitas ayuda, no dudes en contactarnos.
       </p>
-      <p style={{ marginTop: "0.5rem" }}>¡Gracias por unirte a nosotros!</p>
+      <p style={{ marginTop: "0.5rem" }}>¡Gracias!</p>
     </div>
   );
 };
