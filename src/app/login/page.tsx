@@ -142,7 +142,7 @@ export default function ProfileForm() {
                       (!isLoading ? "hidden" : "")
                     }
                   />
-                  Solicitar cambio
+                  Iniciar sesión
                 </Button>
                 {error.isError && (
                   <Alert variant="destructive">
