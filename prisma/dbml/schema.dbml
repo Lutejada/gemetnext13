@@ -240,9 +240,10 @@ Table ejecucion_equipos {
   fechaCreacion DateTime [default: `now()`, not null]
   clienteId String [not null]
   observaciones String [not null]
-  ejecutorId String [not null]
   programacionEquipoId String [unique, not null]
   documentos Json [not null, default: '[]']
+  proveedorId String
+  usuarioId String
 }
 
 Table ejecucion_patrones {
@@ -358,9 +359,11 @@ Ref: proveedor.clienteId > cliente.id
 
 Ref: ejecucion_equipos.clienteId > cliente.id
 
-Ref: ejecucion_equipos.ejecutorId > responsable.id
-
 Ref: ejecucion_equipos.programacionEquipoId > programacion_equipos.id
+
+Ref: ejecucion_equipos.proveedorId > proveedor.id
+
+Ref: ejecucion_equipos.usuarioId > usuario.id
 
 Ref: ejecucion_patrones.clienteId > cliente.id
 

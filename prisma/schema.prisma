@@ -50,7 +50,6 @@ model responsable {
   fecha_inactivacion  DateTime?
   cliente_id          String
   cliente             cliente             @relation(fields: [cliente_id], references: [id])
-  ejecucion_equipos   EjecucionEquipos[]
   EjecucionPatrones   EjecucionPatrones[]
 
   @@index([cliente_id])
@@ -117,20 +116,21 @@ model frecuencia {
 }
 
 model usuario {
-  id                 String    @id @default(cuid())
-  usuario            String    @db.VarChar(40)
-  nombre             String    @db.VarChar(40)
-  apellido           String    @db.VarChar(40)
-  cargo              String    @db.VarChar(40)
-  rol                Role      @default(Consulta)
-  correo             String    @unique @db.VarChar(50)
-  password           String    @db.VarChar(250)
-  correoVerificado   Boolean   @default(false) @map("correo_verificado")
-  fechaCreacion      DateTime  @default(now()) @map("fecha_creacion")
-  fechaActualizacion DateTime  @updatedAt @map("fecha_actualizacion")
-  fechaInactivacion  DateTime? @map("fecha_inactivacion")
-  clienteId          String    @map("cliente_id")
-  cliente            cliente   @relation(fields: [clienteId], references: [id])
+  id                 String             @id @default(cuid())
+  usuario            String             @db.VarChar(40)
+  nombre             String             @db.VarChar(40)
+  apellido           String             @db.VarChar(40)
+  cargo              String             @db.VarChar(40)
+  rol                Role               @default(Consulta)
+  correo             String             @unique @db.VarChar(50)
+  password           String             @db.VarChar(250)
+  correoVerificado   Boolean            @default(false) @map("correo_verificado")
+  fechaCreacion      DateTime           @default(now()) @map("fecha_creacion")
+  fechaActualizacion DateTime           @updatedAt @map("fecha_actualizacion")
+  fechaInactivacion  DateTime?          @map("fecha_inactivacion")
+  clienteId          String             @map("cliente_id")
+  cliente            cliente            @relation(fields: [clienteId], references: [id])
+  EjecucionEquipos   EjecucionEquipos[]
 
   @@index([clienteId, correo])
 }
@@ -338,6 +338,7 @@ model Proveedor {
   email                String?
   cliente              cliente            @relation(fields: [clienteId], references: [id])
   clienteId            String
+  EjecucionEquipos     EjecucionEquipos[]
 
   @@index([clienteId, numeroIdentificacion])
   @@map("proveedor")
@@ -369,18 +370,23 @@ model cliente {
   PasswordResetToken             PasswordResetToken[]
 }
 
+//PROVEDOR
+//USUARIO
+
 model EjecucionEquipos {
   id                   String              @id @default(uuid())
   fechaEjecucion       DateTime            @map("fecha_ejecucion")
   fechaCreacion        DateTime            @default(now()) @map("fecha_creacion")
   clienteId            String              @map("cliente_id")
   observaciones        String
-  ejecutorId           String              @map("ejecutor_id")
   cliente              cliente             @relation(fields: [clienteId], references: [id])
-  responsable          responsable         @relation(fields: [ejecutorId], references: [id])
   programacionEquipo   ProgramacionEquipos @relation(fields: [programacionEquipoId], references: [id])
   programacionEquipoId String              @unique @map("programacion_equipo_id")
   documentos           Json                @default("[]")
+  proveedorId          String?             @map("proveedor_id")
+  proveedor            Proveedor?          @relation(fields: [proveedorId], references: [id])
+  usuarioId            String?             @map("usuario_id")
+  usuario              usuario?            @relation(fields: [usuarioId], references: [id])
 
   @@index([clienteId, programacionEquipoId])
   @@map("ejecucion_equipos")
