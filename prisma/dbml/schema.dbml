@@ -244,6 +244,7 @@ Table ejecucion_equipos {
   documentos Json [not null, default: '[]']
   proveedorId String
   usuarioId String
+  tipoEjecutor tipoEjecutor [not null, default: 'INTERNO']
 }
 
 Table ejecucion_patrones {
@@ -252,9 +253,11 @@ Table ejecucion_patrones {
   fechaCreacion DateTime [default: `now()`, not null]
   clienteId String [not null]
   observaciones String [not null]
-  ejecutorId String [not null]
   programacionPatronId String [unique, not null]
   documentos Json [not null, default: '[]']
+  proveedorId String
+  usuarioId String
+  tipoEjecutor tipoEjecutor [not null, default: 'INTERNO']
 }
 
 Table password_reset_token {
@@ -285,6 +288,11 @@ Enum cumple {
 Enum EstadoProgramacion {
   PENDIENTE
   COMPLETADO
+}
+
+Enum tipoEjecutor {
+  INTERNO
+  EXTERNO
 }
 
 Ref: equipo.marca_id > marca.id
@@ -367,8 +375,10 @@ Ref: ejecucion_equipos.usuarioId > usuario.id
 
 Ref: ejecucion_patrones.clienteId > cliente.id
 
-Ref: ejecucion_patrones.ejecutorId > responsable.id
-
 Ref: ejecucion_patrones.programacionPatronId > programacion_patrones.id
+
+Ref: ejecucion_patrones.proveedorId > proveedor.id
+
+Ref: ejecucion_patrones.usuarioId > usuario.id
 
 Ref: password_reset_token.clienteId > cliente.id

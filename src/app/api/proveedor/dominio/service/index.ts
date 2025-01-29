@@ -14,6 +14,14 @@ export class ProveedorService {
     return this.proveedorReadRepository.obtenerPorID(id, clienteId);
   }
 
+  async validarPorId(id: string, clienteId: string) {
+    const proveedor = await this.obtenerPorId(id, clienteId);
+    if (!proveedor) {
+      throw new ProveedorNoExiste();
+    }
+    return proveedor;
+  }
+
   async obtenerListadoProveedores(clienteId: string) {
     return this.proveedorReadRepository.obtenerListadoProveedores(clienteId);
   }

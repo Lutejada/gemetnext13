@@ -13,24 +13,34 @@ import { ResponsableRepositoryReader } from "@/app/api/responsables/domain/repos
 import { CrearEjecucionDTO } from "../../dto/crearEjecucionEquipo";
 import { IFilesAdaptor } from "@/app/api/common/files/saveFiles";
 import { randomUUID } from "crypto";
-import { Documentos } from "../../../dominio/entity";
+import { Documentos, TipoEjecutor } from "../../../dominio/entity";
+import { UsuarioService } from "../../../../usuarios/dominio/service/index";
+import { ProveedorService } from "../../../../proveedor/dominio/service/index";
+import { U } from "@vercel/blob/dist/create-folder-Oa5wYhFM.cjs";
+import { Usuario } from "@/app/api/usuarios/dominio/entity";
+import { Proveedor } from "@/app/api/proveedor/dominio/entity";
 
 export class CrearEjecucionEquipos {
   constructor(
     private ejecucionRepo: EjecucionEquipoWriteRepository,
     private programacionRepo: EquipoReadRepository,
     private programacionRepoWrite: EquipoWriteRepository,
-    private responsableRepo: ResponsableRepositoryReader,
+    private usuarioService: UsuarioService,
+    private proveedorService: ProveedorService,
     private saveFilesAdaptor: IFilesAdaptor
   ) {}
   async execute(clienteId: string, dto: CrearEjecucionDTO) {
-    const responsable = await this.responsableRepo.obtenerResponsablePorID(
-      clienteId,
-      dto.ejecutorId
-    );
-    if (!responsable) {
-      throw new ResponsableNoExiste();
+    let usuario: Usuario | undefined;
+    let proveedor: Proveedor | undefined;
+    if (dto.tipoEjecutor === TipoEjecutor.INTERNO) {
+      usuario = await this.usuarioService.validarUsuarioPorId(dto.ejecutorId);
+    } else {
+      proveedor = await this.proveedorService.validarPorId(
+        dto.ejecutorId,
+        clienteId
+      );
     }
+
     const programacionEquipo =
       await this.programacionRepo.obtenerProgramacionPorId(
         dto.programacionEquipoId,
@@ -54,13 +64,15 @@ export class CrearEjecucionEquipos {
       id: ejecucionEquipoId,
       observaciones: dto.observaciones,
       fechaEjecucion: dto.fechaEjecucion,
-      responsable: responsable,
       cliente: {
         id: clienteId,
         nombre: clienteId,
       },
       programacionEquipo: programacionEquipo,
       documentos: archivosUrls,
+      tipoEjecutor: dto.tipoEjecutor,
+      proveedor: proveedor,
+      usuario: usuario,
     });
     await this.programacionRepoWrite.cambiarProgramacionEstado(
       dto.programacionEquipoId,

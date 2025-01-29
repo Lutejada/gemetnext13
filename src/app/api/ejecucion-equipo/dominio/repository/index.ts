@@ -6,7 +6,5 @@ export interface EjecucionEquipoReadRepository {
 export interface EjecucionEquipoWriteRepository {
   crear(
     ejecucionEquipo: EjecucionEquipo
-  ): Promise<
-    Omit<EjecucionEquipo, "cliente" | "responsable" | "programacionEquipo">
-  >;
+  ): Promise<Omit<EjecucionEquipo, "cliente" | "programacionEquipo">>;
 }

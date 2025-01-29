@@ -40,17 +40,16 @@ model equipo {
 }
 
 model responsable {
-  id                  String              @id @default(cuid())
+  id                  String      @id @default(cuid())
   ubicacion           ubicacion[]
-  identificacion      String              @unique @db.VarChar(10)
-  nombre              String              @db.VarChar(40)
-  apellido            String              @db.VarChar(40)
-  fecha_creacion      DateTime            @default(now())
-  fecha_actualizacion DateTime            @updatedAt
+  identificacion      String      @unique @db.VarChar(10)
+  nombre              String      @db.VarChar(40)
+  apellido            String      @db.VarChar(40)
+  fecha_creacion      DateTime    @default(now())
+  fecha_actualizacion DateTime    @updatedAt
   fecha_inactivacion  DateTime?
   cliente_id          String
-  cliente             cliente             @relation(fields: [cliente_id], references: [id])
-  EjecucionPatrones   EjecucionPatrones[]
+  cliente             cliente     @relation(fields: [cliente_id], references: [id])
 
   @@index([cliente_id])
 }
@@ -116,21 +115,22 @@ model frecuencia {
 }
 
 model usuario {
-  id                 String             @id @default(cuid())
-  usuario            String             @db.VarChar(40)
-  nombre             String             @db.VarChar(40)
-  apellido           String             @db.VarChar(40)
-  cargo              String             @db.VarChar(40)
-  rol                Role               @default(Consulta)
-  correo             String             @unique @db.VarChar(50)
-  password           String             @db.VarChar(250)
-  correoVerificado   Boolean            @default(false) @map("correo_verificado")
-  fechaCreacion      DateTime           @default(now()) @map("fecha_creacion")
-  fechaActualizacion DateTime           @updatedAt @map("fecha_actualizacion")
-  fechaInactivacion  DateTime?          @map("fecha_inactivacion")
-  clienteId          String             @map("cliente_id")
-  cliente            cliente            @relation(fields: [clienteId], references: [id])
+  id                 String              @id @default(cuid())
+  usuario            String              @db.VarChar(40)
+  nombre             String              @db.VarChar(40)
+  apellido           String              @db.VarChar(40)
+  cargo              String              @db.VarChar(40)
+  rol                Role                @default(Consulta)
+  correo             String              @unique @db.VarChar(50)
+  password           String              @db.VarChar(250)
+  correoVerificado   Boolean             @default(false) @map("correo_verificado")
+  fechaCreacion      DateTime            @default(now()) @map("fecha_creacion")
+  fechaActualizacion DateTime            @updatedAt @map("fecha_actualizacion")
+  fechaInactivacion  DateTime?           @map("fecha_inactivacion")
+  clienteId          String              @map("cliente_id")
+  cliente            cliente             @relation(fields: [clienteId], references: [id])
   EjecucionEquipos   EjecucionEquipos[]
+  EjecucionPatrones  EjecucionPatrones[]
 
   @@index([clienteId, correo])
 }
@@ -329,16 +329,17 @@ enum TipoIdentificacion {
 }
 
 model Proveedor {
-  id                   String             @id @default(uuid())
+  id                   String              @id @default(uuid())
   nombre               String
-  tipoIdetificacion    TipoIdentificacion @default(NIT)
-  numeroIdentificacion String             @unique
+  tipoIdetificacion    TipoIdentificacion  @default(NIT)
+  numeroIdentificacion String              @unique
   direccion            String?
   telefono             String?
   email                String?
-  cliente              cliente            @relation(fields: [clienteId], references: [id])
+  cliente              cliente             @relation(fields: [clienteId], references: [id])
   clienteId            String
   EjecucionEquipos     EjecucionEquipos[]
+  EjecucionPatrones    EjecucionPatrones[]
 
   @@index([clienteId, numeroIdentificacion])
   @@map("proveedor")
@@ -387,6 +388,7 @@ model EjecucionEquipos {
   proveedor            Proveedor?          @relation(fields: [proveedorId], references: [id])
   usuarioId            String?             @map("usuario_id")
   usuario              usuario?            @relation(fields: [usuarioId], references: [id])
+  tipoEjecutor         tipoEjecutor        @default(INTERNO) @map("tipo_ejecutor")
 
   @@index([clienteId, programacionEquipoId])
   @@map("ejecucion_equipos")
@@ -399,11 +401,14 @@ model EjecucionPatrones {
   clienteId            String               @map("cliente_id")
   cliente              cliente              @relation(fields: [clienteId], references: [id])
   observaciones        String
-  ejecutorId           String               @map("ejecutor_id")
-  responsable          responsable          @relation(fields: [ejecutorId], references: [id])
   programacionPatron   ProgramacionPatrones @relation(fields: [programacionPatronId], references: [id])
   programacionPatronId String               @unique @map("programacion_patron_id")
   documentos           Json                 @default("[]")
+  proveedorId          String?              @map("proveedor_id")
+  proveedor            Proveedor?           @relation(fields: [proveedorId], references: [id])
+  usuarioId            String?              @map("usuario_id")
+  usuario              usuario?             @relation(fields: [usuarioId], references: [id])
+  tipoEjecutor         tipoEjecutor         @default(INTERNO) @map("tipo_ejecutor")
 
   @@index([clienteId, programacionPatronId])
   @@map("ejecucion_patrones")
@@ -437,4 +442,9 @@ enum cumple {
 enum EstadoProgramacion {
   PENDIENTE
   COMPLETADO
+}
+
+enum tipoEjecutor {
+  INTERNO
+  EXTERNO
 }
