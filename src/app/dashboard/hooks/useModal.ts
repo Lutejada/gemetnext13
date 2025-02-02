@@ -1,9 +1,9 @@
 import { useState } from "react";
 
-export const useModal = () => {
+export const useModalDropdown = () => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [isClickOpenModal, setIsClickOpenModal] = useState(false);
-  const clickOpenModal = () => {
+  const clickDropdownItem = () => {
     setIsClickOpenModal(true);
   };
 
@@ -11,7 +11,7 @@ export const useModal = () => {
     setIsOpenModal(false);
   };
 
-  const onOpenChange = (value: boolean) => {
+  const detectDropdownClose = (value: boolean) => {
     if (isClickOpenModal && value === false) {
       setIsOpenModal(true);
     }
@@ -22,9 +22,9 @@ export const useModal = () => {
 
   return {
     isOpenModal,
-    clickOpenModal,
+    clickDropdownItem,
     closeModal,
-    onOpenChange,
+    detectDropdownClose,
     onOpenChangeModal,
   };
 };

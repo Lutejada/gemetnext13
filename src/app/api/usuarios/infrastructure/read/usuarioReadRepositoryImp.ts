@@ -4,6 +4,16 @@ import { UsuarioReadRepository } from "../../dominio/repository";
 import { usuario as UsuarioPrisma } from "@prisma/client";
 
 export class UsuarioReadRepositoryImp implements UsuarioReadRepository {
+  async obtenerPorId(usuarioId: string): Promise<Usuario | null> {
+    const res = await prisma.usuario.findUnique({
+      where: {
+        id: usuarioId,
+      },
+    });
+
+    if (!res) return null;
+    return this.mapToDomainUsuario(res);
+  }
   async listarUsuarios(clienteId: string): Promise<Usuario[]> {
     const res = await prisma.usuario.findMany({
       where: {
