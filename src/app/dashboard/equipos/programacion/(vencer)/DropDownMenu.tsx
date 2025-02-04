@@ -14,29 +14,28 @@ interface Props {
 
 import { DialogWrapper } from "@/components/dialogWrapper";
 import { FormEjecucionEquipo } from "./form";
-import { useModal } from "@/app/dashboard/hooks/useModal";
-import { useState } from "react";
+import { useModalDropdown } from "@/app/dashboard/hooks/useModal";
 export const DropDownMenuEjecucionEquipo = ({
   isCompleted,
   programacionEquipoId,
 }: Props) => {
   const {
     isOpenModal,
-    clickOpenModal,
+    clickDropdownItem,
     onOpenChangeModal,
-    onOpenChange,
+    detectDropdownClose,
     closeModal,
-  } = useModal();
+  } = useModalDropdown();
   return (
     <>
-      <DropdownMenu onOpenChange={onOpenChange}>
+      <DropdownMenu onOpenChange={detectDropdownClose}>
         <DropdownMenuTrigger asChild>
           <Button variant="ghost" className="h-8 w-8 p-0">
             <MoreHorizontal className="h-4 w-4" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onClick={clickOpenModal} disabled={isCompleted}>
+          <DropdownMenuItem onClick={clickDropdownItem} disabled={isCompleted}>
             Ejecutar
           </DropdownMenuItem>
         </DropdownMenuContent>
