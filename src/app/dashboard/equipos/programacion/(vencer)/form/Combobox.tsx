@@ -17,7 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useForm } from "react-hook-form";
+import { UseFormReturn, type useForm } from "react-hook-form";
 import {
   FormControl,
   FormField,
@@ -25,9 +25,10 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { TipoEjecutor } from "@/app/api/ejecucion-equipo/dominio/entity";
 
 interface Props {
-  form: ReturnType<typeof useForm>;
+  form: UseFormReturn<any>;
   listValues: { value: string; label: string }[];
   name: string;
   label: string;

@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/select";
 import { obtenerResponsables } from "@/app/dashboard/hooks/useResponsables";
 import { Textarea } from "@/components/ui/textarea";
-import { crearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
+import { useCrearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
@@ -43,6 +43,7 @@ import { TipoEjecutor } from "@/app/api/ejecucion-equipo/dominio/entity";
 import { useListadoProvedores } from "../../../../hooks/useProveedor";
 import { useListadoUsuarios } from "../../../../hooks/useUsuario";
 import { ComboboxForm } from "./Combobox";
+import { useState } from "react";
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
   observaciones: z
@@ -77,12 +78,23 @@ export function FormEjecucionEquipo({
     value: proveedor.id,
     label: proveedor.nombre,
   }));
+
   const { usuarios } = useListadoUsuarios();
-  const { crear, error, errorMsg, isLoading } = crearEjecucionEquipo();
+  const listValuesUsuarios = usuarios.map((usuario) => ({
+    value: usuario.id,
+    label: usuario.nombre,
+  }));
+  const { crear, error, errorMsg, isLoading } = useCrearEjecucionEquipo();
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
   });
+
   const router = useRouter();
+  const [tipoProvider, setTipoProvider] = useState("");
+  const tipoProveedor = (field: (...event: any[]) => void, e: string) => {
+    field(e);
+    setTipoProvider(e);
+  };
 
   async function onSubmit(data: FormValues) {
     await crear({
@@ -154,7 +166,10 @@ export function FormEjecucionEquipo({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Tipo de ejecutor</FormLabel>
-              <Select onValueChange={field.onChange} value={field.value}>
+              <Select
+                onValueChange={(e) => tipoProveedor(field.onChange, e)}
+                value={field.value}
+              >
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Seleccione un Tipo de ejecutor" />
@@ -169,14 +184,24 @@ export function FormEjecucionEquipo({
             </FormItem>
           )}
         />
-
-        <ComboboxForm
-          form={form}
-          listValues={listValuesProveedores}
-          label="Proveedores"
-          name="ejecutorId"
-          placeholder="Seleccione un proveedor"
-        />
+        {tipoProvider === TipoEjecutor.EXTERNO && (
+          <ComboboxForm
+            form={form}
+            listValues={listValuesProveedores}
+            label="Proveedores"
+            name="ejecutorId"
+            placeholder="Seleccione un proveedor"
+          />
+        )}
+        {tipoProvider === TipoEjecutor.INTERNO && (
+          <ComboboxForm
+            form={form}
+            listValues={listValuesUsuarios}
+            label="Usuarios"
+            name="ejecutorId"
+            placeholder="Seleccione un usuario"
+          />
+        )}
 
         <FormField
           control={form.control}

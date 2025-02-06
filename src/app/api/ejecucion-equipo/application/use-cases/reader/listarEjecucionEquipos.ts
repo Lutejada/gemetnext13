@@ -17,8 +17,8 @@ export class ListarEjecucionEquipos {
       observaciones: e.observaciones,
       equipoDescripcion: e.programacionEquipo.equipo?.descripcion ?? "",
       fechaEjecucion: format(new Date(e.fechaEjecucion), "dd-MM-yyyy"),
-      responsable: e.responsable.nombre + " " + e.responsable.apellido,
-      documentos: e.documentos
+      responsable: e?.proveedor ? e.proveedor.nombre : e.usuario?.nombre ?? "",
+      documentos: e.documentos,
     }));
   }
 }

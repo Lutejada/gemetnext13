@@ -8,6 +8,8 @@ import {
 } from "@/app/api/equipos/dominio";
 import { Responsable } from "@/app/api/responsables/domain/entity";
 import { Equipo } from "../../../equipos/dominio/index";
+import { Proveedor } from "@/app/api/proveedor/dominio/entity";
+import { Usuario } from "@/app/api/usuarios/dominio/entity";
 
 export class EjecucionEquiposReadRepositoryImp
   implements EjecucionEquipoReadRepository
@@ -21,7 +23,8 @@ export class EjecucionEquiposReadRepositoryImp
             equipo: true,
           },
         },
-        responsable: true,
+        proveedor: true,
+        usuario: true,
       },
     });
 
@@ -53,11 +56,17 @@ export class EjecucionEquiposReadRepositoryImp
               ubicacion_id: res.programacionEquipo.equipo.ubicacion_id,
             }),
           }),
-          responsable: new Responsable({
-            id: res.responsable.id,
-            apellido: res.responsable.apellido,
-            identificacion: res.responsable.identificacion,
-            nombre: res.responsable.nombre,
+          proveedor: new Proveedor({
+            id: res.proveedor?.id ?? "",
+            nombre: res.proveedor?.nombre ?? "",
+          }),
+          usuario: new Usuario({
+            id: res.usuario?.id ?? "",
+            nombre: res.usuario?.nombre ?? "",
+            apellido: res.usuario?.apellido ?? "",
+            correo: res.usuario?.correo ?? "",
+            rol: res.usuario?.rol ?? "",
+            cargo: res.usuario?.cargo ?? "",
           }),
         })
     );
