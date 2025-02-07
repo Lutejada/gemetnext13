@@ -9,9 +9,9 @@ import { Role } from "@/app/api/usuarios/dominio/entity";
 interface ListarUsuariosQuery {
   roles?: Role[];
 }
-export const useListadoUsuarios = ({ roles }: ListarUsuariosQuery) => {
+export const useListadoUsuarios = (arg?: ListarUsuariosQuery) => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
-
+  const roles = arg?.roles;
   const queryParams = roles
     ? roles.map((role) => `role=${role}`).join("&")
     : "";
