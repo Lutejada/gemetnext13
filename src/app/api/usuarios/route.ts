@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { errorHandler } from "../common/errors/error.handler";
 import { CrearUsuarioImp } from "./use-cases/write/crearUsuario";
 import { UsuarioService } from "./dominio/service/index";
@@ -29,10 +29,12 @@ const passwordResetTokenRepository = new PasswordResetTokenRepositoryImp();
 const passwordResetTokenService = new PasswordResetTokenService(
   passwordResetTokenRepository
 );
+
 const authService = new AuthService(
   usuarioService,
   clienteService,
-  passwordResetTokenService
+  passwordResetTokenService,
+  emailService
 );
 const crearUsuarioImp = new CrearUsuarioImp(
   usuarioService,
@@ -58,9 +60,11 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(_request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const session = await auth();
+    const searchParams = request.nextUrl.searchParams;
+    const roles = searchParams.getAll("role");
     const usuarios = await listarUsuariosImp.execute(session.user.clienteId);
     return NextResponse.json(usuarios);
   } catch (error: any) {

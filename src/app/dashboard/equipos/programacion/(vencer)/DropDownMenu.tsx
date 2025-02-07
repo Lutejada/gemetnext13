@@ -43,8 +43,9 @@ export const DropDownMenuEjecucionEquipo = ({
       <DialogWrapper
         isOpen={isOpenModal}
         onOpenChange={onOpenChangeModal}
-        title="Crear Proveedor"
+        title="Crear Ejecucion"
         description="Ingresa la informacion solicitada"
+        
       >
         <FormEjecucionEquipo
           closeModal={closeModal}

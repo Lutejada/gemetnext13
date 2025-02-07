@@ -3,13 +3,20 @@ import useSWRMutation from "swr/mutation";
 import { httpBase } from "../../config/api-base";
 import useSWR from "swr";
 import { ListarUsuriosDTO } from "@/app/api/usuarios/use-cases/dto/listarUsuarios.DTO";
-import { CambiarPasswordDTO } from "@/app/api/usuarios/use-cases/dto/cambiarPasswordDTO";
 import { CrearUsuarioDTO } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
+import { Role } from "@/app/api/usuarios/dominio/entity";
 
-export const useListadoUsuarios = () => {
+interface ListarUsuariosQuery {
+  roles?: Role[];
+}
+export const useListadoUsuarios = ({ roles }: ListarUsuariosQuery) => {
   const fetcher = (url: string) => httpBase.get(url).then((res) => res.data);
+
+  const queryParams = roles
+    ? roles.map((role) => `role=${role}`).join("&")
+    : "";
   const { data, error, isLoading } = useSWR<ListarUsuriosDTO[]>(
-    "/usuarios",
+    `/usuarios${queryParams ? `?${queryParams}` : ""}`,
     fetcher,
     {
       revalidateIfStale: false,
@@ -17,10 +24,11 @@ export const useListadoUsuarios = () => {
       revalidateOnReconnect: false,
     }
   );
+
   return {
     usuarios: data ?? [],
     isLoading,
-    isError: error,
+    error,
   };
 };
 

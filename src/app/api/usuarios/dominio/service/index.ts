@@ -42,6 +42,13 @@ export class UsuarioService {
     return await this.usuarioReadRepository.listarUsuarios(clienteId);
   }
 
+  async listarUsuarioPorRoles(clienteId: string, roles: Role[]) {
+    return await this.usuarioReadRepository.listarUsuarioPorRoles(
+      clienteId,
+      roles
+    );
+  }
+
   async validarUsuarioExiste(correo: string, clienteId: string) {
     const user = await this.obtenerUsuarioPorCorreo(correo, clienteId);
     if (!user) {

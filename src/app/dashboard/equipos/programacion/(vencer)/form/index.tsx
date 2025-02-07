@@ -32,7 +32,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { obtenerResponsables } from "@/app/dashboard/hooks/useResponsables";
 import { Textarea } from "@/components/ui/textarea";
 import { useCrearEjecucionEquipo } from "@/app/dashboard/hooks/useEjecucionEquipo";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -44,6 +43,7 @@ import { useListadoProvedores } from "../../../../hooks/useProveedor";
 import { useListadoUsuarios } from "../../../../hooks/useUsuario";
 import { ComboboxForm } from "./Combobox";
 import { useState } from "react";
+import { Role } from "@/app/api/usuarios/dominio/entity";
 const FormSchema = z.object({
   fechaEjecucion: z.date({ required_error: "fechaInicio requerida" }),
   observaciones: z
@@ -79,7 +79,9 @@ export function FormEjecucionEquipo({
     label: proveedor.nombre,
   }));
 
-  const { usuarios } = useListadoUsuarios();
+  const { usuarios } = useListadoUsuarios({
+    roles: [Role.Metrologo, Role.Auxiliar],
+  });
   const listValuesUsuarios = usuarios.map((usuario) => ({
     value: usuario.id,
     label: usuario.nombre,
