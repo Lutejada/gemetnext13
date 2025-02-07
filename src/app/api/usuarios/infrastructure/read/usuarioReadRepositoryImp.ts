@@ -1,9 +1,34 @@
 import { prisma } from "@/lib/prisma";
-import { Usuario } from "../../dominio/entity";
+import { Role, Usuario } from "../../dominio/entity";
 import { UsuarioReadRepository } from "../../dominio/repository";
 import { usuario as UsuarioPrisma } from "@prisma/client";
 
 export class UsuarioReadRepositoryImp implements UsuarioReadRepository {
+  async listarUsuarioPorRoles(
+    clienteId: string,
+    roles: Role[]
+  ): Promise<Usuario[]> {
+    const res = await prisma.usuario.findMany({
+      where: {
+        clienteId,
+        rol: {
+          in: roles,
+        },
+      },
+    });
+
+    return res.map((usuario) => this.mapToDomainUsuario(usuario));
+  }
+  async obtenerPorId(usuarioId: string): Promise<Usuario | null> {
+    const res = await prisma.usuario.findUnique({
+      where: {
+        id: usuarioId,
+      },
+    });
+
+    if (!res) return null;
+    return this.mapToDomainUsuario(res);
+  }
   async listarUsuarios(clienteId: string): Promise<Usuario[]> {
     const res = await prisma.usuario.findMany({
       where: {

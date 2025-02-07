@@ -23,12 +23,12 @@ export const DialogWrapper: React.FC<DialogWrapperProps> = ({
   children,
 }) => (
   <Dialog open={isOpen} onOpenChange={onOpenChange}>
-    <DialogContent>
+    <DialogContent className="max-h-[80vh]">
       <DialogHeader>
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      {children}
+      <div className="overflow-y-auto max-h-[500px] ">{children}</div>
     </DialogContent>
   </Dialog>
 );

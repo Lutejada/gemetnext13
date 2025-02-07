@@ -26,8 +26,27 @@ export class UsuarioService {
     return await this.usuarioReadRepository.obtenerPorCorreo(correo, clienteId);
   }
 
+  async obtenerUsuarioPorId(usuarioId: string) {
+    return await this.usuarioReadRepository.obtenerPorId(usuarioId);
+  }
+
+  async validarUsuarioPorId(usuarioId: string) {
+    const user = await this.obtenerUsuarioPorId(usuarioId);
+    if (!user) {
+      throw new UsuarioNoExiste();
+    }
+    return user;
+  }
+
   async listarUsuarios(clienteId: string) {
     return await this.usuarioReadRepository.listarUsuarios(clienteId);
+  }
+
+  async listarUsuarioPorRoles(clienteId: string, roles: Role[]) {
+    return await this.usuarioReadRepository.listarUsuarioPorRoles(
+      clienteId,
+      roles
+    );
   }
 
   async validarUsuarioExiste(correo: string, clienteId: string) {

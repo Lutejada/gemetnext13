@@ -3,7 +3,6 @@ import { auth } from "@/lib/getSession";
 import { errorHandler } from "../../common/errors/error.handler";
 import { CrearEjecucionEquipos } from "../application/use-cases/writer/crearEjecucionEquipos";
 import { EjecucionEquipoWriteRepositoryImp } from "../infrastructure/writer/ejecucionEquipoWriteRepositoryImp";
-import { ResponsableReaderRepoImp } from "../../responsables/infrastructure/reader/responsableReaderRepoImp";
 import {
   validarCrearEjecucionEquipo,
   CrearEjecucionDTO,
@@ -13,17 +12,36 @@ import { EquipoWriteRepositoryImp } from "../../equipos/infrastructure/writer/eq
 import { ListarEjecucionEquipos } from "../application/use-cases/reader/listarEjecucionEquipos";
 import { EjecucionEquiposReadRepositoryImp } from "../infrastructure/reader/ejecucionEquiposReadRepositoryImp";
 import { SaveFilesVercel } from "../../common/files/saveFiles";
+import { TipoEjecutor } from "../dominio/entity";
+import { ProveedorService } from "../../proveedor/dominio/service/index";
+import { UsuarioService } from "../../usuarios/dominio/service";
+import { UsuarioReadRepositoryImp } from "../../usuarios/infrastructure/read/usuarioReadRepositoryImp";
+import { UsuarioWriteRepositoryImp } from "../../usuarios/infrastructure/write/usuarioWriteRepositoryImp";
+import { ProveedorReadRepositoryImp } from "../../proveedor/infrastructure/reader/proveedorReadRepositoryImp";
+import { ProveedorWriteRepositoryImp } from "../../proveedor/infrastructure/writer/proveedorWriteRepositoryImp";
 
 const ejecucionRepo = new EjecucionEquipoWriteRepositoryImp();
-const repoResponsable = new ResponsableReaderRepoImp();
 const equipoRepo = new EquipoReadRepositoryImp();
 const equipoRepoWrite = new EquipoWriteRepositoryImp();
 const fileService = new SaveFilesVercel();
+const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
+const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
+const usuarioService = new UsuarioService(
+  usuarioReadRepositoryImp,
+  usuarioWriteRepositoryImp
+);
+const proveedorReadRepositoryImp = new ProveedorReadRepositoryImp();
+const proveedorWriteRepositoryImp = new ProveedorWriteRepositoryImp();
+const proveedorService = new ProveedorService(
+  proveedorWriteRepositoryImp,
+  proveedorReadRepositoryImp
+);
 const crearEjecucionEquipos = new CrearEjecucionEquipos(
   ejecucionRepo,
   equipoRepo,
   equipoRepoWrite,
-  repoResponsable,
+  usuarioService,
+  proveedorService,
   fileService
 );
 const ejecucionRepoRead = new EjecucionEquiposReadRepositoryImp();
@@ -37,12 +55,13 @@ export async function POST(request: Request) {
       ejecutorId: formData.get("ejecutorId") as string,
       programacionEquipoId: formData.get("programacionEquipoId") as string,
       archivos: formData.getAll("archivos") as File[],
+      tipoEjecutor: formData.get("tipoEjecutor") as TipoEjecutor,
     };
 
-    validarCrearEjecucionEquipo(body);
+    const dto = validarCrearEjecucionEquipo(body);
     const session = await auth();
 
-    await crearEjecucionEquipos.execute(session.user.clienteId, body);
+    await crearEjecucionEquipos.execute(session.user.clienteId, dto);
     return NextResponse.json({ msg: "ejecucion creada" });
   } catch (error: any) {
     return errorHandler(error);

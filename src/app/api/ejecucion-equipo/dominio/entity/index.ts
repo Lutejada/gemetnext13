@@ -1,10 +1,16 @@
-import { Responsable } from "@/app/api/responsables/domain/entity";
 import { Cliente } from "../../../cliente/dominio/entity";
 import { ProgramacionEquipos } from "@/app/api/equipos/dominio";
+import { Proveedor } from "@/app/api/proveedor/dominio/entity";
+import { Usuario } from "@/app/api/usuarios/dominio/entity";
 
 export interface Documentos {
   name?: string;
   url?: string;
+}
+
+export enum TipoEjecutor {
+  INTERNO = "INTERNO",
+  EXTERNO = "EXTERNO",
 }
 
 export class EjecucionEquipo {
@@ -12,17 +18,22 @@ export class EjecucionEquipo {
   fechaEjecucion: Date | string;
   observaciones: string;
   cliente: Cliente;
-  responsable: Responsable;
   programacionEquipo: ProgramacionEquipos;
-  documentos?: Documentos[]
+  documentos?: Documentos[];
+  proveedor?: Proveedor;
+  usuario?: Usuario;
+  tipoEjecutor: TipoEjecutor;
 
-  constructor(attributes: EjecucionEquipo) {
-    this.id = attributes.id;
-    this.fechaEjecucion = attributes.fechaEjecucion;
-    this.observaciones = attributes.observaciones;
-    this.cliente = attributes.cliente;
-    this.responsable = attributes.responsable;
-    this.programacionEquipo = attributes.programacionEquipo;
+  constructor(attributes: Partial<EjecucionEquipo>) {
+    this.id = attributes.id ?? "";
+    this.fechaEjecucion = attributes.fechaEjecucion ?? new Date();
+    this.observaciones = attributes.observaciones ?? "";
+    this.cliente = attributes.cliente ?? new Cliente();
+    this.programacionEquipo =
+      attributes.programacionEquipo ?? ({} as ProgramacionEquipos);
     this.documentos = attributes.documentos ?? [];
+    this.proveedor = attributes.proveedor;
+    this.usuario = attributes.usuario;
+    this.tipoEjecutor = attributes.tipoEjecutor ?? TipoEjecutor.INTERNO;
   }
 }
