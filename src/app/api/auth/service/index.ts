@@ -13,6 +13,7 @@ import { EmailService } from "../../common/email/index";
 import { getBaseDomain } from "@/lib/helpers/getBaseDomain";
 import { ForgotPasswordTemplate } from "../../common/email/templates/forgotPassword";
 import { ForgotPasswordDTO } from "../dto/forgotPasswordDTO";
+import { Role } from "../../usuarios/dominio/entity";
 
 interface Credentials {
   cliente: string;
@@ -26,7 +27,7 @@ export interface UserAuth {
   correo: string;
   nombreCliente: string;
   clienteId: string;
-  rol: string;
+  rol: Role;
 }
 export class AuthService {
   constructor(

@@ -24,8 +24,8 @@ export class ProveedorWriteRepositoryImp implements ProveedorWriteRepository {
       data: {
         nombre: proveedor.nombre,
         direccion: proveedor.direccion,
-        email: proveedor.direccion,
-        numeroIdentificacion: proveedor.direccion,
+        email: proveedor.email,
+        numeroIdentificacion: proveedor.numeroIdentificacion,
         telefono: proveedor.telefono,
         tipoIdetificacion: proveedor.tipoIdetificacion,
         clienteId: proveedor.cliente.id,
