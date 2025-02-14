@@ -5,7 +5,7 @@ export class Usuario {
   nombre: string;
   apellido: string;
   cargo: string;
-  rol: string | Role;
+  rol: Role;
   correo: string;
   password: string;
   fechaCreacion: string | Date;

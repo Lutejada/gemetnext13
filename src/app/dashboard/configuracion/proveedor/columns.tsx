@@ -15,6 +15,10 @@ export const columns: ColumnDef<ListarProveedoresDTO>[] = [
     header: "Numero Identificacion",
   },
   {
+    accessorKey: "numeroIdentificacion",
+    header: "Numero Identificacion",
+  },
+  {
     id: "actions",
     cell: ({ row }) => {
       console.log(row.original);

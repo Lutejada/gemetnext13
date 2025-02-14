@@ -23,12 +23,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import {
-  useEditarProveedor,
-} from "../../hooks/useProveedor";
+import { useEditarProveedor } from "../../hooks/useProveedor";
 import { Role } from "@/app/api/usuarios/dominio/entity";
 import { useCrearUsuario } from "../../hooks/useUsuario";
 import { crearUsuarioDTOschema } from "@/app/api/usuarios/use-cases/dto/crearUsuario.DTO";
+import { auth } from "../../../../lib/getSession";
+import { useSession } from "next-auth/react";
 
 interface Props {
   isEditing?: boolean;
@@ -43,6 +43,9 @@ export function UsuarioForm({
   //proveedorDto,
   closeModal,
 }: Props) {
+  const { data: session } = useSession();
+  const isValidRole = session?.user?.rol === Role.Admin;
+
   const labelform = isEditing ? "Editar Usuario" : "Crear Usuario";
   const form = useForm<FormValues>({
     resolver: zodResolver(crearUsuarioDTOschema),
@@ -73,8 +76,8 @@ export function UsuarioForm({
       //   tipoIdetificacion: values.tipoIdetificacion as Identificacion,
       // });
     } else {
-      console.log(form.formState)
-      console.log(form.setError)
+      console.log(form.formState);
+      console.log(form.setError);
       await crear({
         usuario: values.usuario,
         nombre: values.nombre,
@@ -180,7 +183,7 @@ export function UsuarioForm({
               </FormItem>
             )}
           />
-          
+
           <FormField
             control={form.control}
             name="rol"
@@ -218,7 +221,7 @@ export function UsuarioForm({
         </div>
         <Button
           type="submit"
-          disabled={isLoadingEdit || isLoadingCreated}
+          disabled={!isValidRole || isLoadingEdit || isLoadingCreated}
           className="mx-auto"
         >
           <Loader2

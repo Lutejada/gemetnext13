@@ -28,7 +28,7 @@ export const DialogWrapper: React.FC<DialogWrapperProps> = ({
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
-      <div className="overflow-y-auto max-h-[500px] ">{children}</div>
+      <div className="overflow-y-auto max-h-[500px] p-1">{children}</div>
     </DialogContent>
   </Dialog>
 );

@@ -9,6 +9,7 @@ import { UsuarioWriteRepositoryImp } from "../app/api/usuarios/infrastructure/wr
 import { ClienteReadRepositoryImp } from "../app/api/cliente/infrastructure/read/clienteReadRepositoryImp";
 import { PasswordResetTokenService } from "../app/api/auth/service/passwordResetTokenService";
 import { PasswordResetTokenRepositoryImp } from "../app/api/auth/repository/passwordResetTokenRepositoryIm";
+import { EmailService } from "../app/api/common/email/index";
 const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
 const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
 const clienteReadRepositoryImp = new ClienteReadRepositoryImp();
@@ -16,6 +17,7 @@ const usuarioService = new UsuarioService(
   usuarioReadRepositoryImp,
   usuarioWriteRepositoryImp
 );
+const emailService = new EmailService();
 const passwordResetTokenRepositoryImp = new PasswordResetTokenRepositoryImp();
 const passwordResetTokenService = new PasswordResetTokenService(
   passwordResetTokenRepositoryImp
@@ -24,7 +26,8 @@ const clienteService = new ClienteService(clienteReadRepositoryImp);
 const authService = new AuthService(
   usuarioService,
   clienteService,
-  passwordResetTokenService
+  passwordResetTokenService,
+  emailService
 );
 export const authOptions: NextAuthOptions = {
   session: {

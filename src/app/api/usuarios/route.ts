@@ -15,6 +15,8 @@ import { PasswordResetTokenService } from "../auth/service/passwordResetTokenSer
 import { PasswordResetTokenRepository } from "../auth/repository";
 import { PasswordResetTokenRepositoryImp } from "../auth/repository/passwordResetTokenRepositoryIm";
 import { Cliente } from "../cliente/dominio/entity";
+import { rolesGuard } from "@/lib/roles-guard";
+import { Role } from "./dominio/entity";
 
 const usuarioWriteRepositoryImp = new UsuarioWriteRepositoryImp();
 const usuarioReadRepositoryImp = new UsuarioReadRepositoryImp();
@@ -49,6 +51,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const dto = validarCrearUsuarioDto(body);
     const session = await auth();
+    rolesGuard([Role.Admin], session.user.rol as Role);
     const cliente: Cliente = {
       id: session.user.clienteId,
       nombre: session.user.nombreCliente,
