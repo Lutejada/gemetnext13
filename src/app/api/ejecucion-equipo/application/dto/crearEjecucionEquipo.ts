@@ -1,6 +1,6 @@
 import { validateFileListSize } from "@/app/api/common/files/filesSize";
+import { TipoEjecutor } from "@/app/api/common/types";
 import * as z from "zod";
-import { TipoEjecutor } from "../../dominio/entity";
 
 export interface CrearEjecucionDTO {
   fechaEjecucion: string | Date;

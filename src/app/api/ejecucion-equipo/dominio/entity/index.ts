@@ -1,17 +1,8 @@
+import { Documentos, TipoEjecutor } from "@/app/api/common/types";
 import { Cliente } from "../../../cliente/dominio/entity";
 import { ProgramacionEquipos } from "@/app/api/equipos/dominio";
 import { Proveedor } from "@/app/api/proveedor/dominio/entity";
 import { Usuario } from "@/app/api/usuarios/dominio/entity";
-
-export interface Documentos {
-  name?: string;
-  url?: string;
-}
-
-export enum TipoEjecutor {
-  INTERNO = "INTERNO",
-  EXTERNO = "EXTERNO",
-}
 
 export class EjecucionEquipo {
   id: string;
